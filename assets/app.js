@@ -1,192 +1,220 @@
 (()=>{
-const definitions = [
- {id:'SEGVB2YC',name:'Sverige 2 år',category:'räntor',unit:'%',source:'Riksbanken',descr:'Statsobligation, 2 år',digits:2},
- {id:'SEGVB5YC',name:'Sverige 5 år',category:'räntor',unit:'%',source:'Riksbanken',descr:'Statsobligation, 5 år',digits:2},
- {id:'SEGVB10YC',name:'Sverige 10 år',category:'räntor',unit:'%',source:'Riksbanken',descr:'Statsobligation, 10 år',digits:2},
- {id:'SECBREPOEFF',name:'Styrräntan',category:'räntor',unit:'%',source:'Riksbanken',descr:'Riksbankens policy rate',digits:2},
- {id:'DEGVB10Y',name:'Tyskland 10 år',category:'räntor',unit:'%',source:'Riksbanken',descr:'Statsobligation, 10 år',digits:2},
- {id:'USGVB10Y',name:'USA 10 år',category:'räntor',unit:'%',source:'Riksbanken',descr:'Statsobligation, 10 år',digits:2},
- {id:'SEMB5YCACOMB',name:'Bostadsobligation 5 år',category:'räntor',unit:'%',source:'Riksbanken',descr:'Säkerställd bostadsobligation',digits:2},
- {id:'SEKUSDPMI',name:'USD / SEK',category:'valutor',unit:'SEK',source:'Riksbanken',descr:'Amerikansk dollar i SEK',digits:4},
- {id:'SEKEURPMI',name:'EUR / SEK',category:'valutor',unit:'SEK',source:'Riksbanken',descr:'Euro i SEK',digits:4},
- {id:'SEKNOKPMI',name:'NOK / SEK',category:'valutor',unit:'SEK',source:'Riksbanken',descr:'Norsk krona i SEK',digits:4},
- {id:'SEKDKKPMI',name:'DKK / SEK',category:'valutor',unit:'SEK',source:'Riksbanken',descr:'Dansk krona i SEK',digits:4},
- {id:'SEKGBPPMI',name:'GBP / SEK',category:'valutor',unit:'SEK',source:'Riksbanken',descr:'Brittiskt pund i SEK',digits:4},
- {id:'SEKCHFPMI',name:'CHF / SEK',category:'valutor',unit:'SEK',source:'Riksbanken',descr:'Schweizisk franc i SEK',digits:4},
- {id:'SEKKIX92',name:'KIX-index',category:'valutor',unit:'index',source:'Riksbanken',descr:'Kronans konkurrensvägda index',digits:2},
- {id:'KPIF_YOY',name:'KPIF-inflation',category:'inflation',unit:'%',source:'SCB',descr:'12-månadersförändring',digits:1},
- {id:'KPI_YOY',name:'KPI-inflation',category:'inflation',unit:'%',source:'SCB',descr:'12-månadersförändring',digits:1}
-];
-const byId = Object.fromEntries(definitions.map(d=>[d.id,d]));
-let dataset = { indicators:{}, history:{}, sources:{} };
-let range = '3m';
-const $ = id => document.getElementById(id);
-const fmtDate = iso => { if(!iso) return '–'; try { return new Date(iso.slice(0,10)+'T12:00:00').toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric'}); } catch { return iso; } };
-const fmtMonth = iso => { if(!iso) return '–'; const d = new Date(iso.slice(0,10)+'T12:00:00'); return d.toLocaleDateString('sv-SE',{month:'short',year:'numeric'}); };
-const formatNum = (v,digits=2) => (v===null || v===undefined || !Number.isFinite(Number(v))) ? '—' : new Intl.NumberFormat('sv-SE',{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(Number(v));
-const quote = id => dataset.indicators?.[id] || null;
-const hasValue = q => !!q && typeof q.value === 'number' && Number.isFinite(q.value);
-const dataStr = id => { const q = quote(id), d = byId[id]; return hasValue(q) ? formatNum(q.value, d?.digits ?? 2) : '—'; };
-const statusText = id => { const q = quote(id); return q?.date ? fmtDate(q.date) : 'Ej tillgänglig'; };
-const setText = (id, value) => { const el = $(id); if(el) el.textContent = value; };
-const setHTML = (id, value) => { const el = $(id); if(el) el.innerHTML = value; };
+'use strict';
 
-function cardHtml(id,title,symbol,caption){
-  const q = quote(id), d = byId[id], empty = !hasValue(q);
-  return `<div class="kpi-card ${empty?'empty':''}"><div class="kpi-top"><span class="kpi-name">${title}</span><span class="kpi-icon">${symbol}</span></div><div class="kpi-value">${dataStr(id)}${empty?'':` <span style="font-size:16px;font-weight:700;color:#81786f">${d.unit}</span>`}</div><div class="kpi-bottom"><span class="kpi-change">${caption}</span><span>${statusText(id)}</span></div></div>`;
+// Identifierare i den officiella datafil som uppdateras av GitHub Actions.
+const info = {
+  SEGVB2YC:{name:'Sverige 2 år', unit:'%', digits:2, description:'Statsobligation, 2 år'},
+  SEGVB5YC:{name:'Sverige 5 år', unit:'%', digits:2, description:'Statsobligation, 5 år'},
+  SEGVB10YC:{name:'Sverige 10 år', unit:'%', digits:2, description:'Statsobligation, 10 år'},
+  SECBREPOEFF:{name:'Styrräntan', unit:'%', digits:2, description:'Riksbanken'},
+  DEGVB10Y:{name:'Tyskland 10 år', unit:'%', digits:2, description:'Statsobligation, 10 år'},
+  USGVB10Y:{name:'USA 10 år', unit:'%', digits:2, description:'Statsobligation, 10 år'},
+  SEMB5YCACOMB:{name:'Bostadsobligation 5 år', unit:'%', digits:2, description:'Säkerställd obligation'},
+  SEKUSDPMI:{name:'USD/SEK', unit:'SEK', digits:4, description:'Amerikansk dollar'},
+  SEKEURPMI:{name:'EUR/SEK', unit:'SEK', digits:4, description:'Euro'},
+  SEKNOKPMI:{name:'NOK/SEK', unit:'SEK', digits:4, description:'Norsk krona'},
+  SEKDKKPMI:{name:'DKK/SEK', unit:'SEK', digits:4, description:'Dansk krona'},
+  SEKGBPPMI:{name:'GBP/SEK', unit:'SEK', digits:4, description:'Brittiskt pund'},
+  SEKCHFPMI:{name:'CHF/SEK', unit:'SEK', digits:4, description:'Schweizisk franc'},
+  SEKKIX92:{name:'KIX-index', unit:'index', digits:2, description:'Konkurrensvägd kronkurs'},
+  KPIF_YOY:{name:'KPIF', unit:'%', digits:1, description:'Årsförändring'},
+  KPI_YOY:{name:'KPI', unit:'%', digits:1, description:'Årsförändring'}
+};
+const $=id=>document.getElementById(id);
+const setText=(id,value)=>{const el=$(id);if(el)el.textContent=value;};
+const setHTML=(id,html)=>{const el=$(id);if(el)el.innerHTML=html;};
+const values={indicators:{},history:{},sources:{}};
+let range='3m';
+const views=new Set(['oversikt','marknader','rantor','inflation','valutor','kallor']);
+
+const number=(value,digits=2)=>Number.isFinite(Number(value))&&value!==null&&value!==undefined
+  ?new Intl.NumberFormat('sv-SE',{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(Number(value)):'—';
+const quote=id=>values.indicators?.[id]||null;
+const valid=id=>typeof quote(id)?.value==='number'&&Number.isFinite(quote(id).value);
+const num=id=>valid(id)?number(quote(id).value,info[id]?.digits??2):'—';
+function date(iso){
+  if(!iso||!/^\d{4}-\d{2}-\d{2}/.test(iso))return '–';
+  return new Date(iso.slice(0,10)+'T12:00:00Z').toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric',timeZone:'Europe/Stockholm'});
 }
-
-function paintCards(){
-  setHTML('kpiGrid',
-    cardHtml('SECBREPOEFF','Styrräntan','◎','Riksbanken') +
-    cardHtml('SEGVB10YC','Sverige 10 år','↗','Statsobligation') +
-    cardHtml('KPIF_YOY','KPIF-inflation','◌','12 månader') +
-    cardHtml('SEKUSDPMI','USD / SEK','⇄','1 USD i kronor')
-  );
+function month(iso){
+  if(!iso||!/^\d{4}-\d{2}-\d{2}/.test(iso))return '–';
+  return new Date(iso.slice(0,10)+'T12:00:00Z').toLocaleDateString('sv-SE',{month:'long',year:'numeric',timeZone:'Europe/Stockholm'});
 }
-
-function paintRateList(){
-  const ids = ['SEGVB2YC','SEGVB5YC','SEGVB10YC','DEGVB10Y','USGVB10Y','SEMB5YCACOMB'];
-  setHTML('ratesList', ids.map(id=>{
-    const d = byId[id];
-    return `<div class="rate-item"><div><div class="rate-name">${d.name}</div><div class="rate-sub">${d.descr}</div></div><div class="rate-right"><div class="rate-value">${dataStr(id)}${hasValue(quote(id))?' %':''}</div><div class="rate-date">${statusText(id)}</div></div></div>`;
-  }).join(''));
-}
-
-function paintFx(){
-  const ids = ['SEKUSDPMI','SEKEURPMI','SEKNOKPMI','SEKDKKPMI','SEKGBPPMI','SEKCHFPMI'];
-  const names = {
-    'SEKUSDPMI':['US','Amerikansk dollar'],
-    'SEKEURPMI':['EU','Euro'],
-    'SEKNOKPMI':['NO','Norsk krona'],
-    'SEKDKKPMI':['DK','Dansk krona'],
-    'SEKGBPPMI':['UK','Brittiskt pund'],
-    'SEKCHFPMI':['CH','Schweizisk franc']
-  };
-  setHTML('fxList', ids.map(id=>{
-    const [flag,descr] = names[id], d = byId[id];
-    return `<div class="fx-row"><div class="fx-pair"><span class="fx-icon">${flag}</span><div><div class="fx-label">${d.name}</div><div class="fx-desc">${descr}</div></div></div><div class="fx-price">${dataStr(id)}<small>${statusText(id)}</small></div></div>`;
-  }).join(''));
-}
-
+const dateFor=id=>date(quote(id)?.date);
 function readHistory(id){
-  const pts = dataset.history?.[id] || [];
-  return pts.filter(p=>Number.isFinite(Number(p.value)) && p.date).map(p=>({date:p.date, value:Number(p.value)})).sort((a,b)=>a.date.localeCompare(b.date));
+  const pts=values.history?.[id]||[];
+  return pts.filter(p=>/^\d{4}-\d{2}-\d{2}$/.test(p.date||'')&&Number.isFinite(Number(p.value)))
+    .map(p=>({date:p.date,value:Number(p.value)})).sort((a,b)=>a.date.localeCompare(b.date));
 }
-
-function recentSeries(arr, selectedRange){
-  if(!arr.length) return [];
-  const end = new Date(arr[arr.length-1].date+'T12:00:00Z');
-  const days = selectedRange === '1m' ? 31 : selectedRange === '3m' ? 94 : 370;
-  const from = new Date(end.getTime() - days*86400000).toISOString().slice(0,10);
-  return arr.filter(p=>p.date >= from);
+function sliceRange(points,r){
+  if(!points.length)return [];
+  const last=new Date(points[points.length-1].date+'T12:00:00Z');
+  const days=r==='1m'?31:r==='3m'?94:370;
+  const start=new Date(last.getTime()-days*86400000).toISOString().slice(0,10);
+  return points.filter(p=>p.date>=start);
 }
-
-function makeSvg(points, options={}){
-  const {height=240, width=630, color='#ef6c2a', filled=true, gradientId='lineGradient'} = options;
-  const left=40, right=12, top=14, bottom=32, innerW=width-left-right, innerH=height-top-bottom;
-  if(points.length < 2) return null;
-  const vals = points.map(p=>p.value);
-  let lo = Math.min(...vals), hi = Math.max(...vals);
-  const spread = Math.max(.05, hi-lo);
-  lo -= spread*.18; hi += spread*.18;
-  const X = i => left + (i/(points.length-1))*innerW;
-  const Y = v => top + (hi-v)/(hi-lo)*innerH;
-  const path = points.map((p,i)=>`${i?'L':'M'} ${X(i).toFixed(2)} ${Y(p.value).toFixed(2)}`).join(' ');
-  const fillPath = `${path} L ${X(points.length-1).toFixed(2)} ${(top+innerH).toFixed(2)} L ${left} ${(top+innerH).toFixed(2)} Z`;
-  const lines=[0,.25,.5,.75,1].map(f=>{
-    const y = top + innerH*f;
-    return `<line x1="${left}" y1="${y}" x2="${width-right}" y2="${y}" stroke="#e6e0d8" stroke-width="1" stroke-dasharray="2 6"/><text x="${left-9}" y="${y+4}" text-anchor="end" font-size="10" fill="#8a8177">${formatNum(hi-f*(hi-lo),1)}</text>`;
+function chartSvg(points,{height=250,width=660,id='rate-gradient'}={}){
+  if(points.length<2)return null;
+  const left=44,right=15,top=15,bottom=33,innerW=width-left-right,innerH=height-top-bottom;
+  const arr=points.map(p=>p.value);
+  let lo=Math.min(...arr),hi=Math.max(...arr);
+  const spread=Math.max(.06,hi-lo); lo-=spread*.18;hi+=spread*.18;
+  const x=i=>left+i/(points.length-1)*innerW;
+  const y=v=>top+(hi-v)/(hi-lo)*innerH;
+  const p=points.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(2)},${y(v.value).toFixed(2)}`).join(' ');
+  const area=`${p} L${x(points.length-1).toFixed(2)},${top+innerH} L${left},${top+innerH} Z`;
+  const grid=[0,.25,.5,.75,1].map(i=>{
+    const v=top+innerH*i;
+    return `<line x1="${left}" x2="${width-right}" y1="${v}" y2="${v}" stroke="#ecece8" stroke-dasharray="3 5"/><text x="${left-10}" y="${v+4}" fill="#999" font-size="10" text-anchor="end">${number(hi-(hi-lo)*i,1)}</text>`;
   }).join('');
-  const labels = [0,Math.floor((points.length-1)/2),points.length-1].map(i=>`<text x="${X(i)}" y="${height-10}" text-anchor="${i===0?'start':i===points.length-1?'end':'middle'}" fill="#8a8177" font-size="10">${fmtDate(points[i].date).replace(/ \d{4}$/,'')}</text>`).join('');
-  return `<svg role="img" aria-label="Historiskt diagram, ${points.length} observationer" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none"><defs><linearGradient id="${gradientId}" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.18"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>${lines}${filled ? `<path d="${fillPath}" fill="url(#${gradientId})"/>` : ''}<path d="${path}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><circle cx="${X(points.length-1)}" cy="${Y(points[points.length-1].value)}" r="4" fill="${color}" stroke="#ffffff" stroke-width="3"/>${labels}</svg>`;
+  const ticks=[0,Math.floor((points.length-1)/2),points.length-1].map(i=>`<text x="${x(i)}" y="${height-9}" text-anchor="${i===0?'start':i===points.length-1?'end':'middle'}" fill="#999" font-size="10">${date(points[i].date).replace(/ \d{4}$/,'')}</text>`).join('');
+  return `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" role="img" aria-label="Linjediagram med ${points.length} observationer"><defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fc591f" stop-opacity=".13"/><stop offset="1" stop-color="#fc591f" stop-opacity="0"/></linearGradient></defs>${grid}<path d="${area}" fill="url(#${id})"/><path d="${p}" fill="none" stroke="#fc591f" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><circle cx="${x(points.length-1)}" cy="${y(points[points.length-1].value)}" r="4" fill="#fc591f" stroke="#fff" stroke-width="2.5"/>${ticks}</svg>`;
 }
-
-function paintChart(){
-  const pts = recentSeries(readHistory('SEGVB10YC'), range);
-  const svg = makeSvg(pts, {gradientId:'rateFill'});
-  setHTML('rateChart', svg || '<div class="chart-empty">Historik hämtas automatiskt vid första datakörningen. Aktuella räntenivåer visas ovan även om diagrammet ännu saknar historik.</div>');
-  setText('chartPeriod', pts.length ? `${fmtDate(pts[0].date)} – ${fmtDate(pts[pts.length-1].date)}` : 'Ingen historik ännu');
+function drawGraph(target,points,gradient,periodTarget,height=260){
+  const svg=chartSvg(points,{height,id:gradient});
+  setHTML(target,svg||'<div class="chart-empty">Ingen historik tillgänglig.</div>');
+  setText(periodTarget,points.length?`${date(points[0].date)} – ${date(points[points.length-1].date)}`:'Ingen historik');
 }
+function renderOverview(){
+  const cards=[
+    ['SECBREPOEFF','Styrräntan','◎','Riksbanken'],
+    ['SEGVB10YC','Sverige 10 år','↗','Statsobligation'],
+    ['KPIF_YOY','Inflation, KPIF','◉','12 månader'],
+    ['SEKUSDPMI','USD/SEK','⇄','1 USD i kronor']
+  ];
+  setHTML('kpiGrid',cards.map(([id,name,icon,caption])=>`<article class="kpi-card ${valid(id)?'':'empty'}"><div class="kpi-label">${name}<span aria-hidden="true">${icon}</span></div><div class="kpi-value">${num(id)}${valid(id)?` <span class="unit">${info[id].unit}</span>`:''}</div><div class="kpi-bottom"><span>${caption}</span><time>${dateFor(id)}</time></div></article>`).join(''));
+  drawGraph('overviewRateChart',sliceRange(readHistory('SEGVB10YC'),'3m'),'overview-rate-fill','overviewRatePeriod',250);
+  for(const [id,prefix] of [['KPIF_YOY','overviewKpif'],['KPI_YOY','overviewKpi']]){
+    setText(prefix,valid(id)?`${num(id)} %`:'—');setText(prefix+'Date',quote(id)?.date?month(quote(id).date):'–');
+  }
+}
+function renderRates(){
+  const ids=['SEGVB2YC','SEGVB5YC','SEGVB10YC','DEGVB10Y','USGVB10Y','SEMB5YCACOMB'];
+  setHTML('ratesList',ids.map(id=>`<div class="rate-item"><div><div class="rate-name">${info[id].name}</div><div class="rate-sub">${info[id].description}</div></div><div class="rate-right"><div class="rate-value">${num(id)}${valid(id)?' %':''}</div><time class="rate-date">${dateFor(id)}</time></div></div>`).join(''));
+  drawGraph('rateChart',sliceRange(readHistory('SEGVB10YC'),range),'rate-fill','chartPeriod',350);
+}
+function renderInflation(){
+  for(const [id,prefix] of [['KPIF_YOY','kpif'],['KPI_YOY','kpi']]){
+    setText(prefix+'Value',valid(id)?`${num(id)} %`:'—');
+    setText(prefix+'Date',quote(id)?.date?`Referensmånad: ${month(quote(id).date)}`:'Ej tillgängligt');
+  }
+  drawGraph('inflationChart',readHistory('KPIF_YOY').slice(-36),'inflation-fill','inflationPeriod',350);
+}
+function renderCurrencies(){
+  const ids=['SEKUSDPMI','SEKEURPMI','SEKNOKPMI','SEKDKKPMI','SEKGBPPMI','SEKCHFPMI'];
+  const flags={SEKUSDPMI:'US',SEKEURPMI:'EU',SEKNOKPMI:'NO',SEKDKKPMI:'DK',SEKGBPPMI:'UK',SEKCHFPMI:'CH'};
+  setHTML('fxList',ids.map(id=>`<div class="fx-row"><div class="fx-pair"><span class="fx-icon">${flags[id]}</span><div><div class="fx-label">${info[id].name}</div><div class="fx-desc">${info[id].description}</div></div></div><div class="fx-price">${num(id)}<small>${dateFor(id)}</small></div></div>`).join(''));
+  setText('kixValue',num('SEKKIX92'));
+  setText('kixDate',dateFor('SEKKIX92'));
+}
+function renderStatus(){
+  const stamp=values.generated_at;
+  setText('lastUpdate',stamp&&!Number.isNaN(new Date(stamp).getTime())?new Date(stamp).toLocaleString('sv-SE',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Stockholm'}):'Uppdatering saknas');
+  const entries=Object.entries(values.sources||{});
+  setText('healthStatus',entries.length?entries.map(([name,s])=>`${name==='riksbank'?'Riksbanken':name==='scb'?'SCB':name}: ${s.status==='ok'?'Uppdaterad':s.status==='initial'?'Väntar':s.status==='partial'?'Delvis tillgänglig':'Kontrollera källan'}`).join(' · '):'Ingen status tillgänglig');
+  setText('copyrightYear',new Date().getFullYear());
+}
+function render(){renderOverview();renderRates();renderInflation();renderCurrencies();renderStatus();}
 
-function paintInflation(){
-  [['KPIF_YOY','kpif'],['KPI_YOY','kpi']].forEach(([id,prefix])=>{
-    setText(prefix+'Value', hasValue(quote(id)) ? `${dataStr(id)} %` : '—');
-    setText(prefix+'Date', quote(id)?.date ? `Referensmånad: ${fmtMonth(quote(id).date)}` : 'Inväntar SCB-data');
+// Skapa widget först när dess flik syns. En TradingView-iframe kan annars få bredden 0.
+function addTradingWidget(targetId,src,settings,height){
+  const host=$(targetId);
+  if(!host||host.dataset.initialized)return;
+  host.dataset.initialized='true';
+  const wrapper=document.createElement('div');wrapper.className='tradingview-widget-container';
+  wrapper.style.width='100%';wrapper.style.height=height;
+  const holder=document.createElement('div');holder.className='tradingview-widget-container__widget';
+  holder.style.width='100%';holder.style.height='100%';
+  const script=document.createElement('script');script.type='text/javascript';script.async=true;script.src=src;
+  script.textContent=JSON.stringify(settings);
+  script.addEventListener('error',()=>{
+    host.dataset.initialized='error';
+    host.innerHTML=targetId==='homeTicker' ? '<div class="widget-placeholder">Marknadskurserna kunde inte laddas. <a href="#marknader">Öppna Marknader →</a></div>' : '<div class="widget-placeholder">Kurserna kunde inte laddas. Använd indexlänkarna ovan för att se noteringarna direkt.</div>';
   });
-  const pts = readHistory('KPIF_YOY').slice(-24);
-  const svg = makeSvg(pts, {height:120, width:630, gradientId:'inflationFill'});
-  setHTML('inflationChart', svg || '<div class="chart-empty">Inflationshistorik visas efter första uppdateringen.</div>');
+  wrapper.append(holder,script);host.replaceChildren(wrapper);
+}
+function initTicker(){
+  addTradingWidget('homeTicker','https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js',{
+    symbols:[
+      {proName:'OMXSTO:OMXS30',title:'OMXS30'},
+      {proName:'FOREXCOM:SPXUSD',title:'S&P 500 (CFD)'},
+      {proName:'FOREXCOM:NSXUSD',title:'Nasdaq 100 (CFD)'},
+      {proName:'TVC:UKOIL',title:'Brent'},
+      {proName:'TVC:GOLD',title:'Guld'},
+      {proName:'FX_IDC:USDSEK',title:'USD/SEK'}
+    ], colorTheme:'light',locale:'sv',isTransparent:true,displayMode:'adaptive',showSymbolLogo:false
+  },'88px');
+}
+function initMarket(){
+  addTradingWidget('marketWidget','https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js',{
+    colorTheme:'light',dateRange:'1D',showChart:true,locale:'sv',largeChartUrl:'',
+    isTransparent:false,showSymbolLogo:false,showFloatingTooltip:true,
+    width:'100%',height:'100%',
+    plotLineColorGrowing:'rgba(252,89,31,1)',plotLineColorFalling:'rgba(110,110,110,1)',
+    gridLineColor:'rgba(0,0,0,0.045)',scaleFontColor:'rgba(80,80,80,1)',
+    belowLineFillColorGrowing:'rgba(252,89,31,0.10)',belowLineFillColorFalling:'rgba(90,90,90,0.08)',
+    belowLineFillColorGrowingBottom:'rgba(252,89,31,0)',belowLineFillColorFallingBottom:'rgba(90,90,90,0)',
+    symbolActiveColor:'rgba(252,89,31,0.08)',
+    tabs:[
+      {title:'Börser',symbols:[
+        {s:'OMXSTO:OMXS30',d:'OMXS30'},
+        {s:'FOREXCOM:SPXUSD',d:'S&P 500 (CFD)'},
+        {s:'FOREXCOM:NSXUSD',d:'Nasdaq 100 (CFD)'},
+        {s:'INDEX:DEU40',d:'DAX'},
+        {s:'TVC:VIX',d:'VIX'}
+      ]},
+      {title:'Råvaror',symbols:[
+        {s:'TVC:UKOIL',d:'Brent'},
+        {s:'TVC:USOIL',d:'WTI'},
+        {s:'TVC:GOLD',d:'Guld'},
+        {s:'COMEX:HG1!',d:'Koppar'}
+      ]},
+      {title:'Valutor',symbols:[
+        {s:'FX_IDC:USDSEK',d:'USD/SEK'},
+        {s:'FX_IDC:EURSEK',d:'EUR/SEK'},
+        {s:'FX:EURUSD',d:'EUR/USD'}
+      ]}
+    ]
+  },'570px');
 }
 
-function paintHealth(){
-  const src = dataset.sources || {};
-  const statuses = Object.values(src).map(v=>v.status);
-  const ok = statuses.filter(x=>x==='ok').length;
-  const errors = statuses.filter(x=>x==='error').length;
-  const partial = statuses.filter(x=>x==='partial').length;
-  const ts = dataset.generated_at;
-  setText('lastUpdate', ts ? new Date(ts).toLocaleString('sv-SE',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Stockholm'}) : 'Startdata · 13 nov 2026');
-  setText('healthStatus', !ts ? 'Första schemalagda körningen väntar' : errors ? `${ok} OK · ${errors} fel` : partial ? `${ok} OK · ${partial} delvis` : `${ok} datakällor uppdaterade`);
-  const health = $('healthStatus');
-  if(health) health.style.color = errors ? '#b24f1e' : '#3d342e';
+function activateView(){
+  const name=decodeURIComponent(location.hash.slice(1));
+  const selected=views.has(name)?name:'oversikt';
+  document.querySelectorAll('[data-view]').forEach(v=>{v.hidden=v.dataset.view!==selected;});
+  document.querySelectorAll('[data-view-link]').forEach(link=>{
+    const active=link.dataset.viewLink===selected;
+    link.classList.toggle('active',active);
+    if(active)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
+  });
+  const labels={oversikt:'Översikt',marknader:'Marknader',rantor:'Räntor',inflation:'Inflation',valutor:'Valutor',kallor:'Datakällor'};
+  document.title=`${labels[selected]} – Svensk Makropuls`;
+  if(selected==='oversikt')requestAnimationFrame(initTicker);
+  if(selected==='marknader')requestAnimationFrame(initMarket);
+  window.scrollTo?.(0,0);
 }
-
-function paintAll(){
-  paintCards();
-  paintRateList();
-  paintFx();
-  paintChart();
-  paintInflation();
-  paintHealth();
-}
-
-async function loadData(){
+function clockTick(){setText('clock',new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Stockholm'}));}
+async function load(){
   try{
-    const res = await fetch('./data/market.json?cache='+Date.now(), {cache:'no-store'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    dataset = await res.json();
-    paintAll();
+    const res=await fetch('./data/market.json?v='+Date.now(),{cache:'no-store'});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const payload=await res.json();
+    values.indicators=payload.indicators||{};
+    values.history=payload.history||{};
+    values.sources=payload.sources||{};
+    values.generated_at=payload.generated_at;
+    render();
   }catch(err){
-    console.error('Kan inte läsa datafil', err);
-    setText('healthStatus', 'Datafilen kunde inte läsas');
-    paintAll();
+    console.warn('Datafilen kunde inte läsas',err);
+    render();setText('healthStatus','Datafilen kunde inte läsas');
   }
 }
-
-function clockTick(){
-  setText('clock', new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Stockholm'})+' CET/CEST');
-}
-
-function activateNav(target){
-  document.querySelectorAll('[data-nav]').forEach(link=>{
-    link.classList.toggle('active', link.dataset.nav === target);
-  });
-}
-
-function events(){
-  document.querySelectorAll('.seg').forEach(el=>el.addEventListener('click', ()=>{
-    range = el.dataset.range;
-    document.querySelectorAll('.seg').forEach(b=>b.classList.toggle('active', b === el));
-    paintChart();
-  }));
-  const menu = $('menuToggle');
-  if(menu){
-    menu.addEventListener('click', ()=>{
-      const open = $('sidebar')?.classList.toggle('open');
-      menu.setAttribute('aria-expanded', String(!!open));
-    });
-  }
-  document.querySelectorAll('[data-nav]').forEach(el=>el.addEventListener('click', ()=>{
-    activateNav(el.dataset.nav);
-    $('sidebar')?.classList.remove('open');
-    menu?.setAttribute('aria-expanded','false');
-  }));
-}
-
-clockTick();
-setInterval(clockTick, 30000);
-events();
-paintAll();
-loadData();
+window.addEventListener('hashchange',activateView);
+document.querySelectorAll('[data-range]').forEach(btn=>btn.addEventListener('click',()=>{
+  range=btn.dataset.range;
+  document.querySelectorAll('[data-range]').forEach(other=>other.classList.toggle('active',other===btn));
+  renderRates();
+}));
+clockTick();setInterval(clockTick,30000);
+render();activateView();load();
 })();
