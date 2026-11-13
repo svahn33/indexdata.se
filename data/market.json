@@ -1,0 +1,59 @@
+{
+  "generated_at": null,
+  "note": "Verifierade startvärden för valutor (13 nov 2026) och inflation (okt 2026). Övriga värden hämtas vid första schemalagda körningen.",
+  "indicators": {
+    "SEKUSDPMI": {
+      "value": 10.05022,
+      "date": "2026-11-13",
+      "source": "Sveriges riksbank"
+    },
+    "SEKEURPMI": {
+      "value": 11.1075,
+      "date": "2026-11-13",
+      "source": "Sveriges riksbank"
+    },
+    "SEKNOKPMI": {
+      "value": 1.0509,
+      "date": "2026-11-13",
+      "source": "Sveriges riksbank"
+    },
+    "SEKDKKPMI": {
+      "value": 1.48583,
+      "date": "2026-11-13",
+      "source": "Sveriges riksbank"
+    },
+    "SEKGBPPMI": {
+      "value": 13.293,
+      "date": "2026-11-13",
+      "source": "Sveriges riksbank"
+    },
+    "SEKCHFPMI": {
+      "value": 11.98737,
+      "date": "2026-11-13",
+      "source": "Sveriges riksbank"
+    },
+    "KPIF_YOY": {
+      "value": 1.1,
+      "date": "2026-10-01",
+      "source": "SCB"
+    },
+    "KPI_YOY": {
+      "value": 0.9,
+      "date": "2026-10-01",
+      "source": "SCB"
+    }
+  },
+  "history": {},
+  "sources": {
+    "riksbank": {
+      "status": "initial",
+      "last_success": null,
+      "message": "Väntar på första automatiska uppdateringen"
+    },
+    "scb": {
+      "status": "initial",
+      "last_success": null,
+      "message": "Väntar på första automatiska uppdateringen"
+    }
+  }
+}

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Svensk Makropuls – en automatiskt uppdaterad översikt av räntor, inflation, valutor och finansmarknader, med Sverige i fokus.">
+  <meta name="theme-color" content="#ffffff">
+  <title>Svensk Makropuls – Sverige i fokus</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="stylesheet" href="./assets/styles.css">
+  <script defer src="./assets/app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Sidomeny">
+      <div class="sidebar-inner">
+        <a class="brand" href="#oversikt" aria-label="Makropuls startsida">
+          <span class="brand-mark">m<span>.</span></span>
+          <span class="brand-name">MAKROPULS<small>SVERIGE / EKONOMI</small></span>
+        </a>
+        <nav class="nav-group">
+          <a class="nav-item active" href="#oversikt" data-nav="oversikt">Översikt</a>
+          <a class="nav-item" href="#marknader" data-nav="marknader">Marknader</a>
+          <a class="nav-item" href="#inflation" data-nav="inflation">Inflation</a>
+          <a class="nav-item" href="#kallor" data-nav="kallor">Datakällor</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <span class="sidebar-status-dot"></span> Automatisk uppdatering
+          <p>Riksbanken och SCB uppdateras automatiskt. Marknadsöversikten laddas via TradingView.</p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu" id="menuToggle" aria-label="Visa meny" aria-expanded="false">☰</button>
+          <a class="brand top-brand" href="#oversikt" aria-label="Makropuls startsida">
+            <span class="brand-mark">m<span>.</span></span>
+            <span class="brand-name">MAKROPULS<small>SVERIGE / EKONOMI</small></span>
+          </a>
+          <nav class="top-nav">
+            <a href="#oversikt" data-nav="oversikt" class="active">Översikt</a>
+            <a href="#marknader" data-nav="marknader">Marknader</a>
+            <a href="#inflation" data-nav="inflation">Inflation</a>
+            <a href="#kallor" data-nav="kallor">Datakällor</a>
+          </nav>
+        </div>
+        <div class="topbar-right">
+          <span class="live-status"><i></i> Offentlig data</span>
+          <span class="clock" id="clock">–</span>
+        </div>
+      </header>
+
+      <div class="page-body">
+        <section class="hero" id="oversikt">
+          <div class="hero-main">
+            <div class="eyebrow orange-text">ÖVERSIKT</div>
+            <h1>Det viktigaste först.</h1>
+            <p>När du öppnar sidan ska du direkt se ränteläget, inflationen, kronan och de viktigaste marknaderna — utan att behöva leta.</p>
+          </div>
+          <div class="hero-meta">
+            <div class="hero-meta-card">
+              <span class="metric-mini-label">Senaste datauppdatering</span>
+              <strong id="lastUpdate">Inväntar första körning</strong>
+            </div>
+            <div class="hero-meta-card">
+              <span class="metric-mini-label">Källstatus</span>
+              <span class="hero-aside-status" id="healthStatus"><span class="pulse-dot"></span> Kontrollerar datakällor</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="quick-section quick-compact" aria-labelledby="quick-title">
+          <div class="section-head compact-head">
+            <div>
+              <h2 id="quick-title">Sverige just nu</h2>
+              <p>De viktigaste datapunkterna direkt på startsidan.</p>
+            </div>
+          </div>
+          <div class="kpi-grid" id="kpiGrid" aria-live="polite"></div>
+        </section>
+
+        <section class="main-grid focus-grid">
+          <div class="panel chart-panel" id="rantor">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow subtle-eyebrow">RÄNTEMARKNADEN</span>
+                <h2>Ränteläget</h2>
+                <p>Svenska statsobligationsräntor över tid</p>
+              </div>
+              <span class="pill">PROCENT, %</span>
+            </div>
+            <div class="chart-toolbar">
+              <div class="chart-legend"><span class="legend-line"></span> <span id="chartSeriesName">Sverige 10 år</span></div>
+              <div class="segmented" role="group" aria-label="Välj tidsperiod"><button class="seg active" data-range="1m">1M</button><button class="seg" data-range="3m">3M</button><button class="seg" data-range="1y">1Å</button></div>
+            </div>
+            <div class="chart-stage" id="rateChart"><div class="chart-empty">Historik hämtas automatiskt vid första datakörningen.</div></div>
+            <div class="chart-foot"><span><span class="source-dot"></span> Källa: Sveriges riksbank</span><span id="chartPeriod">–</span></div>
+          </div>
+
+          <div class="stack-col">
+            <div class="panel watch-panel">
+              <div class="panel-head">
+                <div>
+                  <span class="eyebrow subtle-eyebrow">SNABB ÖVERBLICK</span>
+                  <h2>Viktigaste räntorna</h2>
+                  <p>Senaste tillgängliga notering</p>
+                </div>
+              </div>
+              <div id="ratesList" class="rate-list"></div>
+            </div>
+            <div class="panel keypoints-panel">
+              <div class="panel-head">
+                <div>
+                  <span class="eyebrow subtle-eyebrow">ATT FÖLJA</span>
+                  <h2>Tre saker att hålla koll på</h2>
+                </div>
+              </div>
+              <div class="keypoints-list">
+                <div class="keypoint"><strong>1. Sverige 10 år</strong><p>Ger snabb känsla för ränteläget och bostadsmarknaden.</p></div>
+                <div class="keypoint"><strong>2. KPIF</strong><p>Visar den underliggande inflationen som Riksbanken fokuserar på.</p></div>
+                <div class="keypoint"><strong>3. USD/SEK</strong><p>Speglat riskaptit, kronstyrka och internationella flöden.</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="market-section" id="marknader">
+          <div class="section-head">
+            <div>
+              <h2>Marknadsöversikt</h2>
+              <p>Index, råvaror och valutor i en samlad vy.</p>
+            </div>
+            <a class="inline-link" href="https://www.tradingview.com/" target="_blank" rel="noopener">Drivs av TradingView ↗</a>
+          </div>
+          <div class="market-grid">
+            <div class="panel trading-panel">
+              <div class="trading-title"><span class="market-signal">◉</span> INDEX, RÅVAROR & VALUTOR</div>
+              <div class="tradingview-widget-container widget-light" style="height:510px;width:100%"><div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                {"colorTheme":"light","dateRange":"1D","showChart":true,"locale":"sv","largeChartUrl":"","isTransparent":true,"showSymbolLogo":false,"showFloatingTooltip":true,"width":"100%","height":"100%","plotLineColorGrowing":"rgba(237, 108, 42, 1)","plotLineColorFalling":"rgba(56, 56, 56, 0.65)","gridLineColor":"rgba(0,0,0,0.05)","scaleFontColor":"rgba(70,70,70,0.9)","belowLineFillColorGrowing":"rgba(237,108,42,0.12)","belowLineFillColorFalling":"rgba(125,125,125,0.08)","belowLineFillColorGrowingBottom":"rgba(237,108,42,0.0)","belowLineFillColorFallingBottom":"rgba(125,125,125,0.0)","symbolActiveColor":"rgba(237,108,42,0.10)","tabs":[{"title":"Börser","symbols":[{"s":"OMXSTO:OMXS30","d":"OMXS30"},{"s":"SP:SPX","d":"S&P 500"},{"s":"NASDAQ:NDX","d":"Nasdaq 100"},{"s":"XETR:DAX","d":"DAX"},{"s":"TVC:VIX","d":"VIX"}]},{"title":"Råvaror","symbols":[{"s":"TVC:UKOIL","d":"Brent"},{"s":"TVC:USOIL","d":"WTI"},{"s":"TVC:GOLD","d":"Guld"},{"s":"COMEX:HG1!","d":"Koppar"}]},{"title":"Valutor","symbols":[{"s":"FX_IDC:USDSEK","d":"USD/SEK"},{"s":"FX_IDC:EURSEK","d":"EUR/SEK"},{"s":"FX_IDC:EURUSD","d":"EUR/USD"}]}]}
+                </script>
+              </div>
+            </div>
+            <div class="panel fx-panel">
+              <div class="panel-head"><div><span class="eyebrow subtle-eyebrow">VALUTOR</span><h2>Kronans styrka</h2><p>Kronor per utländsk valuta · Riksbanken</p></div></div>
+              <div id="fxList" class="fx-list"></div>
+              <div class="fx-caption">Riksbankens valutakurser är indikativa och ska inte användas för transaktioner.</div>
+            </div>
+          </div>
+          <p class="legal-note">Kurser från TradingView kan vara fördröjda eller saknas för enskilda instrument. Tillgänglighet och uppdateringstakt varierar mellan börser.</p>
+        </section>
+
+        <section class="main-grid inflation-grid" id="inflation">
+          <div class="panel inflation-panel">
+            <div class="panel-head"><div><span class="eyebrow subtle-eyebrow">INFLATION</span><h2>Inflationen</h2><p>SCB:s officiella månadstal</p></div><span class="pill">12 MÅN</span></div>
+            <div class="inflation-cards"><div><span>KPIF</span><strong id="kpifValue">—</strong><small id="kpifDate">Inväntar SCB-data</small></div><div><span>KPI</span><strong id="kpiValue">—</strong><small id="kpiDate">Inväntar SCB-data</small></div></div>
+            <div id="inflationChart" class="mini-chart"><div class="chart-empty">Inflationshistorik visas efter första uppdateringen.</div></div>
+            <div class="chart-foot"><span><span class="source-dot"></span> Källa: SCB, statistikdatabasen</span><a href="https://www.scb.se/PR0101" target="_blank" rel="noopener">Öppna SCB ↗</a></div>
+          </div>
+          <div class="panel context-panel">
+            <div class="panel-head"><div><span class="eyebrow subtle-eyebrow">SAMBAND</span><h2>Hur du kan läsa siffrorna</h2><p>Kort hjälp för att tolka helhetsbilden</p></div></div>
+            <div class="context-list">
+              <div class="context-item"><div class="context-num">01</div><div><strong>Sverige mot Tyskland</strong><p>Ränteskillnaden ger en bild av hur Sverige prissätts relativt euroområdet.</p></div></div>
+              <div class="context-item"><div class="context-num">02</div><div><strong>2 år mot 10 år</strong><p>Räntekurvan visar skillnaden mellan korta och långa förväntningar.</p></div></div>
+              <div class="context-item"><div class="context-num">03</div><div><strong>KPIF mot styrräntan</strong><p>Följ inflationstakten bredvid penningpolitikens nivå.</p></div></div>
+              <div class="context-item"><div class="context-num">04</div><div><strong>Kronan mot omvärlden</strong><p>USD/SEK och EUR/SEK ger snabb känsla för valutamarknaden.</p></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="sources-section" id="kallor">
+          <div class="section-head">
+            <div>
+              <h2>Datakällor & drift</h2>
+              <p>Öppna källor, automatisk uppdatering och så lite manuellt arbete som möjligt.</p>
+            </div>
+          </div>
+          <div class="sources-grid">
+            <a class="source-card" href="https://www.riksbank.se/sv/statistik/rantor-och-valutakurser/hamta-rantor-och-valutakurser-via-api/" target="_blank" rel="noopener"><div class="source-card-symbol">R</div><div><strong>Sveriges riksbank ↗</strong><p>Statsobligationer, styrränta, valutakurser och KIX-index.</p><span>ÖPPET API · VARDAGAR</span></div></a>
+            <a class="source-card" href="https://www.scb.se/vara-tjanster/oppna-data/pxwebapi/" target="_blank" rel="noopener"><div class="source-card-symbol">S</div><div><strong>Statistiska centralbyrån ↗</strong><p>KPIF och KPI med automatisk uppdatering när SCB publicerar.</p><span>ÖPPET API · MÅNADSVIS</span></div></a>
+            <a class="source-card" href="https://www.tradingview.com/widget/" target="_blank" rel="noopener"><div class="source-card-symbol">T</div><div><strong>TradingView ↗</strong><p>Inbäddad vy över index, råvaror och valutamarknader.</p><span>WIDGET · VARIERANDE FÖRDRÖJNING</span></div></a>
+          </div>
+          <div class="system-note"><span class="system-note-icon">↻</span><div><strong>Byggd för lågt underhåll</strong><p>Ett schemalagt GitHub Actions-jobb samlar officiella data på vardagar och sparar dem i en lokal JSON-fil. Webbplatsen läser filen automatiskt. Om en källa inte svarar behålls tidigare värden med sina ursprungliga datum.</p></div></div>
+        </section>
+
+        <footer>
+          <div><span class="footer-logo">m<span>.</span></span> Svensk Makropuls</div>
+          <span>Oberoende dashboard. Ej investeringsrådgivning.</span>
+          <a href="#oversikt">Till toppen ↑</a>
+        </footer>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
