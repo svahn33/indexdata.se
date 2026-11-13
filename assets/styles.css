@@ -202,3 +202,14 @@ h2{font-size:21px;letter-spacing:-.65px;margin-bottom:0;line-height:1.35}
 .commodity-skeleton{border:1px solid var(--border);border-radius:12px;background:#fff;padding:30px;grid-column:1/-1;color:#888;font-size:13px}
 @media(max-width:900px){.commodity-data-cards,.power-area-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.commodity-native-charts{grid-template-columns:1fr}}
 @media(max-width:560px){.commodity-page-heading{flex-direction:column}.commodity-updated{width:100%}.commodity-data-cards,.power-area-cards{gap:9px}.commodity-price-card,.power-area-card{padding:15px 13px}.commodity-price-card strong,.power-area-card strong{font-size:23px}.commodity-chart-card{padding:16px}.commodity-chart-heading{flex-direction:column;gap:12px}.commodity-chart-heading label{width:100%}.commodity-chart-heading select{max-width:none;width:100%}.commodity-chart-area{height:206px}.commodity-table-section{padding:16px}}
+
+/* Råvaror v8: kursdiagram och kvartpriser */
+.commodity-chart-card[data-chart="metals"] .commodity-chart-area,
+.commodity-chart-card[data-chart="agriculture"] .commodity-chart-area{height:350px;min-height:350px;display:block;margin-top:12px}
+.commodity-chart-card .commodity-trading-frame{width:100%;height:100%;overflow:hidden;border-radius:8px;background:#fff}
+.commodity-chart-meta{line-height:1.55}
+.commodity-price-date,.power-area-card .date{line-height:1.5}
+@media(max-width:560px){
+  .commodity-chart-card[data-chart="metals"] .commodity-chart-area,
+  .commodity-chart-card[data-chart="agriculture"] .commodity-chart-area{height:300px;min-height:300px}
+}
