@@ -1,0 +1,94 @@
+<!doctype html>
+<html data-page="ravaror" lang="sv">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Råvarupriser i en samlad vy: Brentolja, WTI, guld, koppar, silver, naturgas och vete. Automatisk uppdatering via TradingView."/>
+  <meta name="theme-color" content="#ffffff"/>
+  <title>Råvaror – Svensk Makropuls</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg"/>
+  <link rel="stylesheet" href="./assets/styles.css?v=6"/>
+  <script defer src="./assets/app.js?v=6"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a aria-label="Svensk Makropuls, startsida" class="brand" href="./index.html">
+      <span aria-hidden="true" class="brand-icon">m<span>.</span></span>
+      <span class="brand-wordmark">makropuls<span class="brand-dot">.</span><small>SVENSK EKONOMI</small></span>
+    </a>
+    <nav aria-label="Huvudmeny" class="main-nav">
+      <a href="./index.html">Översikt</a>
+      <a href="./marknader.html">Marknader</a>
+      <a href="./ravaror.html" class="active" aria-current="page">Råvaror</a>
+      <a href="./rantor.html">Räntor</a>
+      <a href="./inflation.html">Inflation</a>
+      <a href="./valutor.html">Valutor</a>
+      <a href="./kallor.html">Källor</a>
+    </nav>
+    <span aria-label="Klockslag i Sverige" class="header-time" id="clock">–</span>
+  </div>
+</header>
+<main class="main" id="mainContent">
+  <section aria-labelledby="commoditiesTitle" class="current-page" id="ravaror">
+    <div class="page-heading">
+      <div>
+        <div class="overline">ENERGI · METALLER · JORDBRUK</div>
+        <h1 id="commoditiesTitle">Råvaror</h1>
+        <p>Olja, metaller och andra viktiga råvaror – direkt på sidan.</p>
+      </div>
+    </div>
+
+    <section class="surface market-strip market-strip-detail" aria-labelledby="commodityTickerTitle">
+      <div class="block-head">
+        <h2 id="commodityTickerTitle">Råvarumarknaden just nu</h2>
+        <span class="quotes-label">Automatiska kurser</span>
+      </div>
+      <div id="commodityTicker" class="ticker-slot">
+        <div class="ticker-placeholder">Hämtar råvarukurser…</div>
+      </div>
+    </section>
+
+    <section class="featured-commodities" aria-labelledby="commodityFeaturedTitle">
+      <div class="block-head">
+        <div>
+          <div class="overline">KURSUTVECKLING</div>
+          <h2 id="commodityFeaturedTitle">Följ råvarorna</h2>
+        </div>
+      </div>
+      <div class="commodity-preview-grid">
+        <article class="surface index-preview">
+          <div class="index-preview-heading"><h3>Brentolja</h3><span>USD / fat · indikativ kurs</span></div>
+          <div class="index-mini-widget" id="brentWidget"><div class="widget-placeholder">Hämtar kurs…</div></div>
+        </article>
+        <article class="surface index-preview">
+          <div class="index-preview-heading"><h3>WTI-olja</h3><span>USD / fat · indikativ kurs</span></div>
+          <div class="index-mini-widget" id="wtiWidget"><div class="widget-placeholder">Hämtar kurs…</div></div>
+        </article>
+        <article class="surface index-preview">
+          <div class="index-preview-heading"><h3>Guld</h3><span>USD / troy ounce · indikativ kurs</span></div>
+          <div class="index-mini-widget" id="goldWidget"><div class="widget-placeholder">Hämtar kurs…</div></div>
+        </article>
+        <article class="surface index-preview">
+          <div class="index-preview-heading"><h3>Koppar</h3><span>USD / pund · terminskontrakt</span></div>
+          <div class="index-mini-widget" id="copperWidget"><div class="widget-placeholder">Hämtar kurs…</div></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="surface market-surface quotes-surface" aria-labelledby="commodityQuotesTitle">
+      <div class="block-head">
+        <div>
+          <div class="overline">ALLA RÅVAROR</div>
+          <h2 id="commodityQuotesTitle">Råvarukurser</h2>
+          <p>Energi, ädelmetaller, industrimetaller och jordbruksråvaror.</p>
+        </div>
+      </div>
+      <div class="market-widget commodity-quotes-widget" id="commodityQuotesWidget"><div class="widget-placeholder">Hämtar råvarukurser…</div></div>
+      <p class="micro-note">Källa: TradingView. Kurser, instrumenttyper och enheter kan skilja mellan leverantörer. Vissa noteringar är CFD:er eller terminer och kan vara fördröjda.</p>
+    </section>
+  </section>
+</main>
+<footer class="site-footer"><span>Svensk Makropuls</span><span>© <span id="copyrightYear">2026</span> · Oberoende marknadsöversikt · Ej investeringsrådgivning</span></footer>
+</body>
+</html>
