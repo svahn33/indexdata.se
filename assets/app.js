@@ -25,7 +25,6 @@ const setText=(id,value)=>{const el=$(id);if(el)el.textContent=value;};
 const setHTML=(id,html)=>{const el=$(id);if(el)el.innerHTML=html;};
 const values={indicators:{},history:{},sources:{}};
 let range='3m';
-const views=new Set(['oversikt','marknader','rantor','inflation','valutor','kallor']);
 
 const number=(value,digits=2)=>Number.isFinite(Number(value))&&value!==null&&value!==undefined
   ?new Intl.NumberFormat('sv-SE',{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(Number(value)):'—';
@@ -129,7 +128,7 @@ function addTradingWidget(targetId,src,settings,height){
   script.textContent=JSON.stringify(settings);
   script.addEventListener('error',()=>{
     host.dataset.initialized='error';
-    host.innerHTML=targetId==='homeTicker' ? '<div class="widget-placeholder">Marknadskurserna kunde inte laddas. <a href="#marknader">Öppna Marknader →</a></div>' : '<div class="widget-placeholder">Kurserna kunde inte laddas. Använd indexlänkarna ovan för att se noteringarna direkt.</div>';
+    host.innerHTML=targetId==='homeTicker' ? '<div class="widget-placeholder">Marknadskurserna kunde inte laddas. <a href="./marknader.html">Öppna Marknader →</a></div>' : '<div class="widget-placeholder">Kurserna kunde inte laddas. Använd indexlänkarna ovan för att se noteringarna direkt.</div>';
   });
   wrapper.append(holder,script);host.replaceChildren(wrapper);
 }
@@ -137,8 +136,7 @@ function initTicker(){
   addTradingWidget('homeTicker','https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js',{
     symbols:[
       {proName:'OMXSTO:OMXS30',title:'OMXS30'},
-      {proName:'FOREXCOM:SPXUSD',title:'S&P 500 (CFD)'},
-      {proName:'FOREXCOM:NSXUSD',title:'Nasdaq 100 (CFD)'},
+      {proName:'XETR:DAX',title:'DAX'},
       {proName:'TVC:UKOIL',title:'Brent'},
       {proName:'TVC:GOLD',title:'Guld'},
       {proName:'FX_IDC:USDSEK',title:'USD/SEK'}
@@ -158,9 +156,9 @@ function initMarket(){
     tabs:[
       {title:'Börser',symbols:[
         {s:'OMXSTO:OMXS30',d:'OMXS30'},
-        {s:'FOREXCOM:SPXUSD',d:'S&P 500 (CFD)'},
-        {s:'FOREXCOM:NSXUSD',d:'Nasdaq 100 (CFD)'},
-        {s:'INDEX:DEU40',d:'DAX'},
+        {s:'AMEX:SPY',d:'SPY (S&P 500 ETF)'},
+        {s:'NASDAQ:QQQ',d:'QQQ (Nasdaq 100 ETF)'},
+        {s:'XETR:DAX',d:'DAX'},
         {s:'TVC:VIX',d:'VIX'}
       ]},
       {title:'Råvaror',symbols:[
@@ -178,21 +176,6 @@ function initMarket(){
   },'570px');
 }
 
-function activateView(){
-  const name=decodeURIComponent(location.hash.slice(1));
-  const selected=views.has(name)?name:'oversikt';
-  document.querySelectorAll('[data-view]').forEach(v=>{v.hidden=v.dataset.view!==selected;});
-  document.querySelectorAll('[data-view-link]').forEach(link=>{
-    const active=link.dataset.viewLink===selected;
-    link.classList.toggle('active',active);
-    if(active)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
-  });
-  const labels={oversikt:'Översikt',marknader:'Marknader',rantor:'Räntor',inflation:'Inflation',valutor:'Valutor',kallor:'Datakällor'};
-  document.title=`${labels[selected]} – Svensk Makropuls`;
-  if(selected==='oversikt')requestAnimationFrame(initTicker);
-  if(selected==='marknader')requestAnimationFrame(initMarket);
-  window.scrollTo?.(0,0);
-}
 function clockTick(){setText('clock',new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Stockholm'}));}
 async function load(){
   try{
@@ -209,12 +192,14 @@ async function load(){
     render();setText('healthStatus','Datafilen kunde inte läsas');
   }
 }
-window.addEventListener('hashchange',activateView);
 document.querySelectorAll('[data-range]').forEach(btn=>btn.addEventListener('click',()=>{
   range=btn.dataset.range;
   document.querySelectorAll('[data-range]').forEach(other=>other.classList.toggle('active',other===btn));
   renderRates();
 }));
 clockTick();setInterval(clockTick,30000);
-render();activateView();load();
+render();
+if($('homeTicker'))requestAnimationFrame(initTicker);
+if($('marketWidget'))requestAnimationFrame(initMarket);
+load();
 })();

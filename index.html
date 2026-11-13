@@ -1,156 +1,98 @@
 <!doctype html>
-<html lang="sv">
+
+<html data-page="oversikt" lang="sv">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Svensk Makropuls – aktuella svenska räntor, inflation, valutakurser och globala marknader på en plats.">
-  <meta name="theme-color" content="#ffffff">
-  <title>Översikt – Svensk Makropuls</title>
-  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/styles.css?v=3">
-  <script src="./assets/app.js?v=3" defer></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Svensk Makropuls – aktuella svenska räntor, inflation, valutakurser och globala marknader på en plats." name="description"/>
+<meta content="#ffffff" name="theme-color"/>
+<title>Översikt – Svensk Makropuls</title>
+<link href="./assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="./assets/styles.css?v=4" rel="stylesheet"/>
+<script defer="" src="./assets/app.js?v=4"></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="#oversikt" aria-label="Svensk Makropuls, startsida">
-        <span class="brand-icon" aria-hidden="true">m<span>.</span></span>
-        <span class="brand-wordmark">makropuls<span class="brand-dot">.</span><small>SVENSK EKONOMI</small></span>
-      </a>
-      <nav class="main-nav" aria-label="Huvudmeny">
-        <a href="#oversikt" data-view-link="oversikt" aria-current="page">Översikt</a>
-        <a href="#marknader" data-view-link="marknader">Marknader</a>
-        <a href="#rantor" data-view-link="rantor">Räntor</a>
-        <a href="#inflation" data-view-link="inflation">Inflation</a>
-        <a href="#valutor" data-view-link="valutor">Valutor</a>
-        <a href="#kallor" data-view-link="kallor">Källor</a>
-      </nav>
-      <span class="header-time" id="clock" aria-label="Klockslag i Sverige">–</span>
-    </div>
-  </header>
+<header class="site-header">
+<div class="header-inner">
+<a aria-label="Svensk Makropuls, startsida" class="brand" href="./index.html">
+<span aria-hidden="true" class="brand-icon">m<span>.</span></span>
+<span class="brand-wordmark">makropuls<span class="brand-dot">.</span><small>SVENSK EKONOMI</small></span>
+</a>
+<nav aria-label="Huvudmeny" class="main-nav">
+<a aria-current="page" class="active" href="./index.html">Översikt</a>
+<a class="" href="./marknader.html">Marknader</a>
+<a class="" href="./rantor.html">Räntor</a>
+<a class="" href="./inflation.html">Inflation</a>
+<a class="" href="./valutor.html">Valutor</a>
+<a class="" href="./kallor.html">Källor</a>
+</nav>
+<span aria-label="Klockslag i Sverige" class="header-time" id="clock">–</span>
+</div>
+</header>
+<main class="main" id="mainContent">
+<!-- ÖVERSIKT -->
+<section aria-labelledby="overviewTitle" class="current-page" id="oversikt">
+<div class="page-heading landing-heading">
+<div>
+<div class="overline">SVENSK EKONOMI</div>
+<h1 id="overviewTitle">Makroöversikt</h1>
+<p>Räntor, inflation, valutor och globala marknader.</p>
+</div>
+<div class="update-info">
+<span class="update-label"><span aria-hidden="true" class="status-dot"></span> Senaste datauppdatering</span>
+<strong id="lastUpdate">–</strong>
+</div>
+</div>
+<div aria-live="polite" class="kpi-grid" id="kpiGrid"></div>
+<section aria-labelledby="overviewMarketsTitle" class="surface market-strip">
+<div class="block-head">
+<h2 id="overviewMarketsTitle">Marknader</h2>
+<a class="see-more" href="./marknader.html">Visa marknader <span aria-hidden="true">→</span></a>
+</div>
+<div class="ticker-slot" id="homeTicker">
+<div class="ticker-placeholder">Marknadskurser via TradingView</div>
+</div>
+<p class="micro-note">Marknadsnoteringar kan vara fördröjda.</p>
+</section>
+<div class="overview-grid">
+<section aria-labelledby="homeRatesTitle" class="surface overview-rates">
+<div class="block-head">
+<div>
+<div class="overline">RÄNTOR</div>
+<h2 id="homeRatesTitle">Sverige 10 år</h2>
+</div>
+<a class="see-more" href="./rantor.html">Alla räntor <span aria-hidden="true">→</span></a>
+</div>
+<div class="chart-box chart-box-home" id="overviewRateChart"><div class="chart-empty">Ingen historik tillgänglig</div></div>
+<div class="panel-foot"><span>Riksbanken</span><span id="overviewRatePeriod">–</span></div>
+</section>
+<section aria-labelledby="homeInflationTitle" class="surface overview-inflation">
+<div class="block-head">
+<div>
+<div class="overline">INFLATION</div>
+<h2 id="homeInflationTitle">Senaste inflationen</h2>
+</div>
+<a class="see-more" href="./inflation.html">Visa inflation <span aria-hidden="true">→</span></a>
+</div>
+<div class="mini-metric-group">
+<div class="mini-metric"><span>KPIF</span><strong id="overviewKpif">—</strong><small id="overviewKpifDate">–</small></div>
+<div class="mini-metric"><span>KPI</span><strong id="overviewKpi">—</strong><small id="overviewKpiDate">–</small></div>
+</div>
+<div class="panel-foot"><span>SCB</span><span>Årsförändring</span></div>
+</section>
+</div>
+</section>
+<!-- MARKNADER -->
 
-  <main class="main" id="mainContent">
-    <!-- ÖVERSIKT -->
-    <section class="view" id="oversikt" data-view="oversikt" aria-labelledby="overviewTitle">
-      <div class="page-heading landing-heading">
-        <div>
-          <div class="overline">SVENSK EKONOMI</div>
-          <h1 id="overviewTitle">Makroöversikt</h1>
-          <p>Räntor, inflation, valutor och globala marknader.</p>
-        </div>
-        <div class="update-info">
-          <span class="update-label"><span class="status-dot" aria-hidden="true"></span> Senaste datauppdatering</span>
-          <strong id="lastUpdate">–</strong>
-        </div>
-      </div>
+<!-- RÄNTOR -->
 
-      <div class="kpi-grid" id="kpiGrid" aria-live="polite"></div>
+<!-- INFLATION -->
 
-      <section class="surface market-strip" aria-labelledby="overviewMarketsTitle">
-        <div class="block-head">
-          <h2 id="overviewMarketsTitle">Marknader</h2>
-          <a class="see-more" href="#marknader">Visa marknader <span aria-hidden="true">→</span></a>
-        </div>
-        <div class="ticker-slot" id="homeTicker">
-          <div class="ticker-placeholder">Marknadskurser via TradingView</div>
-        </div>
-        <p class="micro-note">För USA-index används indikativa CFD-noteringar. Kurser kan vara fördröjda.</p>
-      </section>
+<!-- VALUTOR -->
 
-      <div class="overview-grid">
-        <section class="surface overview-rates" aria-labelledby="homeRatesTitle">
-          <div class="block-head">
-            <div>
-              <div class="overline">RÄNTOR</div>
-              <h2 id="homeRatesTitle">Sverige 10 år</h2>
-            </div>
-            <a class="see-more" href="#rantor">Alla räntor <span aria-hidden="true">→</span></a>
-          </div>
-          <div class="chart-box chart-box-home" id="overviewRateChart"><div class="chart-empty">Ingen historik tillgänglig</div></div>
-          <div class="panel-foot"><span>Riksbanken</span><span id="overviewRatePeriod">–</span></div>
-        </section>
-        <section class="surface overview-inflation" aria-labelledby="homeInflationTitle">
-          <div class="block-head">
-            <div>
-              <div class="overline">INFLATION</div>
-              <h2 id="homeInflationTitle">Senaste inflationen</h2>
-            </div>
-            <a class="see-more" href="#inflation">Visa inflation <span aria-hidden="true">→</span></a>
-          </div>
-          <div class="mini-metric-group">
-            <div class="mini-metric"><span>KPIF</span><strong id="overviewKpif">—</strong><small id="overviewKpifDate">–</small></div>
-            <div class="mini-metric"><span>KPI</span><strong id="overviewKpi">—</strong><small id="overviewKpiDate">–</small></div>
-          </div>
-          <div class="panel-foot"><span>SCB</span><span>Årsförändring</span></div>
-        </section>
-      </div>
-    </section>
+<!-- KÄLLOR -->
 
-    <!-- MARKNADER -->
-    <section class="view" id="marknader" data-view="marknader" aria-labelledby="marketTitle" hidden>
-      <div class="page-heading"><div><div class="overline">FINANSMARKNADER</div><h1 id="marketTitle">Marknader</h1><p>Börsindex, råvaror och valutor.</p></div></div>
-      <div class="market-quicklinks" aria-label="Indexinformation">
-        <a class="market-link" href="https://www.tradingview.com/symbols/SPX/" target="_blank" rel="noopener noreferrer"><span class="market-link-name">S&amp;P 500</span><span>Officiellt index <span aria-hidden="true">↗</span></span></a>
-        <a class="market-link" href="https://www.tradingview.com/symbols/NASDAQ-NDX/" target="_blank" rel="noopener noreferrer"><span class="market-link-name">Nasdaq 100</span><span>Officiellt index <span aria-hidden="true">↗</span></span></a>
-        <a class="market-link" href="https://www.tradingview.com/symbols/OMXSTO-OMXS30/" target="_blank" rel="noopener noreferrer"><span class="market-link-name">OMXS30</span><span>Stockholmsbörsen <span aria-hidden="true">↗</span></span></a>
-      </div>
-      <section class="surface market-surface" aria-label="Marknadskurser från TradingView">
-        <div class="block-head"><h2>Marknadsöversikt</h2><a class="source-link" href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">TradingView ↗</a></div>
-        <div class="market-widget" id="marketWidget"><div class="widget-placeholder">Marknadsöversikten laddas när du öppnar fliken.</div></div>
-        <p class="micro-note">S&amp;P 500 och Nasdaq 100 visas som indikativa CFD-kurser från TradingView (SPXUSD respektive NSXUSD), inte som officiella indexnoteringar. Börskurser kan vara fördröjda.</p>
-      </section>
-    </section>
-
-    <!-- RÄNTOR -->
-    <section class="view" id="rantor" data-view="rantor" aria-labelledby="ratesTitle" hidden>
-      <div class="page-heading"><div><div class="overline">OBLIGATIONSMARKNADEN</div><h1 id="ratesTitle">Räntor</h1><p>Svenska och internationella obligationsräntor.</p></div></div>
-      <div class="rate-page-grid">
-        <section class="surface rate-graph-surface" aria-labelledby="rateGraphTitle">
-          <div class="block-head"><div><h2 id="rateGraphTitle">Sverige 10 år</h2><p>Statsobligationsränta, %</p></div><div class="segmented" role="group" aria-label="Välj period"><button class="seg" type="button" data-range="1m">1M</button><button class="seg active" type="button" data-range="3m">3M</button><button class="seg" type="button" data-range="1y">1Å</button></div></div>
-          <div class="chart-box chart-box-full" id="rateChart"><div class="chart-empty">Ingen historik tillgänglig</div></div>
-          <div class="panel-foot"><span>Riksbanken</span><span id="chartPeriod">–</span></div>
-        </section>
-        <section class="surface rate-list-surface" aria-labelledby="rateListTitle">
-          <div class="block-head"><div><h2 id="rateListTitle">Ränteöversikt</h2><p>Senaste notering</p></div></div>
-          <div id="ratesList" class="rate-list"></div>
-        </section>
-      </div>
-    </section>
-
-    <!-- INFLATION -->
-    <section class="view" id="inflation" data-view="inflation" aria-labelledby="inflationTitle" hidden>
-      <div class="page-heading"><div><div class="overline">PRISUTVECKLING</div><h1 id="inflationTitle">Inflation</h1><p>Svenskt konsumentprisindex.</p></div></div>
-      <section class="surface inflation-main">
-        <div class="block-head"><div><h2>Senaste månad</h2><p>Förändring mot samma månad föregående år</p></div><a class="source-link" href="https://www.scb.se/PR0101" target="_blank" rel="noopener noreferrer">SCB ↗</a></div>
-        <div class="inflation-card-grid">
-          <div class="inflation-metric"><span>KPIF</span><strong id="kpifValue">—</strong><small id="kpifDate">–</small></div>
-          <div class="inflation-metric"><span>KPI</span><strong id="kpiValue">—</strong><small id="kpiDate">–</small></div>
-        </div>
-      </section>
-      <section class="surface inflation-graph" aria-labelledby="inflationGraphTitle"><div class="block-head"><div><h2 id="inflationGraphTitle">KPIF – historisk utveckling</h2><p>Årsförändring, %</p></div></div><div class="chart-box chart-box-full" id="inflationChart"><div class="chart-empty">Ingen historik tillgänglig</div></div><div class="panel-foot"><span>SCB</span><span id="inflationPeriod">–</span></div></section>
-    </section>
-
-    <!-- VALUTOR -->
-    <section class="view" id="valutor" data-view="valutor" aria-labelledby="currencyTitle" hidden>
-      <div class="page-heading"><div><div class="overline">VALUTAMARKNADEN</div><h1 id="currencyTitle">Valutor</h1><p>Riksbankens indikativa valutakurser.</p></div></div>
-      <div class="currency-grid">
-        <section class="surface" aria-labelledby="fxTitle"><div class="block-head"><div><h2 id="fxTitle">Kronkurser</h2><p>SEK per enhet utländsk valuta</p></div></div><div id="fxList" class="fx-list"></div></section>
-        <section class="surface currency-detail"><div class="block-head"><div><h2>KIX-index</h2><p>Konkurrensvägd kronkurs</p></div></div><div class="currency-feature"><strong id="kixValue">—</strong><span id="kixDate">–</span></div><div class="panel-foot"><span>Riksbanken</span><a class="source-link" href="https://www.riksbank.se/sv/statistik/rantor-och-valutakurser/" target="_blank" rel="noopener noreferrer">Visa källa ↗</a></div></section>
-      </div>
-    </section>
-
-    <!-- KÄLLOR -->
-    <section class="view" id="kallor" data-view="kallor" aria-labelledby="sourcesTitle" hidden>
-      <div class="page-heading"><div><div class="overline">INFORMATION</div><h1 id="sourcesTitle">Datakällor</h1><p>Källor, publiceringstider och datastatus.</p></div></div>
-      <div class="source-grid">
-        <a class="surface source-item" href="https://www.riksbank.se/sv/statistik/rantor-och-valutakurser/hamta-rantor-och-valutakurser-via-api/" target="_blank" rel="noopener noreferrer"><span class="source-logo">R</span><span><strong>Sveriges riksbank ↗</strong><small>Räntor och valutakurser · bankdagar</small></span></a>
-        <a class="surface source-item" href="https://www.scb.se/vara-tjanster/oppna-data/" target="_blank" rel="noopener noreferrer"><span class="source-logo">S</span><span><strong>SCB ↗</strong><small>KPI och KPIF · månadsvis</small></span></a>
-        <a class="surface source-item" href="https://www.tradingview.com/widget/" target="_blank" rel="noopener noreferrer"><span class="source-logo">T</span><span><strong>TradingView ↗</strong><small>Börsindex, råvaror och valutamarknader</small></span></a>
-      </div>
-      <section class="surface data-status"><h2>Datastatus</h2><div id="healthStatus" class="status-line">Hämtar status…</div><p>Automatisk hämtning av officiell statistik på vardagar. Senaste observationens datum visas vid varje datapunkt.</p></section>
-    </section>
-  </main>
-
-  <footer class="site-footer"><span>Svensk Makropuls</span><span>© <span id="copyrightYear">2026</span> · Oberoende marknadsöversikt · Ej investeringsrådgivning</span></footer>
+</main>
+<footer class="site-footer"><span>Svensk Makropuls</span><span>© <span id="copyrightYear">2026</span> · Oberoende marknadsöversikt · Ej investeringsrådgivning</span></footer>
 </body>
 </html>

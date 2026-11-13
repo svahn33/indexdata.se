@@ -111,3 +111,15 @@ h2{font-size:21px;letter-spacing:-.65px;margin-bottom:0;line-height:1.35}
 @media(max-width:1120px){.header-inner{padding:0 23px;gap:24px}.main-nav{gap:18px}.header-time{display:none}.main{padding:30px 23px 60px}.site-footer{padding:22px 23px}.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:810px){.header-inner{height:auto;min-height:70px;flex-wrap:wrap;gap:0;padding:13px 18px 0}.brand{padding-bottom:13px}.main-nav{width:100%;overflow-x:auto;gap:25px;scrollbar-width:none}.main-nav::-webkit-scrollbar{display:none}.main-nav a{padding:12px 0;font-size:14px}.main{padding:23px 16px 52px}.site-footer{padding:23px 16px}.overview-grid,.rate-page-grid,.currency-grid,.source-grid{grid-template-columns:1fr}.market-quicklinks{grid-template-columns:1fr}.page-heading{align-items:start}.update-info{min-width:0;flex:none}.chart-box-full{height:315px}}
 @media(max-width:560px){.landing-heading{flex-direction:column;align-items:stretch;gap:14px}.update-info{padding:12px 16px}.page-heading{margin-bottom:20px}.page-heading h1{font-size:33px}.kpi-grid{gap:9px}.kpi-card{padding:17px 14px;min-height:133px}.kpi-card .kpi-label{font-size:12px}.kpi-value{font-size:26px;margin:20px 0 10px;letter-spacing:-1px}.unit{font-size:11px}.kpi-bottom{font-size:10px;flex-wrap:wrap}.market-strip,.overview-grid .surface,.rate-graph-surface,.rate-list-surface,.inflation-main,.inflation-graph,.currency-grid>.surface,.data-status,.market-surface{padding:17px}.block-head h2{font-size:19px}.mini-metric-group{gap:9px}.mini-metric{padding:14px;min-height:159px}.mini-metric strong{font-size:27px}.chart-box-home{height:192px}.market-widget{min-height:460px}.market-widget .tradingview-widget-container{height:460px}.market-link{padding:16px}.site-footer{flex-direction:column;gap:5px}.rate-item{padding:12px 0}.source-item{padding:18px}.header-inner{padding-left:16px;padding-right:16px}}
+
+/* Separate page navigation and index data panels */
+.current-page{min-height:58vh}
+.usa-indices{margin-bottom:22px}
+.usa-index-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.index-embed{padding:20px;overflow:hidden}
+.index-embed h3{font-size:19px;margin:0;font-family:'Manrope','DM Sans',sans-serif}
+.index-embed iframe{display:block;width:100%;height:430px;border:0;background:#fff;border-radius:8px}
+.index-embed .block-head{align-items:center;margin-bottom:12px}
+.source-grid:has(.source-item:nth-child(4)){grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:950px){.usa-index-grid{grid-template-columns:1fr}.source-grid:has(.source-item:nth-child(4)){grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.index-embed{padding:14px}.index-embed iframe{height:350px}.source-grid:has(.source-item:nth-child(4)){grid-template-columns:1fr}}

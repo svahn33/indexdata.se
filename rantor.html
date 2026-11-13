@@ -1,0 +1,61 @@
+<!doctype html>
+
+<html data-page="rantor" lang="sv">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Svensk Makropuls – aktuella svenska räntor, inflation, valutakurser och globala marknader på en plats." name="description"/>
+<meta content="#ffffff" name="theme-color"/>
+<title>Räntor – Svensk Makropuls</title>
+<link href="./assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="./assets/styles.css?v=4" rel="stylesheet"/>
+<script defer="" src="./assets/app.js?v=4"></script>
+</head>
+<body>
+<header class="site-header">
+<div class="header-inner">
+<a aria-label="Svensk Makropuls, startsida" class="brand" href="./index.html">
+<span aria-hidden="true" class="brand-icon">m<span>.</span></span>
+<span class="brand-wordmark">makropuls<span class="brand-dot">.</span><small>SVENSK EKONOMI</small></span>
+</a>
+<nav aria-label="Huvudmeny" class="main-nav">
+<a class="" href="./index.html">Översikt</a>
+<a class="" href="./marknader.html">Marknader</a>
+<a aria-current="page" class="active" href="./rantor.html">Räntor</a>
+<a class="" href="./inflation.html">Inflation</a>
+<a class="" href="./valutor.html">Valutor</a>
+<a class="" href="./kallor.html">Källor</a>
+</nav>
+<span aria-label="Klockslag i Sverige" class="header-time" id="clock">–</span>
+</div>
+</header>
+<main class="main" id="mainContent">
+<!-- ÖVERSIKT -->
+
+<!-- MARKNADER -->
+
+<!-- RÄNTOR -->
+<section aria-labelledby="ratesTitle" class="current-page" id="rantor">
+<div class="page-heading"><div><div class="overline">OBLIGATIONSMARKNADEN</div><h1 id="ratesTitle">Räntor</h1><p>Svenska och internationella obligationsräntor.</p></div></div>
+<div class="rate-page-grid">
+<section aria-labelledby="rateGraphTitle" class="surface rate-graph-surface">
+<div class="block-head"><div><h2 id="rateGraphTitle">Sverige 10 år</h2><p>Statsobligationsränta, %</p></div><div aria-label="Välj period" class="segmented" role="group"><button class="seg" data-range="1m" type="button">1M</button><button class="seg active" data-range="3m" type="button">3M</button><button class="seg" data-range="1y" type="button">1Å</button></div></div>
+<div class="chart-box chart-box-full" id="rateChart"><div class="chart-empty">Ingen historik tillgänglig</div></div>
+<div class="panel-foot"><span>Riksbanken</span><span id="chartPeriod">–</span></div>
+</section>
+<section aria-labelledby="rateListTitle" class="surface rate-list-surface">
+<div class="block-head"><div><h2 id="rateListTitle">Ränteöversikt</h2><p>Senaste notering</p></div></div>
+<div class="rate-list" id="ratesList"></div>
+</section>
+</div>
+</section>
+<!-- INFLATION -->
+
+<!-- VALUTOR -->
+
+<!-- KÄLLOR -->
+
+</main>
+<footer class="site-footer"><span>Svensk Makropuls</span><span>© <span id="copyrightYear">2026</span> · Oberoende marknadsöversikt · Ej investeringsrådgivning</span></footer>
+</body>
+</html>
