@@ -4,7 +4,7 @@
 Sources:
   EIA daily spot prices distributed as downloadable CSV by FRED (no key)
   World Bank Pink Sheet monthly historical workbook
-  Spotwatts free and redistributable SE1-SE4 day-ahead area prices
+  Spotwatts free and redistributable SE1-SE4 quarter-hour day-ahead prices
 
 We preserve each observation date and source attribution; no fabricated backfill.
 This job can safely run repeatedly, including on weekends.
@@ -102,18 +102,43 @@ def parse_csv_series(data, series):
     return [{'date':d, 'value':v} for d,v in sorted(out.items())][-400:]
 
 
-def parse_spotwatts_day(obj, expected_zone):
-    if obj.get('zone', '').upper() != expected_zone.upper():
+def parse_spotwatts_day(obj, expected_zone, now=None):
+    """Convert 15-minute day-ahead spot prices from SEK/kWh to öre/kWh.
+
+    Important: the quote is the *active interval*, not the day's average.
+    Interval start/end include their UTC offset (DST-safe).
+    """
+    if not isinstance(obj, dict) or obj.get('zone', '').upper() != expected_zone.upper():
         raise ValueError('Power area mismatch')
     day = obj.get('date', '')
     if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', day):
         raise ValueError('Power price day missing')
     if obj.get('currency') != 'SEK' or obj.get('unit') != 'SEK/kWh':
         raise ValueError('Unexpected power price units')
-    avg = to_num(obj.get('average', {}).get('price'))
-    if avg is None: raise ValueError('Daily average missing')
-    return {'value':round(avg, 5), 'date':day, 'source':'Spotwatts / ENTSO-E',
-            'frequency':'day', 'unit':'SEK/kWh', 'description':'Dygnsmedel, exkl. moms'}
+    intervals=[]
+    for item in obj.get('intervals', []):
+        try:
+            start=datetime.fromisoformat(item['start'])
+            end=datetime.fromisoformat(item['end'])
+            price=to_num(item['price'])
+            if not price is not None or start.tzinfo is None or end.tzinfo is None or start >= end:
+                continue
+            if start.date().isoformat()!=day:
+                continue
+            intervals.append({'start':item['start'], 'end':item['end'], 'value':round(price*100, 3)})
+        except (TypeError, ValueError, KeyError):
+            continue
+    if not intervals:
+        raise ValueError('Missing quarter-hour power prices')
+    intervals.sort(key=lambda row: datetime.fromisoformat(row['start']))
+    now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        raise ValueError('Current time requires timezone')
+    current=next((item for item in intervals
+                  if datetime.fromisoformat(item['start']) <= now < datetime.fromisoformat(item['end'])), None)
+    return {'date':day,'intervals':intervals,'current':current,
+            'source':'Spotwatts / ENTSO-E','frequency':'quarter','unit':'öre/kWh',
+            'description':'Aktuellt kvartpris exkl. moms och avgifter'}
 
 
 class WorkbookLinkParser(HTMLParser):
@@ -291,17 +316,33 @@ def update_worldbank(client,result):
 
 def update_power(client,result):
     errors=[];count=0
+    result.setdefault('power_intervals',{})
     for i in range(1,5):
         zone=f'se{i}';key=f'power_{zone}'
         try:
-            obj=json.loads(client(SPOTWATTS.format(zone=zone),limit=250000))
-            row=parse_spotwatts_day(obj,zone)
-            existing=result['history'].get(key,[])
-            points=[{'date':p['date'],'value':p['value']} for p in existing
-                    if isinstance(p,dict) and re.fullmatch(r'\d{4}-\d{2}-\d{2}',p.get('date','')) and to_num(p.get('value')) is not None]
-            points.append({'date':row['date'],'value':row['value']})
-            # Only one daily price per area. Never overwrite with older observations.
-            if store_series(result,key,points,'SEK/kWh','Spotwatts / ENTSO-E','day'):count+=1
+            obj=json.loads(client(SPOTWATTS.format(zone=zone),limit=280000))
+            day=parse_spotwatts_day(obj,zone)
+            # Do not replace today's data with an older day (rare stale cache).
+            stored=result['power_intervals'].get(key,{}).get('date','')
+            if stored > day['date']:
+                errors.append(f'{zone}: old day ignored')
+                continue
+            result['power_intervals'][key]={
+                'date':day['date'], 'unit':'öre/kWh', 'intervals':day['intervals']
+            }
+            current=day['current']
+            if current:
+                result['quotes'][key]={
+                    'date':day['date'], 'start':current['start'], 'end':current['end'],
+                    'value':current['value'], 'unit':'öre/kWh',
+                    'frequency':'quarter', 'source':day['source']
+                }
+            else:
+                # No currently active interval: do not expose yesterday's price as today's.
+                result['quotes'].pop(key,None)
+            # Old day-average history must not masquerade as quarter-hour observations.
+            result['history'].pop(key,None)
+            count+=1
         except Exception as e:
             LOG.warning('Spotwatts %s failed: %s',zone,e)
             errors.append(f'{zone}: {str(e)[:100]}')
@@ -313,7 +354,7 @@ def run(client=download,output=OUTPUT):
         try:result=json.loads(output.read_text(encoding='utf-8'))
         except (ValueError, OSError):result={}
     else:result={}
-    for key in ('quotes','history','sources'):result.setdefault(key,{})
+    for key in ('quotes','history','sources','power_intervals'):result.setdefault(key,{})
     result['generated_at']=datetime.now(timezone.utc).isoformat(timespec='seconds')
     for name,func in [('eia',update_eia),('worldbank',update_worldbank),('power',update_power)]:
         try:count,errors=func(client,result)
