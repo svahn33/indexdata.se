@@ -45,7 +45,7 @@ jobs:
       - name: Skapa webbpaket
         run: |
           mkdir -p public/assets public/data
-          cp index.html public/
+          cp ./*.html public/
           touch public/.nojekyll
           cp assets/* public/assets/
           cp data/market.json public/data/
