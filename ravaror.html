@@ -1,14 +1,15 @@
 <!doctype html>
-<html data-page="ravaror" lang="sv">
+<html lang="sv" data-page="ravaror">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Råvarupriser i en samlad vy: Brentolja, WTI, guld, koppar, silver, naturgas och vete. Automatisk uppdatering via TradingView."/>
+  <meta name="description" content="Råvaror och svenska elpriser: olja, gas, guld, koppar, jordbruksråvaror och SE1–SE4. Öppna datakällor och egna diagram."/>
   <meta name="theme-color" content="#ffffff"/>
   <title>Råvaror – Svensk Makropuls</title>
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg"/>
-  <link rel="stylesheet" href="./assets/styles.css?v=6"/>
-  <script defer src="./assets/app.js?v=6"></script>
+  <link rel="stylesheet" href="./assets/styles.css?v=7"/>
+  <script defer src="./assets/app.js?v=7"></script>
+  <script defer src="./assets/commodities.js?v=7"></script>
 </head>
 <body>
 <header class="site-header">
@@ -30,63 +31,79 @@
   </div>
 </header>
 <main class="main" id="mainContent">
-  <section aria-labelledby="commoditiesTitle" class="current-page" id="ravaror">
-    <div class="page-heading">
-      <div>
-        <div class="overline">ENERGI · METALLER · JORDBRUK</div>
+  <section class="current-page" id="ravaror" aria-labelledby="commoditiesTitle">
+    <div class="page-heading commodity-page-heading">
+      <div><div class="overline">ENERGI · METALLER · JORDBRUK · EL</div>
         <h1 id="commoditiesTitle">Råvaror</h1>
-        <p>Olja, metaller och andra viktiga råvaror – direkt på sidan.</p>
+        <p>Spotpriser, månadssnitt och svenska elområden.</p>
       </div>
+      <div class="commodity-updated"><span>SENASTE DATAKONTROLL</span><strong id="commodityLastUpdate">–</strong></div>
     </div>
 
-    <section class="surface market-strip market-strip-detail" aria-labelledby="commodityTickerTitle">
-      <div class="block-head">
-        <h2 id="commodityTickerTitle">Råvarumarknaden just nu</h2>
-        <span class="quotes-label">Automatiska kurser</span>
-      </div>
-      <div id="commodityTicker" class="ticker-slot">
-        <div class="ticker-placeholder">Hämtar råvarukurser…</div>
+    <section class="commodity-section" aria-labelledby="commodityHighlightsTitle">
+      <div class="block-head"><div><h2 id="commodityHighlightsTitle">Senaste noteringarna</h2>
+        <p>Olja och gas: dagliga spotpriser. Metaller: månatliga genomsnitt.</p></div></div>
+      <div id="commodityHighlights" class="commodity-data-cards" aria-live="polite">
+        <div class="commodity-skeleton">Inväntar automatiskt hämtade råvarupriser…</div>
       </div>
     </section>
 
-    <section class="featured-commodities" aria-labelledby="commodityFeaturedTitle">
-      <div class="block-head">
-        <div>
-          <div class="overline">KURSUTVECKLING</div>
-          <h2 id="commodityFeaturedTitle">Följ råvarorna</h2>
-        </div>
-      </div>
-      <div class="commodity-preview-grid">
-        <article class="surface index-preview">
-          <div class="index-preview-heading"><h3>Brentolja</h3><span>USD / fat · indikativ kurs</span></div>
-          <div class="index-mini-widget" id="brentWidget"><div class="widget-placeholder">Hämtar kurs…</div></div>
+    <section class="commodity-section" aria-labelledby="commodityChartsTitle">
+      <div class="block-head"><div><h2 id="commodityChartsTitle">Prisutveckling</h2><p>Historiska priser från EIA och Världsbanken.</p></div></div>
+      <div class="commodity-native-charts">
+        <article class="surface commodity-chart-card" data-chart="energy">
+          <div class="commodity-chart-heading"><div><div class="overline">ENERGI</div><h3 id="energyTitle">Brentolja</h3><div id="energyValue" class="commodity-chart-number">—</div><div id="energyMeta" class="commodity-chart-meta">Dagligt spotpris · USD/fat</div></div>
+            <label>Visa<select id="energySelect" aria-label="Välj energiråvara"><option value="brent">Brentolja</option><option value="wti">WTI-olja</option><option value="gas_us">Naturgas, Henry Hub</option></select></label></div>
+          <div id="energyChart" class="commodity-chart-area"><div class="chart-empty">Ingen historik ännu.</div></div>
+          <div class="commodity-chart-foot"><span id="energyPeriod">—</span><span>EIA via FRED</span></div>
         </article>
-        <article class="surface index-preview">
-          <div class="index-preview-heading"><h3>WTI-olja</h3><span>USD / fat · indikativ kurs</span></div>
-          <div class="index-mini-widget" id="wtiWidget"><div class="widget-placeholder">Hämtar kurs…</div></div>
+        <article class="surface commodity-chart-card" data-chart="metals">
+          <div class="commodity-chart-heading"><div><div class="overline">METALLER</div><h3 id="metalsTitle">Guld</h3><div id="metalsValue" class="commodity-chart-number">—</div><div id="metalsMeta" class="commodity-chart-meta">Månadsgenomsnitt · USD/troy oz</div></div>
+            <label>Visa<select id="metalsSelect" aria-label="Välj metall"><option value="gold">Guld</option><option value="silver">Silver</option><option value="copper">Koppar</option><option value="aluminum">Aluminium</option></select></label></div>
+          <div id="metalsChart" class="commodity-chart-area"><div class="chart-empty">Ingen historik ännu.</div></div>
+          <div class="commodity-chart-foot"><span id="metalsPeriod">—</span><span>Världsbanken</span></div>
         </article>
-        <article class="surface index-preview">
-          <div class="index-preview-heading"><h3>Guld</h3><span>USD / troy ounce · indikativ kurs</span></div>
-          <div class="index-mini-widget" id="goldWidget"><div class="widget-placeholder">Hämtar kurs…</div></div>
+        <article class="surface commodity-chart-card" data-chart="agriculture">
+          <div class="commodity-chart-heading"><div><div class="overline">JORDBRUK</div><h3 id="agricultureTitle">Vete</h3><div id="agricultureValue" class="commodity-chart-number">—</div><div id="agricultureMeta" class="commodity-chart-meta">Månadsgenomsnitt · USD/ton</div></div>
+            <label>Visa<select id="agricultureSelect" aria-label="Välj jordbruksråvara"><option value="wheat">Vete</option><option value="maize">Majs</option><option value="coffee">Kaffe, Arabica</option><option value="sugar">Socker</option></select></label></div>
+          <div id="agricultureChart" class="commodity-chart-area"><div class="chart-empty">Ingen historik ännu.</div></div>
+          <div class="commodity-chart-foot"><span id="agriculturePeriod">—</span><span>Världsbanken</span></div>
         </article>
-        <article class="surface index-preview">
-          <div class="index-preview-heading"><h3>Koppar</h3><span>USD / pund · terminskontrakt</span></div>
-          <div class="index-mini-widget" id="copperWidget"><div class="widget-placeholder">Hämtar kurs…</div></div>
+        <article class="surface commodity-chart-card" data-chart="electricity">
+          <div class="commodity-chart-heading"><div><div class="overline">SVENSKA ELPRISER</div><h3 id="electricityTitle">Elområde SE3</h3><div id="electricityValue" class="commodity-chart-number">—</div><div id="electricityMeta" class="commodity-chart-meta">Senaste dygnsmedel · SEK/kWh exkl. moms</div></div>
+            <label>Visa<select id="electricitySelect" aria-label="Välj elområde"><option value="power_se3">SE3 – Stockholm</option><option value="power_se4">SE4 – Malmö</option><option value="power_se2">SE2 – Sundsvall</option><option value="power_se1">SE1 – Luleå</option></select></label></div>
+          <div id="electricityChart" class="commodity-chart-area"><div class="chart-empty">Historik byggs upp dagligen.</div></div>
+          <div class="commodity-chart-foot"><span id="electricityPeriod">—</span><a href="https://spotwatts.com/" target="_blank" rel="noopener">Prices: Spotwatts ↗</a></div>
         </article>
       </div>
     </section>
 
-    <section class="surface market-surface quotes-surface" aria-labelledby="commodityQuotesTitle">
-      <div class="block-head">
-        <div>
-          <div class="overline">ALLA RÅVAROR</div>
-          <h2 id="commodityQuotesTitle">Råvarukurser</h2>
-          <p>Energi, ädelmetaller, industrimetaller och jordbruksråvaror.</p>
-        </div>
-      </div>
-      <div class="market-widget commodity-quotes-widget" id="commodityQuotesWidget"><div class="widget-placeholder">Hämtar råvarukurser…</div></div>
-      <p class="micro-note">Källa: TradingView. Kurser, instrumenttyper och enheter kan skilja mellan leverantörer. Vissa noteringar är CFD:er eller terminer och kan vara fördröjda.</p>
+    <section class="commodity-section" aria-labelledby="powerAreasTitle">
+      <div class="block-head"><div><h2 id="powerAreasTitle">Svenska elområden</h2><p>Senaste tillgängliga dygnsmedel, exklusive moms, skatter och elnätsavgift.</p></div>
+        <a class="source-link" href="https://spotwatts.com/" target="_blank" rel="noopener">Prices: Spotwatts ↗</a></div>
+      <div id="powerAreaCards" class="power-area-cards" aria-live="polite"><div class="commodity-skeleton">Inväntar elpriser…</div></div>
     </section>
+
+    <section class="surface commodity-table-section" aria-labelledby="commodityAllTitle">
+      <div class="block-head"><div><h2 id="commodityAllTitle">Alla råvarupriser</h2><p>Senaste tillgängliga värde med datum, enhet och källa.</p></div></div>
+      <div class="commodity-table-scroll"><table class="commodity-table">
+        <thead><tr><th>Råvara</th><th>Pris</th><th>Datum / period</th><th>Datakälla</th></tr></thead>
+        <tbody id="commodityTable"><tr><td colspan="4">Inväntar data…</td></tr></tbody>
+      </table></div>
+      <p class="micro-note">Olje- och gaspriser är EIA:s dagliga spotpriser via FRED. Världsbankens övriga råvaror är månadssnitt. Elpriser är dygnsmedel. Instrument och periodicitet är därför inte direkt jämförbara.</p>
+    </section>
+
+    <section class="commodity-section commodity-market-preview" aria-labelledby="commodityLiveTitle">
+      <div class="block-head"><div><h2 id="commodityLiveTitle">Indikativa marknadskurser</h2><p>Kompletterande kursband från TradingView. Kan vara fördröjt.</p></div></div>
+      <div id="commodityTicker" class="ticker-slot"><div class="ticker-placeholder">Hämtar marknadskurser…</div></div>
+    </section>
+    <div class="commodity-provenance"><strong>Datakällor:</strong>
+      <a href="https://www.eia.gov/opendata/" target="_blank" rel="noopener">EIA ↗</a>
+      <a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener">FRED ↗</a>
+      <a href="https://www.worldbank.org/en/research/commodity-markets" target="_blank" rel="noopener">Världsbanken (CC BY 4.0) ↗</a>
+      <a href="https://spotwatts.com/" target="_blank" rel="noopener">Prices: Spotwatts ↗</a>
+      <span id="commoditySourceHealth">—</span>
+    </div>
   </section>
 </main>
 <footer class="site-footer"><span>Svensk Makropuls</span><span>© <span id="copyrightYear">2026</span> · Oberoende marknadsöversikt · Ej investeringsrådgivning</span></footer>
