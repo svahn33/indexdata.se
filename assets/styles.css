@@ -142,3 +142,11 @@ h2{font-size:21px;letter-spacing:-.65px;margin-bottom:0;line-height:1.35}
 .quotes-widget .tradingview-widget-container{height:920px}
 @media(max-width:810px){.index-preview-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.index-preview{padding:16px}.quotes-widget{min-height:1020px}.quotes-widget .tradingview-widget-container{height:1020px}}
+
+/* Version 6 – egen sida för råvaror */
+.featured-commodities{margin:0 0 24px}
+.commodity-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.commodity-quotes-widget{min-height:900px}
+.commodity-quotes-widget .tradingview-widget-container{height:900px}
+@media(max-width:900px){.commodity-preview-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.commodity-quotes-widget{min-height:1020px}.commodity-quotes-widget .tradingview-widget-container{height:1020px}}

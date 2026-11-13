@@ -184,6 +184,47 @@ function initMarketQuotes(){
   },'920px');
 }
 
+
+// Råvaror visas på en egen sida för att undvika att blanda index och råvarudata.
+// TVC-serierna är indikativa CFD-kurser; terminer kan ha fördröjning eller sakna fri visning.
+const commoditySymbols = [
+  {proName:'TVC:UKOIL',title:'Brentolja'},
+  {proName:'TVC:USOIL',title:'WTI-olja'},
+  {proName:'TVC:GOLD',title:'Guld'},
+  {proName:'TVC:SILVER',title:'Silver'},
+  {proName:'COMEX:HG1!',title:'Koppar'},
+  {proName:'NYMEX:NG1!',title:'Naturgas'}
+];
+function initCommodityTicker(){
+  addTradingWidget('commodityTicker','https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js',{
+    symbols:commoditySymbols,colorTheme:'light',locale:'sv',isTransparent:true,
+    displayMode:'adaptive',showSymbolLogo:false
+  },'88px');
+}
+function initCommodityQuotes(){
+  addTradingWidget('commodityQuotesWidget','https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js',{
+    title:'',width:'100%',height:'100%',locale:'sv',colorTheme:'light',
+    isTransparent:false,showSymbolLogo:false,
+    symbolsGroups:[
+      {name:'Energi',symbols:[
+        {name:'TVC:UKOIL',displayName:'Brentolja (CFD)'},
+        {name:'TVC:USOIL',displayName:'WTI-olja (CFD)'},
+        {name:'NYMEX:NG1!',displayName:'Naturgas (termin)'}
+      ]},
+      {name:'Ädelmetaller',symbols:[
+        {name:'TVC:GOLD',displayName:'Guld (CFD)'},
+        {name:'TVC:SILVER',displayName:'Silver (CFD)'}
+      ]},
+      {name:'Industrimetaller',symbols:[
+        {name:'COMEX:HG1!',displayName:'Koppar (termin)'}
+      ]},
+      {name:'Jordbruk',symbols:[
+        {name:'CBOT:ZW1!',displayName:'Vete (termin)'}
+      ]}
+    ]
+  },'900px');
+}
+
 function clockTick(){setText('clock',new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Stockholm'}));}
 async function load(){
   try{
@@ -212,5 +253,11 @@ if($('marketTicker'))requestAnimationFrame(()=>initTicker('marketTicker'));
 if($('sp500Widget'))requestAnimationFrame(()=>initMiniChart('sp500Widget','FOREXCOM:SPXUSD'));
 if($('nasdaqWidget'))requestAnimationFrame(()=>initMiniChart('nasdaqWidget','FOREXCOM:NSXUSD'));
 if($('marketQuotesWidget'))requestAnimationFrame(initMarketQuotes);
+if($('commodityTicker'))requestAnimationFrame(initCommodityTicker);
+if($('brentWidget'))requestAnimationFrame(()=>initMiniChart('brentWidget','TVC:UKOIL'));
+if($('wtiWidget'))requestAnimationFrame(()=>initMiniChart('wtiWidget','TVC:USOIL'));
+if($('goldWidget'))requestAnimationFrame(()=>initMiniChart('goldWidget','TVC:GOLD'));
+if($('copperWidget'))requestAnimationFrame(()=>initMiniChart('copperWidget','COMEX:HG1!'));
+if($('commodityQuotesWidget'))requestAnimationFrame(initCommodityQuotes);
 load();
 })();
