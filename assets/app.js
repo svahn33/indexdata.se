@@ -128,52 +128,60 @@ function addTradingWidget(targetId,src,settings,height){
   script.textContent=JSON.stringify(settings);
   script.addEventListener('error',()=>{
     host.dataset.initialized='error';
-    host.innerHTML=targetId==='homeTicker' ? '<div class="widget-placeholder">Marknadskurserna kunde inte laddas. <a href="./marknader.html">Öppna Marknader →</a></div>' : '<div class="widget-placeholder">Kurserna kunde inte laddas. Använd indexlänkarna ovan för att se noteringarna direkt.</div>';
+    host.innerHTML='<div class="widget-placeholder">Marknadsdata kan inte visas för tillfället. Kontrollera anslutningen eller försök igen senare.</div>';
   });
   wrapper.append(holder,script);host.replaceChildren(wrapper);
 }
-function initTicker(){
-  addTradingWidget('homeTicker','https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js',{
-    symbols:[
-      {proName:'OMXSTO:OMXS30',title:'OMXS30'},
-      {proName:'XETR:DAX',title:'DAX'},
-      {proName:'TVC:UKOIL',title:'Brent'},
-      {proName:'TVC:GOLD',title:'Guld'},
-      {proName:'FX_IDC:USDSEK',title:'USD/SEK'}
-    ], colorTheme:'light',locale:'sv',isTransparent:true,displayMode:'adaptive',showSymbolLogo:false
+// Samma instrument i båda tickerbanden och marknadstabellen.
+// SPXUSD och NSXUSD är indikativa CFD-noteringar, inte officiella indexvärden.
+const marketSymbols = [
+  {proName:'OMXSTO:OMXS30',title:'OMXS30'},
+  {proName:'FOREXCOM:SPXUSD',title:'S&P 500*'},
+  {proName:'FOREXCOM:NSXUSD',title:'Nasdaq 100*'},
+  {proName:'INDEX:DEU40',title:'DAX'},
+  {proName:'TVC:UKOIL',title:'Brentolja'},
+  {proName:'TVC:GOLD',title:'Guld'},
+  {proName:'FX_IDC:USDSEK',title:'USD/SEK'}
+];
+function initTicker(target='homeTicker'){
+  addTradingWidget(target,'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js',{
+    symbols:marketSymbols,colorTheme:'light',locale:'sv',isTransparent:true,
+    displayMode:'adaptive',showSymbolLogo:false
   },'88px');
 }
-function initMarket(){
-  addTradingWidget('marketWidget','https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js',{
-    colorTheme:'light',dateRange:'1D',showChart:true,locale:'sv',largeChartUrl:'',
-    isTransparent:false,showSymbolLogo:false,showFloatingTooltip:true,
-    width:'100%',height:'100%',
-    plotLineColorGrowing:'rgba(252,89,31,1)',plotLineColorFalling:'rgba(110,110,110,1)',
-    gridLineColor:'rgba(0,0,0,0.045)',scaleFontColor:'rgba(80,80,80,1)',
-    belowLineFillColorGrowing:'rgba(252,89,31,0.10)',belowLineFillColorFalling:'rgba(90,90,90,0.08)',
-    belowLineFillColorGrowingBottom:'rgba(252,89,31,0)',belowLineFillColorFallingBottom:'rgba(90,90,90,0)',
-    symbolActiveColor:'rgba(252,89,31,0.08)',
-    tabs:[
-      {title:'Börser',symbols:[
-        {s:'OMXSTO:OMXS30',d:'OMXS30'},
-        {s:'AMEX:SPY',d:'SPY (S&P 500 ETF)'},
-        {s:'NASDAQ:QQQ',d:'QQQ (Nasdaq 100 ETF)'},
-        {s:'XETR:DAX',d:'DAX'},
-        {s:'TVC:VIX',d:'VIX'}
+function initMiniChart(target,symbol){
+  addTradingWidget(target,'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js',{
+    symbol,width:'100%',height:'100%',locale:'sv',dateRange:'1D',colorTheme:'light',
+    isTransparent:true,autosize:true,noTimeScale:false,
+    trendLineColor:'rgba(252,89,31,1)',underLineColor:'rgba(252,89,31,0.16)',
+    underLineBottomColor:'rgba(252,89,31,0)',
+  },'238px');
+}
+function initMarketQuotes(){
+  addTradingWidget('marketQuotesWidget','https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js',{
+    title:'',width:'100%',height:'100%',locale:'sv',colorTheme:'light',
+    isTransparent:false,showSymbolLogo:false,
+    symbolsGroups:[
+      {name:'Börsindex',symbols:[
+        {name:'OMXSTO:OMXS30',displayName:'OMXS30'},
+        {name:'FOREXCOM:SPXUSD',displayName:'S&P 500 (CFD)'},
+        {name:'FOREXCOM:NSXUSD',displayName:'Nasdaq 100 (CFD)'},
+        {name:'INDEX:DEU40',displayName:'DAX'},
+        {name:'TVC:VIX',displayName:'VIX'}
       ]},
-      {title:'Råvaror',symbols:[
-        {s:'TVC:UKOIL',d:'Brent'},
-        {s:'TVC:USOIL',d:'WTI'},
-        {s:'TVC:GOLD',d:'Guld'},
-        {s:'COMEX:HG1!',d:'Koppar'}
+      {name:'Råvaror',symbols:[
+        {name:'TVC:UKOIL',displayName:'Brentolja'},
+        {name:'TVC:USOIL',displayName:'WTI-olja'},
+        {name:'TVC:GOLD',displayName:'Guld'},
+        {name:'COMEX:HG1!',displayName:'Koppar'}
       ]},
-      {title:'Valutor',symbols:[
-        {s:'FX_IDC:USDSEK',d:'USD/SEK'},
-        {s:'FX_IDC:EURSEK',d:'EUR/SEK'},
-        {s:'FX:EURUSD',d:'EUR/USD'}
+      {name:'Valutor',symbols:[
+        {name:'FX_IDC:USDSEK',displayName:'USD/SEK'},
+        {name:'FX_IDC:EURSEK',displayName:'EUR/SEK'},
+        {name:'FX:EURUSD',displayName:'EUR/USD'}
       ]}
     ]
-  },'570px');
+  },'920px');
 }
 
 function clockTick(){setText('clock',new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Stockholm'}));}
@@ -199,7 +207,10 @@ document.querySelectorAll('[data-range]').forEach(btn=>btn.addEventListener('cli
 }));
 clockTick();setInterval(clockTick,30000);
 render();
-if($('homeTicker'))requestAnimationFrame(initTicker);
-if($('marketWidget'))requestAnimationFrame(initMarket);
+if($('homeTicker'))requestAnimationFrame(()=>initTicker('homeTicker'));
+if($('marketTicker'))requestAnimationFrame(()=>initTicker('marketTicker'));
+if($('sp500Widget'))requestAnimationFrame(()=>initMiniChart('sp500Widget','FOREXCOM:SPXUSD'));
+if($('nasdaqWidget'))requestAnimationFrame(()=>initMiniChart('nasdaqWidget','FOREXCOM:NSXUSD'));
+if($('marketQuotesWidget'))requestAnimationFrame(initMarketQuotes);
 load();
 })();

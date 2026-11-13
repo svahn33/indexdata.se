@@ -8,8 +8,8 @@
 <meta content="#ffffff" name="theme-color"/>
 <title>Marknader – Svensk Makropuls</title>
 <link href="./assets/favicon.svg" rel="icon" type="image/svg+xml"/>
-<link href="./assets/styles.css?v=4" rel="stylesheet"/>
-<script defer="" src="./assets/app.js?v=4"></script>
+<link href="./assets/styles.css?v=5" rel="stylesheet"/>
+<script defer="" src="./assets/app.js?v=5"></script>
 </head>
 <body>
 <header class="site-header">
@@ -34,27 +34,31 @@
 
 <!-- MARKNADER -->
 <section aria-labelledby="marketTitle" class="current-page" id="marknader">
-<div class="page-heading"><div><div class="overline">FINANSMARKNADER</div><h1 id="marketTitle">Marknader</h1><p>Börsindex, råvaror och valutor.</p></div></div>
+<div class="page-heading"><div><div class="overline">FINANSMARKNADER</div><h1 id="marketTitle">Marknader</h1><p>Börsindex, råvaror och valutor – direkt på sidan.</p></div></div>
 
 
-<section aria-labelledby="usaIndexTitle" class="usa-indices">
-<div class="block-head"><div><div class="overline">USA</div><h2 id="usaIndexTitle">S&amp;P 500 och Nasdaq 100</h2><p>Officiella index · senaste publicerade slutkurser</p></div></div>
-<div class="usa-index-grid">
-<article class="surface index-embed">
-<div class="block-head"><h3>S&amp;P 500</h3><a class="source-link" href="https://fred.stlouisfed.org/series/SP500" rel="noopener noreferrer" target="_blank">Visa på FRED ↗</a></div>
-<iframe loading="lazy" referrerpolicy="strict-origin-when-cross-origin" scrolling="no" src="https://fred.stlouisfed.org/graph/graph-landing.php?g=f78A&amp;width=670&amp;height=475" title="S&amp;P 500, officiell slutkurs och historik från FRED"></iframe>
-<p class="micro-note">S&amp;P Dow Jones Indices via FRED · slutkurser, ej intradag</p>
-</article>
-<article class="surface index-embed">
-<div class="block-head"><h3>Nasdaq 100</h3><a class="source-link" href="https://fred.stlouisfed.org/series/NASDAQ100" rel="noopener noreferrer" target="_blank">Visa på FRED ↗</a></div>
-<iframe loading="lazy" referrerpolicy="strict-origin-when-cross-origin" scrolling="no" src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1CwKP&amp;width=670&amp;height=475" title="Nasdaq 100, officiell slutkurs och historik från FRED"></iframe>
-<p class="micro-note">Nasdaq via FRED · slutkurser, ej intradag</p>
-</article>
-</div>
-</section><section aria-label="Marknadskurser från TradingView" class="surface market-surface">
-<div class="block-head"><h2>Övriga marknader</h2><a class="source-link" href="https://www.tradingview.com/" rel="noopener noreferrer" target="_blank">TradingView ↗</a></div>
-<div class="market-widget" id="marketWidget"><div class="widget-placeholder">Hämtar marknadskurser…</div></div>
-<p class="micro-note">TradingView visar kursrörelser för bland annat OMXS30, DAX, råvaror och börshandlade indexfonder. Kurser kan vara fördröjda.</p>
+<section aria-labelledby="marketTickerTitle" class="surface market-strip market-strip-detail">
+  <div class="block-head"><h2 id="marketTickerTitle">Marknadspuls</h2><span class="quotes-label">Löpande noteringar</span></div>
+  <div class="ticker-slot" id="marketTicker"><div class="ticker-placeholder">Marknadskurser via TradingView</div></div>
+</section>
+<section aria-labelledby="featuredIndicesTitle" class="featured-indices">
+  <div class="block-head"><div><div class="overline">BÖRSINDEX</div><h2 id="featuredIndicesTitle">USA – indexutveckling</h2></div></div>
+  <div class="index-preview-grid">
+    <article class="surface index-preview">
+      <div class="index-preview-heading"><h3>S&amp;P 500</h3><span>US 500 · indikativ kurs</span></div>
+      <div class="index-mini-widget" id="sp500Widget"><div class="widget-placeholder">Hämtar kurs…</div></div>
+    </article>
+    <article class="surface index-preview">
+      <div class="index-preview-heading"><h3>Nasdaq 100</h3><span>US Tech 100 · indikativ kurs</span></div>
+      <div class="index-mini-widget" id="nasdaqWidget"><div class="widget-placeholder">Hämtar kurs…</div></div>
+    </article>
+  </div>
+  <p class="micro-note">Indikativa CFD-noteringar från TradingView, inte officiella indexkurser. Kurser kan vara fördröjda.</p>
+</section>
+<section aria-labelledby="marketQuotesTitle" class="surface market-surface quotes-surface">
+  <div class="block-head"><div><div class="overline">MARKNADSDATA</div><h2 id="marketQuotesTitle">Alla marknadskurser</h2><p>Aktuella nivåer och förändringar för börsindex, råvaror och valutor.</p></div></div>
+  <div class="market-widget quotes-widget" id="marketQuotesWidget"><div class="widget-placeholder">Hämtar marknadskurser…</div></div>
+  <p class="micro-note">Källa: TradingView. Tillgänglighet, fördröjning och instrumenttyp varierar. Amerikanska index visas genom indikativa CFD-instrument.</p>
 </section>
 </section>
 <!-- RÄNTOR -->
