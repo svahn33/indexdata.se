@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T16:36:59+00:00",
+  "generated_at": "2026-11-14T17:07:58+00:00",
   "history": {
     "DEGVB10Y": [
       {
@@ -8036,13 +8036,13 @@
   "sources": {
     "riksbank": {
       "count": 27,
-      "last_success": "2026-11-14T16:36:59+00:00",
+      "last_success": "2026-11-14T17:07:58+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "scb": {
       "count": 2,
-      "last_success": "2026-11-14T16:36:59+00:00",
+      "last_success": "2026-11-14T17:07:58+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     }
