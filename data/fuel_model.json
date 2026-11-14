@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T23:06:24+00:00",
+  "generated_at": "2026-11-14T23:09:49+00:00",
   "kind": "scenario_model_not_observed_pump_price",
   "fuel": "petrol_95",
   "unit": "SEK/l",
@@ -130,6 +130,141 @@
     }
   ],
   "method": "rullande median av senaste 10 officiella veckopriser minus råoljeproxy; aktuell råoljeproxy adderas; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873",
-  "disclaimer": "Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid.",
+  "disclaimer": "Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.",
+  "diesel_model": {
+    "generated_at": "2026-11-14T23:09:49+00:00",
+    "kind": "scenario_model_not_observed_pump_price",
+    "fuel": "diesel",
+    "unit": "SEK/l",
+    "includes_taxes": "via weekly reference prices",
+    "estimate_sek_per_l": 20.96,
+    "indicative_lower_sek_per_l": 19.7,
+    "indicative_upper_sek_per_l": 22.22,
+    "indicative_band_sek_per_l": 1.26,
+    "rolling_backtest_mae_sek_per_l": 0.84,
+    "backtest_weeks": 8,
+    "last_official_observation": "2026-11-09",
+    "latest_official_sek_per_l_approx": 21.48,
+    "reference_brent_usd_per_barrel": 93.824,
+    "brent_latest_date": "2026-11-11",
+    "reference_usdsek": 9.9317,
+    "usdsek_latest_date": "2026-11-11",
+    "eursek_latest_date": "2026-11-13",
+    "calibration_weeks": 10,
+    "calibration_offset_sek_per_l": 13.63386,
+    "crude_pass_through_multiplier": 1.25,
+    "litres_per_barrel": 158.9873,
+    "recent_history": [
+      {
+        "date": "2026-10-12",
+        "value": 23.74
+      },
+      {
+        "date": "2026-10-13",
+        "value": 23.71
+      },
+      {
+        "date": "2026-10-14",
+        "value": 23.7
+      },
+      {
+        "date": "2026-10-15",
+        "value": 23.65
+      },
+      {
+        "date": "2026-10-16",
+        "value": 23.41
+      },
+      {
+        "date": "2026-10-19",
+        "value": 23.23
+      },
+      {
+        "date": "2026-10-20",
+        "value": 23.09
+      },
+      {
+        "date": "2026-10-21",
+        "value": 22.91
+      },
+      {
+        "date": "2026-10-22",
+        "value": 22.93
+      },
+      {
+        "date": "2026-10-23",
+        "value": 23.1
+      },
+      {
+        "date": "2026-10-26",
+        "value": 23.25
+      },
+      {
+        "date": "2026-10-27",
+        "value": 23.36
+      },
+      {
+        "date": "2026-10-28",
+        "value": 23.38
+      },
+      {
+        "date": "2026-10-29",
+        "value": 23.18
+      },
+      {
+        "date": "2026-10-30",
+        "value": 23.0
+      },
+      {
+        "date": "2026-11-02",
+        "value": 22.61
+      },
+      {
+        "date": "2026-11-03",
+        "value": 22.4
+      },
+      {
+        "date": "2026-11-04",
+        "value": 21.93
+      },
+      {
+        "date": "2026-11-05",
+        "value": 21.7
+      },
+      {
+        "date": "2026-11-06",
+        "value": 21.43
+      },
+      {
+        "date": "2026-11-09",
+        "value": 21.14
+      },
+      {
+        "date": "2026-11-10",
+        "value": 20.86
+      },
+      {
+        "date": "2026-11-11",
+        "value": 20.96
+      }
+    ],
+    "sources": [
+      {
+        "name": "EU Oil Bulletin via EU EnergyPrices",
+        "url": "https://www.euenergyprices.eu/en/data"
+      },
+      {
+        "name": "Brent / EIA via FRED",
+        "url": "https://fred.stlouisfed.org/series/DCOILBRENTEU"
+      },
+      {
+        "name": "Valutor / Sveriges riksbank",
+        "url": "https://www.riksbank.se/sv/statistik/rantor-och-valutakurser/hamta-rantor-och-valutakurser-via-api/"
+      }
+    ],
+    "method": "rullande median av senaste 10 officiella veckopriser minus råoljeproxy; aktuell råoljeproxy adderas; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873",
+    "disclaimer": "Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.",
+    "status": "ok"
+  },
   "status": "ok"
 }
