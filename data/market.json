@@ -1,11 +1,7 @@
 {
-  "generated_at": "2026-11-13T22:48:16+00:00",
+  "generated_at": "2026-11-14T13:44:15+00:00",
   "history": {
     "DEGVB10Y": [
-      {
-        "date": "2025-10-14",
-        "value": 2.6072
-      },
       {
         "date": "2025-10-15",
         "value": 2.57
@@ -1089,6 +1085,10 @@
       {
         "date": "2026-11-12",
         "value": 3.35
+      },
+      {
+        "date": "2026-11-13",
+        "value": 3.3813
       }
     ],
     "KPIF_YOY": [
@@ -1384,10 +1384,6 @@
       }
     ],
     "SECBREPOEFF": [
-      {
-        "date": "2025-10-14",
-        "value": 1.75
-      },
       {
         "date": "2025-10-15",
         "value": 1.75
@@ -2479,10 +2475,6 @@
     ],
     "SEGVB10YC": [
       {
-        "date": "2025-10-14",
-        "value": 2.523
-      },
-      {
         "date": "2025-10-15",
         "value": 2.507
       },
@@ -3565,13 +3557,13 @@
       {
         "date": "2026-11-12",
         "value": 3.075
+      },
+      {
+        "date": "2026-11-13",
+        "value": 3.075
       }
     ],
     "SEGVB2YC": [
-      {
-        "date": "2025-10-14",
-        "value": 1.824
-      },
       {
         "date": "2025-10-15",
         "value": 1.821
@@ -4655,13 +4647,13 @@
       {
         "date": "2026-11-12",
         "value": 2.77
+      },
+      {
+        "date": "2026-11-13",
+        "value": 2.756
       }
     ],
     "SEKEURPMI": [
-      {
-        "date": "2025-10-14",
-        "value": 11.038
-      },
       {
         "date": "2025-10-15",
         "value": 11.0195
@@ -5753,10 +5745,6 @@
     ],
     "SEKUSDPMI": [
       {
-        "date": "2025-10-14",
-        "value": 9.55423
-      },
-      {
         "date": "2025-10-15",
         "value": 9.48159
       },
@@ -6847,10 +6835,6 @@
     ],
     "USGVB10Y": [
       {
-        "date": "2025-10-14",
-        "value": 4.032
-      },
-      {
         "date": "2025-10-15",
         "value": 4.028
       },
@@ -7929,19 +7913,23 @@
       {
         "date": "2026-11-12",
         "value": 5.133
+      },
+      {
+        "date": "2026-11-13",
+        "value": 5.139
       }
     ]
   },
   "indicators": {
     "DEGVB10Y": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
-      "value": 3.35
+      "value": 3.3813
     },
     "GBGVB10Y": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
-      "value": 5.2816
+      "value": 5.3377
     },
     "JPGVB10Y": {
       "date": "2026-11-13",
@@ -7959,9 +7947,9 @@
       "value": 0.9
     },
     "NOGVB10Y": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
-      "value": 4.322
+      "value": 4.3776
     },
     "SECBREPOEFF": {
       "date": "2026-11-13",
@@ -7969,24 +7957,24 @@
       "value": 2.0
     },
     "SEGVB10YC": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
       "value": 3.075
     },
     "SEGVB2YC": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
-      "value": 2.77
+      "value": 2.756
     },
     "SEGVB5YC": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
-      "value": 2.901
+      "value": 2.928
     },
     "SEGVB7YC": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
-      "value": 2.961
+      "value": 2.987
     },
     "SEKCHFPMI": {
       "date": "2026-11-13",
@@ -8024,37 +8012,37 @@
       "value": 10.05022
     },
     "SEMB2YCACOMB": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
-      "value": 3.078
+      "value": 3.075
     },
     "SEMB5YCACOMB": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
-      "value": 3.395
+      "value": 3.432
     },
     "SETB3MBENCH": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
-      "value": 2.135
+      "value": 2.16
     },
     "USGVB10Y": {
-      "date": "2026-11-12",
+      "date": "2026-11-13",
       "source": "Sveriges riksbank",
-      "value": 5.133
+      "value": 5.139
     }
   },
   "note": "Verifierade startvärden för valutor (13 nov 2026) och inflation (okt 2026). Övriga värden hämtas vid första schemalagda körningen.",
   "sources": {
     "riksbank": {
       "count": 27,
-      "last_success": "2026-11-13T22:48:16+00:00",
+      "last_success": "2026-11-14T13:44:15+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "scb": {
       "count": 2,
-      "last_success": "2026-11-13T22:48:16+00:00",
+      "last_success": "2026-11-14T13:44:15+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     }
