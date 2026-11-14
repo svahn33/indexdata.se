@@ -121,11 +121,15 @@ def parse_spotwatts_day(obj, expected_zone, now=None):
             start=datetime.fromisoformat(item['start'])
             end=datetime.fromisoformat(item['end'])
             price=to_num(item['price'])
+            price_vat=to_num(item.get('price_vat'))
+            if price_vat is None and price is not None:
+                price_vat=price*(1+float(obj.get('vat_rate',25))/100)
             if not price is not None or start.tzinfo is None or end.tzinfo is None or start >= end:
                 continue
             if start.date().isoformat()!=day:
                 continue
-            intervals.append({'start':item['start'], 'end':item['end'], 'value':round(price*100, 3)})
+            intervals.append({'start':item['start'], 'end':item['end'], 'value':round(price*100, 3),
+                              'value_vat':round(price_vat*100,3)})
         except (TypeError, ValueError, KeyError):
             continue
     if not intervals:
@@ -138,7 +142,7 @@ def parse_spotwatts_day(obj, expected_zone, now=None):
                   if datetime.fromisoformat(item['start']) <= now < datetime.fromisoformat(item['end'])), None)
     return {'date':day,'intervals':intervals,'current':current,
             'source':'Spotwatts / ENTSO-E','frequency':'quarter','unit':'öre/kWh',
-            'description':'Aktuellt kvartpris exkl. moms och avgifter'}
+            'description':'Aktuellt kvartpris med moms, exkl. elnätsavgifter, energiskatt och påslag'}
 
 
 class WorkbookLinkParser(HTMLParser):
@@ -334,7 +338,7 @@ def update_power(client,result):
             if current:
                 result['quotes'][key]={
                     'date':day['date'], 'start':current['start'], 'end':current['end'],
-                    'value':current['value'], 'unit':'öre/kWh',
+                    'value':current['value'], 'value_vat':current['value_vat'], 'unit':'öre/kWh',
                     'frequency':'quarter', 'source':day['source']
                 }
             else:

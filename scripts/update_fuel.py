@@ -13,7 +13,9 @@ import json
 import logging
 import re
 import sys
-from datetime import datetime, timezone
+from html.parser import HTMLParser
+from html import unescape
+from datetime import date, datetime, timezone
 from pathlib import Path
 from urllib.request import Request, urlopen
 
@@ -21,6 +23,111 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data' / 'fuel.json'
 URL = 'https://www.euenergyprices.eu/api/data/fuel.csv'
 LOGGER = logging.getLogger('fuel')
+# Public business list prices, not the local retail price at the pump.
+# Fetch at most twice per day, matching the current GitHub Actions schedule.
+DAILY_SOURCES = (
+    ('OKQ8', 'https://www.okq8.se/foretag/priser'),
+    ('Circle K', 'https://www.circlek.se/foretag/drivmedel/priser'),
+)
+
+
+class VisibleText(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.hidden = 0
+        self.chunks = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag in ('script', 'style', 'svg', 'noscript'):
+            self.hidden += 1
+
+    def handle_endtag(self, tag):
+        if tag in ('script', 'style', 'svg', 'noscript'):
+            self.hidden = max(0, self.hidden - 1)
+
+    def handle_data(self, data):
+        if not self.hidden and data.strip():
+            self.chunks.append(data.strip())
+
+
+def visible_text(content):
+    parser = VisibleText()
+    parser.feed(content.decode('utf-8-sig') if isinstance(content, bytes) else content)
+    return re.sub(r'\s+', ' ', unescape(' '.join(parser.chunks)))
+
+
+def extract_price(text, pattern):
+    for match in re.finditer(pattern, text, flags=re.I):
+        following = text[match.end():match.end()+210]
+        num_match = re.search(r'(?<![0-9])([0-9]{1,2}[,.][0-9]{2})(?![0-9])', following)
+        date_match = re.search(r'20[0-9]{2}-[0-9]{2}-[0-9]{2}', following)
+        if not num_match or not date_match or date_match.start() < num_match.start():
+            continue
+        price = float(num_match.group(1).replace(',', '.'))
+        when = date_match.group(0)
+        try: date_value = date.fromisoformat(when)
+        except ValueError: continue
+        if 5 <= price <= 45 and date_value <= date.today():
+            return {'value_sek_per_l': round(price, 2), 'date': when}
+    return None
+
+
+def parse_daily_prices(content, brand):
+    text = visible_text(content)
+    if brand == 'OKQ8':
+        start = text.lower().find('drivmedel på station')
+        end = text.lower().find('titta inte på prisskyltarna')
+        if start >= 0:
+            text = text[start:end if end > start else start + 4000]
+        petrol = extract_price(text, r'OKQ8\s+GoEasy\s+95\b')
+        diesel = extract_price(text, r'OKQ8\s+GoEasy\s+Diesel\b(?!\s+Extra)')
+    elif brand == 'Circle K':
+        start = text.lower().find('aktuella listpriser företagskund')
+        end = text.lower().find('för drivmedel som betalas')
+        if start >= 0:
+            text = text[start:end if end > start else start + 4000]
+        petrol = extract_price(text, r'miles\s+95\b')
+        diesel = extract_price(text, r'miles\s+diesel\b(?!\s+plus)')
+    else:
+        raise ValueError('Unknown source')
+    if petrol is None or diesel is None:
+        raise ValueError(f'Missing business fuel prices on {brand}; no assumptions allowed')
+    return {'petrol': petrol, 'diesel': diesel}
+
+
+def update_daily(fetch_html=None, output=OUT, now=None):
+    try:
+        obj = json.loads(output.read_text(encoding='utf-8')) if output.exists() else {}
+    except (ValueError, OSError):
+        obj = {}
+    for name, url in DAILY_SOURCES:
+        try:
+            if fetch_html is None:
+                req = Request(url, headers={
+                    'User-Agent': 'Mozilla/5.0 (compatible; IndexdataPriceCheck/1.0)',
+                    'Accept': 'text/html',
+                })
+                with urlopen(req, timeout=25) as response:
+                    html = response.read(2_000_001)
+                    if len(html)>2_000_000:raise ValueError('Oversized supplier page')
+            else:
+                html=fetch_html(url)
+            prices = parse_daily_prices(html, name)
+            obj['daily_reference'] = {
+                **prices,
+                'checked_at': (now or datetime.now(timezone.utc)).isoformat(),
+                'source': name,
+                'source_url': url,
+                'price_type': 'published_business_list_including_vat',
+            }
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(json.dumps(obj, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+            return True
+        except Exception as exc:
+            LOGGER.warning('Daily prices from %s unavailable: %s', name, exc)
+    # Keep older reference with its original checked_at (not considered fresh by UI).
+    return False
+
 
 
 def normalize(text):
@@ -132,4 +239,6 @@ if __name__=='__main__':
     logging.basicConfig(level=logging.INFO)
     # Do not fail entire site publishing when one auxiliary source is down.
     success=update()
-    print('Fuel updated' if success else 'Fuel not updated; prior values retained')
+    daily_success=update_daily()
+    print('EU weekly updated' if success else 'EU weekly unchanged')
+    print('Daily business prices verified' if daily_success else 'Daily prices unavailable; dated fallback kept')
