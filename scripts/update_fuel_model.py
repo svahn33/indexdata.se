@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create Indexdata's transparent *modelled* Swedish petrol 95 price.
+"""Create Indexdata's transparent *modelled* Swedish petrol 95 and diesel prices.
 
 Data dependencies, all already collected by this site's GitHub Actions:
 - EU EnergyPrices (source: EU Commission weekly retail petrol 95 with tax)
@@ -95,7 +95,7 @@ def daily_crude_proxy(brent, usd, when, require_oil_today=False):
             'proxy':PASS_THROUGH * oil_avg * fx[1] / BARREL_LITRES}
 
 
-def weekly_observations(fuel, brent, usd, eur, today):
+def weekly_observations(fuel, brent, usd, eur, today, fuel_kind='petrol'):
     results = []
     hist = fuel.get('history') if isinstance(fuel, dict) else []
     if not isinstance(hist, list):
@@ -106,7 +106,7 @@ def weekly_observations(fuel, brent, usd, eur, today):
         day = iso_day(row.get('date'))
         if day is None or day > today or (today-day).days > 240:
             continue
-        p = row.get('petrol')
+        p = row.get(fuel_kind)
         value_eur = number(p.get('value_eur_per_l') if isinstance(p, dict) else None, .25, 5)
         if value_eur is None:
             continue
@@ -136,7 +136,7 @@ def rolling_errors(weekly, window=6, count=8):
     return errors
 
 
-def build(market, commodities, fuel, now=None):
+def build_single(market, commodities, fuel, now=None, fuel_kind='petrol'):
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None:
         raise ValueError('now must have time zone')
@@ -157,7 +157,7 @@ def build(market, commodities, fuel, now=None):
     if not crude:
         raise ValueError('Not enough recent Brent observations')
     # The historical official observations are the only price anchors.
-    weekly = sorted(weekly_observations(fuel, brent, usd, eur, today),key=lambda r:r['date'])
+    weekly = sorted(weekly_observations(fuel, brent, usd, eur, today, fuel_kind=fuel_kind),key=lambda r:r['date'])
     if len(weekly) < 10:
         raise ValueError(f'Need >=10 aligned official weeks (got {len(weekly)})')
     if (today-weekly[-1]['date']).days > 21:
@@ -184,7 +184,7 @@ def build(market, commodities, fuel, now=None):
     return {
         'generated_at':now.isoformat(timespec='seconds'),
         'kind':'scenario_model_not_observed_pump_price',
-        'fuel':'petrol_95', 'unit':'SEK/l', 'includes_taxes':'via weekly reference prices',
+        'fuel':'petrol_95' if fuel_kind=='petrol' else 'diesel', 'unit':'SEK/l', 'includes_taxes':'via weekly reference prices',
         'estimate_sek_per_l':round(estimate,2),
         'indicative_lower_sek_per_l':round(max(0,estimate-band),2),
         'indicative_upper_sek_per_l':round(estimate+band,2),
@@ -209,8 +209,25 @@ def build(market, commodities, fuel, now=None):
             {'name':'Valutor / Sveriges riksbank','url':'https://www.riksbank.se/sv/statistik/rantor-och-valutakurser/hamta-rantor-och-valutakurser-via-api/'},
         ],
         'method': 'rullande median av senaste 10 officiella veckopriser minus råoljeproxy; aktuell råoljeproxy adderas; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873',
-        'disclaimer': 'Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid.',
+        'disclaimer': 'Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.',
     }
+
+
+def build(market, commodities, fuel, now=None):
+    """Produce the established petrol fields plus an independent diesel model.
+
+    Diesel does not overwrite the petrol model if its official series is sparse.
+    Both calibrations use their own EU weekly retail price observations.
+    """
+    petrol = build_single(market, commodities, fuel, now, fuel_kind='petrol')
+    try:
+        diesel = build_single(market, commodities, fuel, now, fuel_kind='diesel')
+        diesel['status'] = 'ok'
+    except (ValueError, TypeError, KeyError, ZeroDivisionError) as exc:
+        diesel = {'status':'unavailable', 'fuel':'diesel',
+                  'kind':'scenario_model_not_observed_pump_price', 'reason':str(exc)}
+    petrol['diesel_model'] = diesel
+    return petrol
 
 
 def run(market_path=DATA/'market.json', commodities_path=DATA/'commodities.json',
@@ -219,7 +236,7 @@ def run(market_path=DATA/'market.json', commodities_path=DATA/'commodities.json'
     try:
         result = build(market, com, fuel, now=now)
         result['status']='ok'
-        LOG.info('Modelled petrol95 = %.2f SEK/l',result['estimate_sek_per_l'])
+        LOG.info('Modelled petrol95 = %.2f SEK/l, diesel status = %s',result['estimate_sek_per_l'], result['diesel_model']['status'])
     except (ValueError, TypeError, KeyError, ZeroDivisionError) as exc:
         # Explicitly clear stale model output instead of leaving a misleading price.
         result={'status':'unavailable', 'generated_at':(now or datetime.now(timezone.utc)).isoformat(timespec='seconds'),
