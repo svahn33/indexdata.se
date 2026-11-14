@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="Sverige idag – elpriser, Stockholmsbörsen, bensin, diesel, räntor och inflation på en enda skärm.">
+  <meta name="description" content="Sverige idag – elpriser, Stockholmsbörsen, bensinestimat, diesel, räntor och inflation på en enda skärm.">
   <title>Sverige idag – Svensk Makropuls</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/styles.css?v=10">
-  <script defer src="./assets/home.js?v=10"></script>
+  <link rel="stylesheet" href="./assets/styles.css?v=13">
+  <script defer src="./assets/home.js?v=13"></script>
 </head>
 <body class="home-screen">
 <header class="site-header">
@@ -51,12 +51,12 @@
     </article>
 
     <article class="surface today-box today-fuel">
-      <div class="today-box-header"><div><span class="today-kicker">DRIVMEDEL</span><h2>Bensin &amp; diesel</h2></div><a class="today-open" href="https://www.circlek.se/foretag/drivmedel/priser" id="homeFuelLink" target="_blank" rel="noopener noreferrer" aria-label="Visa källa för drivmedelspriser">Källa <span aria-hidden="true">↗</span></a></div>
+      <div class="today-box-header"><div><span class="today-kicker">DRIVMEDEL</span><h2>Bensin &amp; diesel</h2></div><a class="today-open" href="./bensinmodell.html" id="homeFuelLink" aria-label="Öppna den interaktiva bensinprismodellen">Modellen <span aria-hidden="true">↗</span></a></div>
       <div class="fuel-mini-list">
-        <div class="fuel-mini"><div><span class="fuel-type">Bensin 95</span><span class="fuel-unit">kr/l</span></div><strong id="homePetrol">—</strong></div>
-        <div class="fuel-mini"><div><span class="fuel-type">Diesel</span><span class="fuel-unit">kr/l</span></div><strong id="homeDiesel">—</strong></div>
+        <div class="fuel-mini"><div><span class="fuel-type">Bensin 95 · estimat</span><span class="fuel-unit">kr/l · ej pumppris</span></div><strong id="homePetrol">—</strong></div>
+        <div class="fuel-mini"><div><span class="fuel-type">Diesel · EU veckosnitt</span><span class="fuel-unit">kr/l · senast publicerat</span></div><strong id="homeDiesel">—</strong></div>
       </div>
-      <div class="today-source" id="homeFuelNote">Kontrollerar aktuella företagslistpriser · inkl. moms</div>
+      <div class="today-source" id="homeFuelNote">Inväntar modellvärde · inklusive skatter</div>
     </article>
   </section>
 

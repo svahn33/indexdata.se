@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html data-page="kallor" lang="sv">
 <head>
@@ -8,7 +8,7 @@
 <meta content="#ffffff" name="theme-color"/>
 <title>Datakällor – Svensk Makropuls</title>
 <link href="./assets/favicon.svg" rel="icon" type="image/svg+xml"/>
-<link href="./assets/styles.css?v=7" rel="stylesheet"/>
+<link href="./assets/styles.css?v=13" rel="stylesheet"/>
 <script defer="" src="./assets/app.js?v=6"></script>
 </head>
 <body>
@@ -32,15 +32,10 @@
 </header>
 <main class="main" id="mainContent">
 <!-- ÖVERSIKT -->
-
 <!-- MARKNADER -->
-
 <!-- RÄNTOR -->
-
 <!-- INFLATION -->
-
 <!-- VALUTOR -->
-
 <!-- KÄLLOR -->
 <section aria-labelledby="sourcesTitle" class="current-page" id="kallor">
 <div class="page-heading"><div><div class="overline">INFORMATION</div><h1 id="sourcesTitle">Datakällor</h1><p>Källor, publiceringstider och datastatus.</p></div></div>
@@ -51,9 +46,10 @@
 <a class="surface source-item" href="https://www.eia.gov/opendata/" rel="noopener noreferrer" target="_blank"><span class="source-logo">E</span><span><strong>EIA ↗</strong><small>Dagliga spotpriser för Brent, WTI och naturgas via FRED</small></span></a>
 <a class="surface source-item" href="https://www.worldbank.org/en/research/commodity-markets" rel="noopener noreferrer" target="_blank"><span class="source-logo">W</span><span><strong>Världsbanken ↗</strong><small>Pink Sheet · månatliga råvarupriser · CC BY 4.0</small></span></a>
 <a class="surface source-item" href="https://spotwatts.com/" rel="noopener noreferrer" target="_blank"><span class="source-logo">E</span><span><strong>Prices: Spotwatts ↗</strong><small>Svenska elområden SE1–SE4 · kvartpriser i öre/kWh inkl. 25 % moms (exkl. nät/skatt/påslag)</small></span></a>
-<a class="surface source-item" href="https://www.okq8.se/foretag/priser" rel="noopener noreferrer" target="_blank"><span class="source-logo">B</span><span><strong>OKQ8 ↗</strong><small>Publicerade företagslistpriser för bensin 95 och diesel inkl. moms; ej lokala pumppriser.</small></span></a>
-<a class="surface source-item" href="https://www.circlek.se/foretag/drivmedel/priser" rel="noopener noreferrer" target="_blank"><span class="source-logo">B</span><span><strong>Circle K Pro ↗</strong><small>Aktuella publicerade företagslistpriser för bensin 95 och diesel, inkl. moms. Gäller inte lokala pumppriser.</small></span></a>
-<a class="surface source-item" href="https://www.euenergyprices.eu/en/data" rel="noopener noreferrer" target="_blank"><span class="source-logo">D</span><span><strong>Drivmedel: EU EnergyPrices ↗</strong><small>EU-kommissionens Oil Bulletin · bensin 95 och diesel, veckovis · kr/l ungefärligt omräknat med Riksbankens EUR/SEK · CC BY 4.0</small></span></a>
+
+
+<a class="surface source-item" href="https://www.euenergyprices.eu/en/data" rel="noopener noreferrer" target="_blank"><span class="source-logo">D</span><span><strong>Drivmedel: EU EnergyPrices ↗</strong><small>EU-kommissionens Oil Bulletin · officiella veckopriser inkl. skatter. Underlag för bensinmodellen och visat dieselveckosnitt · CC BY 4.0</small></span></a>
+<a class="surface source-item" href="./bensinmodell.html"><span class="source-logo">M</span><span><strong>Indexdatas bensinprismodell ↗</strong><small>Beräknad bensin 95 i kr/l · Brent via EIA/FRED, USD/SEK via Riksbanken, kalibrerad mot EU:s veckopriser. Indikativt felspann; ej faktiskt pumppris.</small></span></a>
 <a class="surface source-item" href="https://fred.stlouisfed.org/" rel="noopener noreferrer" target="_blank"><span class="source-logo">F</span><span><strong>FRED ↗</strong><small>EIA:s spotpriser för olja och naturgas · dagliga serier</small></span></a></div>
 <section class="surface data-status"><h2>Datastatus</h2><div class="status-line" id="healthStatus">Hämtar status…</div><p>Räntor, valutor och råvaror hämtas automatiskt via GitHub Actions. Elpriser uppdateras även på helger. Datumet för varje datapunkt visar när priset gäller.</p></section>
 </section>

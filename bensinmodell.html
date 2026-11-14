@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="sv" data-page="bensinmodell">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f5ef">
+  <meta name="description" content="Indexdatas bensinprismodell – en uppskattning av svenskt bensin 95 utifrån Brentolja, USD/SEK och EU:s officiella veckopriser.">
+  <title>Bensinprismodellen – Indexdata</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/styles.css?v=13">
+  <script defer src="./assets/fuel-model.js?v=13"></script>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="brand" href="./index.html" aria-label="Indexdata – startsida"><span class="brand-icon" aria-hidden="true">m<span>.</span></span><span class="brand-wordmark">makropuls<span class="brand-dot">.</span><small>SVENSK EKONOMI</small></span></a>
+  <nav class="main-nav" aria-label="Huvudmeny">
+    <a href="./index.html">Översikt</a><a href="./marknader.html">Marknader</a><a href="./ravaror.html">Råvaror</a><a href="./rantor.html">Räntor</a><a href="./inflation.html">Inflation</a><a href="./valutor.html">Valutor</a><a href="./kallor.html">Källor</a>
+  </nav>
+  <span id="clock" class="header-time" aria-label="Klockslag i Sverige">–</span>
+</div></header>
+<main class="main" id="mainContent">
+  <div class="page-heading fuel-page-heading"><div>
+    <div class="overline">DRIVMEDEL · EXPERIMENTELL MODELL</div>
+    <h1>Bensinprismodellen<span class="orange-period">.</span></h1>
+    <p>Vad kan bensin 95 kosta när råoljan och dollarkursen förändras?</p>
+  </div><a class="fuel-back-link" href="./index.html">← Sverige idag</a></div>
+  <div class="fuel-model-layout">
+    <section class="surface fuel-model-hero" aria-labelledby="modelTitle">
+      <div class="fuel-model-header"><span class="today-kicker">UPPSKATTAT PUMPPRIS · BENSIN 95</span><span class="fuel-model-tag">MODELL · EJ UPPMÄTT</span></div>
+      <h2 id="modelTitle" class="sr-only">Modellens bensinpris</h2>
+      <div class="fuel-model-big" aria-live="polite"><strong id="modelPrice">—</strong><span>kr/liter</span></div>
+      <div class="fuel-model-band" id="modelBand">Beräknar indikativt spann …</div>
+      <div class="fuel-model-rule"></div>
+      <div class="fuel-model-stats">
+        <div><small>Brent (5 noteringar)</small><strong id="modelBrent">—</strong><small id="modelBrentDate">USD/fat</small></div>
+        <div><small>USD/SEK</small><strong id="modelUsdsek">—</strong><small id="modelUsdDate">Riksbanken</small></div>
+        <div><small>Officiellt veckopris*</small><strong id="modelWeekly">—</strong><small id="modelWeeklyDate">Senaste observation</small></div>
+      </div>
+      <p class="fuel-model-status" id="modelStatus" role="status">Hämtar senast publicerade modell …</p>
+    </section>
+    <section class="surface fuel-model-scenarios" aria-labelledby="modelScenarioTitle">
+      <div class="fuel-model-subtitle"><div class="today-kicker">PROVA SJÄLV</div><h2 id="modelScenarioTitle">Vad händer om …?</h2></div>
+      <p class="fuel-muted">Justera Brent och dollarkursen. Påslaget från den historiska kalibreringen hålls konstant.</p>
+      <label class="fuel-slider-label" for="scenarioBrent"><span>Brentolja</span><strong id="scenarioBrentValue">— USD/fat</strong></label>
+      <input id="scenarioBrent" type="range" min="30" max="200" step="1" disabled>
+      <label class="fuel-slider-label" for="scenarioUsd"><span>USD/SEK</span><strong id="scenarioUsdValue">— kr</strong></label>
+      <input id="scenarioUsd" type="range" min="6" max="16" step="0.05" disabled>
+      <div class="fuel-model-result"><div><small>Scenario: uppskattat bensinpris</small><strong id="scenarioPrice">—</strong></div><span>kr/l</span></div>
+      <button class="fuel-model-reset" id="scenarioReset" type="button" disabled>Återställ till marknadsläget</button>
+      <small class="fuel-model-disclaimer">Scenarier är enkla känslighetsberäkningar, inte prognoser eller stationspriser.</small>
+    </section>
+    <section class="surface fuel-model-chart" aria-labelledby="modelChartTitle">
+      <div class="fuel-model-chart-title"><div><div class="today-kicker">MODELLENS UTVECKLING</div><h2 id="modelChartTitle">Senaste 30 dagarna</h2></div><span class="fuel-muted">kr/l</span></div>
+      <div class="fuel-chart-wrap" id="fuelChart" role="img" aria-label="Modellberäknade bensinpriser senaste 30 dagarna">Diagram visas när tillräckligt med marknadsdata finns.</div>
+      <div class="fuel-muted fuel-chart-foot">Historiska scenariovärden med <em>dagens kalibrerade påslag</em>. Inte uppmätta historiska pumppriser.</div>
+    </section>
+    <section class="surface fuel-model-explain" aria-labelledby="modelMethodTitle">
+      <div class="today-kicker">METOD &amp; OSÄKERHET</div><h2 id="modelMethodTitle">Hur räknar vi?</h2>
+      <ol class="fuel-method-list">
+        <li>Vi omvandlar Brent från USD per fat till en råoljeindikator i kr per liter med Riksbankens USD/SEK. Antagen känslighet är 1,25 gånger råoljeindikatorn.</li>
+        <li>Vi jämför den med de senaste <strong>10</strong> veckornas svenska konsumentpris för bensin 95, inklusive skatter, från EU:s Oil Bulletin. Veckopriserna omvandlas ungefärligt till SEK med historiska EUR/SEK.</li>
+        <li>Medianen av skillnaderna blir ett kalibrerat påslag. Detta påslag adderas till dagens råoljeindikator, som jämnas ut över fem oljenoteringar.</li>
+        <li>Vi jämför tidigare veckors beräkningar med då faktiskt publicerade veckopriser för att få ett <strong>indikativt felspann</strong>.</li>
+      </ol>
+      <p class="fuel-muted">* Det officiella veckopriset är en separat statistisk observation och inte dagens pumppris. Modellen är förenklad: raffinering, distribution, biokomponenter, skatteförändringar, valutaförskjutning och marknadens eftersläpning fångas inte fullständigt. Felspannet är inte ett 95-procentigt konfidensintervall.</p>
+      <div class="fuel-model-sources">
+        <a href="https://www.euenergyprices.eu/en/data" target="_blank" rel="noopener noreferrer">EU EnergyPrices · EU Oil Bulletin ↗</a>
+        <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener noreferrer">EIA/FRED · Brent ↗</a>
+        <a href="https://www.riksbank.se/sv/statistik/rantor-och-valutakurser/hamta-rantor-och-valutakurser-via-api/" target="_blank" rel="noopener noreferrer">Riksbanken · valutakurser ↗</a>
+      </div>
+    </section>
+  </div>
+</main>
+<footer class="site-footer"><span>Indexdata</span><span>© <span id="copyrightYear">2026</span> · Modellvärden är inte faktiskt pumppris</span></footer>
+</body>
+</html>
