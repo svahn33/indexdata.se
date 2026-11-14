@@ -352,3 +352,19 @@ h1,h2,.brand-wordmark,.market-link-name,.kpi-value,.rate-value,.fx-price,.inflat
 .today-fuel .fuel-mini strong{color:var(--deep-green)}
 @media(max-width:930px){.fuel-model-layout{grid-template-columns:1fr}.fuel-model-hero{min-height:0}}
 @media(max-width:620px){.fuel-page-heading{align-items:flex-start;flex-direction:column;gap:5px}.fuel-model-layout>.surface{padding:18px}.fuel-model-stats{gap:8px}.fuel-model-stats strong{font-size:19px}.fuel-model-stats small{font-size:10px}.fuel-model-big{margin-top:18px}.fuel-model-tag{font-size:9px}.fuel-model-big strong{font-size:53px}}
+
+
+/* VERSION 14 – kompakt momsväxel för el och bränslemodellens val */
+.vat-toggle{display:inline-flex;align-items:center;gap:2px;background:#eee8dc;border:1px solid #ded4c3;padding:2px;border-radius:9px;flex-shrink:0}
+.vat-toggle button{border:0;border-radius:6px;background:transparent;color:#52655e;font:inherit;font-size:10px;font-weight:800;padding:6px 7px;white-space:nowrap;cursor:pointer}
+.vat-toggle button[aria-pressed="true"]{background:var(--deep-green);color:#fff;box-shadow:0 1px 3px #0002}
+.vat-toggle button:focus-visible,.fuel-type-tabs button:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.power-header-controls{display:flex;align-items:flex-start;gap:10px}
+.power-header-controls .today-open{padding-top:7px}
+.power-source-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+.power-source-controls .vat-toggle button{font-size:11px;padding:7px 10px}
+.fuel-type-tabs{display:flex;align-items:center;gap:4px;width:max-content;background:#eee8dc;border-radius:11px;padding:3px;border:1px solid #ded4c3;margin:14px 0 0}
+.fuel-type-tabs button{border:0;border-radius:8px;background:transparent;color:#425e54;font:inherit;font-size:13px;font-weight:800;cursor:pointer;padding:10px 17px}
+.fuel-type-tabs button[aria-pressed="true"]{background:var(--deep-green);color:white;box-shadow:0 2px 6px #0002}
+@media(max-width:620px){.today-electricity .power-header-controls{gap:6px}.today-electricity .today-open{font-size:10px}.vat-toggle button{padding:6px 7px}.power-source-controls{justify-content:flex-start}}
+@media(max-width:390px){.today-electricity .today-box-header{gap:5px}.today-electricity .power-header-controls{gap:4px}.today-electricity .vat-toggle button{padding:5px;font-size:9px}}

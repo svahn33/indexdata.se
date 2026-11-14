@@ -18,6 +18,22 @@ let commodities={power_intervals:{}};
 let fuel={};
 let fuelModel={};
 let powerLive={};
+const VAT_STORAGE_KEY='indexdata-power-vat';
+let vatMode='incl';
+try{if(localStorage.getItem(VAT_STORAGE_KEY)==='excl')vatMode='excl';}catch(_e){}
+function applyVatButtons(){
+  document.querySelectorAll('.vat-toggle button[data-vat]').forEach(b=>{
+    b.setAttribute('aria-pressed',String(b.dataset.vat===vatMode));
+  });
+}
+function setupVatToggle(){
+  document.querySelectorAll('.vat-toggle button[data-vat]').forEach(b=>b.addEventListener('click',()=>{
+    vatMode=b.dataset.vat==='excl'?'excl':'incl';
+    try{localStorage.setItem(VAT_STORAGE_KEY,vatMode);}catch(_e){}
+    applyVatButtons();paintPower();
+  }));
+  applyVatButtons();
+}
 
 function paintMarket(){
   set('homePolicy',quoteText(market,'SECBREPOEFF',2,' %'));
@@ -44,17 +60,17 @@ function paintFuel(){
     Date.now()-Date.parse(fuelModel.generated_at)<=7*86400000&&
     Date.now()>=Date.parse(fuelModel.generated_at)-3600000;
   set('homePetrol',modelOk?fmt(fuelModel.estimate_sek_per_l):'—');
-  const eur=latest(market,'SEKEURPMI');
-  const d=fuel?.diesel;
-  const dieselDay=/^\d{4}-\d{2}-\d{2}$/.test(d?.date||'')?Date.parse(d.date+'T12:00:00Z'):NaN;
-  const dieselOk=d&&isNum(d.value_eur_per_l)&&d.value_eur_per_l>.25&&d.value_eur_per_l<5&&
-    eur&&isNum(eur.value)&&Number.isFinite(dieselDay)&&Date.now()-dieselDay<=28*86400000;
-  set('homeDiesel',dieselOk?fmt(d.value_eur_per_l*eur.value):'—');
-  if(modelOk){
-    const range=isNum(fuelModel.indicative_band_sek_per_l)?` ±${fmt(fuelModel.indicative_band_sek_per_l)} kr` : '';
-    set('homeFuelNote',`Bensin: modell${range} · Brent + USD/SEK · Diesel: EU ${dieselOk?fmtShortDate(d.date):'saknas'} · inkl. skatter`);
+  const diesel=fuelModel?.diesel_model;
+  const dieselModelOk=diesel?.status==='ok'&&diesel?.kind==='scenario_model_not_observed_pump_price'&&
+    diesel?.fuel==='diesel'&&isNum(diesel.estimate_sek_per_l)&&
+    diesel.estimate_sek_per_l>=7&&diesel.estimate_sek_per_l<=45&&modelOk;
+  set('homeDiesel',dieselModelOk?fmt(diesel.estimate_sek_per_l):'—');
+  if(modelOk&&dieselModelOk){
+    set('homeFuelNote',`Bensin & diesel: modellestimat · Brent + USD/SEK · EU-kalibrering · inkl. skatter`);
+  }else if(modelOk){
+    set('homeFuelNote','Bensin: estimat · Diesel: inväntar modellunderlag · ej faktiska pumppriser');
   }else{
-    set('homeFuelNote',`Bensinmodellen inväntar historik · Diesel: ${dieselOk?'EU:s veckosnitt '+fmtShortDate(d.date):'data saknas'}`);
+    set('homeFuelNote','Inväntar bensin- och dieselestimat från automatiska beräkningen');
   }
 }
 
@@ -74,8 +90,9 @@ function activePrice(d){
   });
   return active||null;
 }
-function powerInclVat(p){
+function selectedPowerPrice(p){
   if(!p)return null;
+  if(vatMode==='excl')return isNum(p.value)?p.value:null;
   if(isNum(p.value_vat))return p.value_vat;
   if(isNum(p.value))return Math.round(p.value*125)/100;
   return null;
@@ -87,11 +104,11 @@ function paintPower(){
     const key='power_'+zone.toLowerCase();
     const day=powerLive[key]||commodities?.power_intervals?.[key];
     const interval=activePrice(day);
-    set(id,interval?fmt(powerInclVat(interval),1):'—');
+    set(id,interval?fmt(selectedPowerPrice(interval),1):'—');
     if(interval)seen.push(interval);
   });
   const q=seen[0];
-  set('homePowerNote',q?`${fmtTime(q.start)}–${fmtTime(q.end)} · inkl. 25 % moms, exkl. elnät/skatt/påslag`:'Dagens kvartpriser saknas · inkl. moms visas när tillgängligt');
+  set('homePowerNote',q?`${fmtTime(q.start)}–${fmtTime(q.end)} · ${vatMode==='incl'?'inkl. 25 % moms':'exkl. moms'} · exkl. elnät/energiskatt/påslag`:`Dagens kvartpriser saknas · ${vatMode==='incl'?'inkl.':'exkl.'} moms`);
 }
 async function json(url){
   const response=await fetch(url,{cache:'no-store'});
@@ -150,6 +167,7 @@ function marketWidgets(){
     colorTheme:'light',locale:'sv',isTransparent:true,displayMode:'adaptive',showSymbolLogo:false
   });
 }
+setupVatToggle();
 refreshTime();setInterval(refreshTime,30000);
 paintMarket();paintPower();
 readStatic();

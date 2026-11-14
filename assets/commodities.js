@@ -45,13 +45,20 @@ const valid=id=>typeof quote(id)?.value==='number'&&Number.isFinite(quote(id).va
 const labelDate=id=>fmtDate(quote(id)?.date,quote(id)?.frequency==='month');
 let data={quotes:{},history:{},sources:{},power_intervals:{}};
 const lastWidgets={};
-// Cached intervals are in öre/kWh excluding VAT; value_vat, when present,
-// is the source's own price including VAT. Never apply VAT twice.
-function priceInclVat(point){
-  if(!point)return null;
-  if(typeof point.value_vat==='number'&&Number.isFinite(point.value_vat))return point.value_vat;
-  if(typeof point.value==='number'&&Number.isFinite(point.value))return Math.round(point.value*125)/100;
-  return null;
+const VAT_STORAGE_KEY='indexdata-power-vat';
+let vatMode='incl';
+try{if(localStorage.getItem(VAT_STORAGE_KEY)==='excl')vatMode='excl';}catch(_e){}
+const vatLabel=()=>vatMode==='incl'?'inkl. 25 % moms':'exkl. moms';
+const powerValue=p=>p&&Number.isFinite(p.value)?
+  (vatMode==='incl'?(Number.isFinite(p.value_vat)?p.value_vat:Math.round(p.value*125)/100):p.value):NaN;
+function setupVatToggle(){
+  const buttons=document.querySelectorAll('.vat-toggle button[data-vat]');
+  const update=()=>buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.vat===vatMode)));
+  buttons.forEach(b=>b.addEventListener('click',()=>{
+    vatMode=b.dataset.vat==='excl'?'excl':'incl';
+    try{localStorage.setItem(VAT_STORAGE_KEY,vatMode);}catch(_e){}
+    update();renderPowerUI();
+  }));update();
 }
 
 function validPowerDay(day){
@@ -62,7 +69,7 @@ function activePower(key,now=Date.now()){
   if(!validPowerDay(day))return null;
   const cur=day.intervals.find(p=>Date.parse(p.start)<=now&&now<Date.parse(p.end)&&Number.isFinite(p.value));
   if(!cur)return null;
-  return {date:day.date,start:cur.start,end:cur.end,value:priceInclVat(cur),unit:'öre/kWh',
+  return {date:day.date,start:cur.start,end:cur.end,value:powerValue(cur),unit:'öre/kWh',
     frequency:'quarter',source:'Spotwatts / ENTSO-E'};
 }
 function current(id){return id.startsWith('power_')?activePower(id):quote(id);}
@@ -70,7 +77,7 @@ function currentValid(id){return typeof current(id)?.value==='number'&&Number.is
 function observation(id){
   if(id.startsWith('power_')){
     const q=current(id);
-    return q?`Idag ${fmtClock(q.start)}–${fmtClock(q.end)} · inkl. moms`:'Inget pris för pågående kvart';
+    return q?`Idag ${fmtClock(q.start)}–${fmtClock(q.end)} · ${vatLabel()}`:'Inget pris för pågående kvart';
   }
   return `${quote(id)?.frequency==='month'?'Månadsgenomsnitt':SERIES[id].frequency} · ${labelDate(id)}`;
 }
@@ -130,15 +137,15 @@ function renderPowerChart(id){
   const q=current(id),day=data.power_intervals?.[id],host=$('electricityChart');
   set('electricityTitle',`Elområde ${SERIES[id].name}`);
   set('electricityValue',q?`${num(q.value,2)} öre/kWh`:'—');
-  set('electricityMeta',q?`Aktuellt kvart ${fmtClock(q.start)}–${fmtClock(q.end)} · inkl. moms`:'Inväntar aktuellt kvartpris');
+  set('electricityMeta',q?`Aktuellt kvart ${fmtClock(q.start)}–${fmtClock(q.end)} · ${vatLabel()}`:'Inväntar aktuellt kvartpris');
   if(!host)return;
   if(!validPowerDay(day)){
     host.innerHTML='<div class="chart-empty">Inga kvartpriser för idag. Aktuell data hämtas automatiskt.</div>';
     set('electricityPeriod','Ingen aktuell dagskurva');return;
   }
-  const pts=day.intervals.filter(p=>Number.isFinite(priceInclVat(p))&&Number.isFinite(Date.parse(p.start))&&Number.isFinite(Date.parse(p.end))).map(p=>({...p,value:priceInclVat(p)}));
+  const pts=day.intervals.filter(p=>Number.isFinite(powerValue(p))&&Number.isFinite(Date.parse(p.start))&&Number.isFinite(Date.parse(p.end))).map(p=>({...p,value:powerValue(p)}));
   host.innerHTML=lineChart(pts,'electricity',{intraday:true})||'<div class="chart-empty">Dagens kvartpriser saknas.</div>';
-  set('electricityPeriod',`${fmtDate(day.date)} · ${pts.length} prisintervall · öre/kWh inkl. moms`);
+  set('electricityPeriod',`${fmtDate(day.date)} · ${pts.length} prisintervall · öre/kWh ${vatLabel()}`);
 }
 function renderChart(group){
   const choice=$(group+'Select');if(!choice)return;
@@ -172,7 +179,7 @@ function renderPower(){
     const q=current(key),card=element('article','power-area-card');
     card.append(element('h3','',SERIES[key].name),element('span','place',ZONE_NAMES[key]),
       element('strong','',q?num(q.value,2):'—'),
-      element('div','unit','öre/kWh · inkl. moms'),
+      element('div','unit',`öre/kWh · ${vatLabel()}`),
       element('time','date',observation(key)));
     return card;
   }));
@@ -189,7 +196,7 @@ function renderTable(){
     const section=element('tr','table-group'),head=element('td','',category);head.colSpan=4;
     section.append(head);target.append(section);
     for(const id of ids){
-      const row=element('tr'),q=current(id),unit=element('span','price-unit-inline',SERIES[id].unit),price=element('td');
+      const row=element('tr'),q=current(id),unit=element('span','price-unit-inline',id.startsWith('power_')?`öre/kWh (${vatLabel()})`:SERIES[id].unit),price=element('td');
       price.append(document.createTextNode(currentValid(id)?num(q.value,SERIES[id].digits):'—'),unit);
       row.append(element('td','',SERIES[id].name),price,element('td','',id.startsWith('power_')?observation(id):labelDate(id)),element('td','',q?.source||'—'));
       target.append(row);
@@ -219,7 +226,7 @@ async function loadPowerLive(){
       if(body?.date!==localDay()||body.zone?.toLowerCase()!==zone||body.unit!=='SEK/kWh'||!Array.isArray(body.intervals))return;
       const intervals=body.intervals.map(p=>({
         start:p.start,end:p.end,value:typeof p.price==='number'?Math.round(p.price*100000)/1000:NaN,
-        value_vat:typeof p.price_vat==='number'?Math.round(p.price_vat*100000)/1000:(typeof p.price==='number'?Math.round(p.price*125000)/1000:NaN)
+        value_vat:typeof p.price_vat==='number'?Math.round(p.price_vat*100000)/1000:NaN
       })).filter(p=>Number.isFinite(p.value)&&Number.isFinite(Date.parse(p.start))&&Number.isFinite(Date.parse(p.end))&&Date.parse(p.start)<Date.parse(p.end));
       if(!intervals.length)return;
       data.power_intervals[`power_${zone}`]={date:body.date,unit:'öre/kWh',intervals};
@@ -244,7 +251,7 @@ async function load(){
   await loadPowerLive();
 }
 ['energy','metals','agriculture','electricity'].forEach(id=>$(id+'Select')?.addEventListener('change',()=>renderChart(id)));
-renderAll();load();
+setupVatToggle();renderAll();load();
 setInterval(renderPowerUI,60000);
 setInterval(loadPowerLive,30*60000);
 })();

@@ -6,6 +6,9 @@ const fmt=(num,decimals=2)=>Number.isFinite(num)?num.toLocaleString('sv-SE',{min
 const date=(value)=>/^\d{4}-\d{2}-\d{2}$/.test(value||'')?new Date(value+'T12:00:00Z').toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric',timeZone:'Europe/Stockholm'}):'—';
 const valid=n=>typeof n==='number'&&Number.isFinite(n);
 let model=null;
+let fileData=null;
+let selectedFuel='petrol';
+const fuelName=()=>selectedFuel==='petrol'?'bensin 95':'diesel';
 const brent=$('scenarioBrent'),usd=$('scenarioUsd');
 function scenario(){
   if(!model)return;
@@ -48,39 +51,75 @@ function lineChart(data){
   target.replaceChildren(svg);
   target.setAttribute('aria-label',`Modellens senaste ${clean.length} börsdagar, från ${fmt(clean[0].value)} till ${fmt(last.value)} kronor per liter`);
 }
+function isModelData(d){
+  return d?.status==='ok'&&d?.kind==='scenario_model_not_observed_pump_price'&&
+    valid(d.estimate_sek_per_l)&&d.estimate_sek_per_l>=7&&d.estimate_sek_per_l<=45&&
+    valid(d.reference_brent_usd_per_barrel)&&valid(d.reference_usdsek)&&
+    valid(d.crude_pass_through_multiplier)&&valid(d.litres_per_barrel);
+}
+function renderFuel(){
+  const name=fuelName();
+  document.querySelectorAll('.fuel-type-tabs button[data-fuel]').forEach(b=>{
+    b.setAttribute('aria-pressed',String(b.dataset.fuel===selectedFuel));
+  });
+  set('modelFuelTitle',`UPPSKATTAT PUMPPRIS · ${name.toLocaleUpperCase('sv-SE')}`);
+  set('scenarioFuelLabel',`Scenario: uppskattat ${selectedFuel==='petrol'?'bensinpris':'dieselpris'}`);
+  model=selectedFuel==='petrol'?fileData:fileData?.diesel_model;
+  if(!isModelData(model)){
+    const explanation=model?.reason||'Inväntar tillräckligt med EU-veckor och marknadsdata';
+    model=null;
+    for(const id of ['modelPrice','modelBrent','modelUsdsek','modelWeekly','scenarioPrice'])set(id,'—');
+    set('modelBand','Inget tillförlitligt estimat just nu');
+    set('modelStatus',`${name}: ${explanation}.`);
+    set('modelBrentDate','USD/fat');set('modelUsdDate','Riksbanken');set('modelWeeklyDate','Senaste observation');
+    for(const id of ['scenarioBrentValue','scenarioUsdValue'])set(id,'—');
+    brent.disabled=true;usd.disabled=true;$('scenarioReset').disabled=true;
+    $('fuelChart').textContent='Diagram visas när tillräckligt med data finns.';
+    return;
+  }
+  const d=model;
+  set('modelPrice',fmt(d.estimate_sek_per_l));
+  if(valid(d.indicative_lower_sek_per_l)&&valid(d.indicative_upper_sek_per_l)){
+    set('modelBand',`Indikativt spann ${fmt(d.indicative_lower_sek_per_l)}–${fmt(d.indicative_upper_sek_per_l)} kr/l · historiskt medelfel ${fmt(d.rolling_backtest_mae_sek_per_l)} kr`);
+  }else set('modelBand','Osäkerhetsdata saknas');
+  set('modelBrent',fmt(d.reference_brent_usd_per_barrel,1));
+  set('modelBrentDate',`USD/fat · ${date(d.brent_latest_date)}`);
+  set('modelUsdsek',fmt(d.reference_usdsek));
+  set('modelUsdDate',date(d.usdsek_latest_date));
+  set('modelWeekly',fmt(d.latest_official_sek_per_l_approx));
+  set('modelWeeklyDate',date(d.last_official_observation));
+  set('modelStatus',`${name.charAt(0).toUpperCase()+name.slice(1)}: kalibrerad mot ${d.calibration_weeks} EU-veckor · ${d.backtest_weeks} veckor i efterhandskontroll. Modellberäkning, ej faktiskt pumppris.`);
+  brent.value=String(Math.min(Number(brent.max),Math.max(Number(brent.min),d.reference_brent_usd_per_barrel)));
+  usd.value=String(Math.min(Number(usd.max),Math.max(Number(usd.min),d.reference_usdsek)));
+  brent.disabled=false;usd.disabled=false;$('scenarioReset').disabled=false;
+  scenario();
+  $('fuelChart').textContent='Dagens modellhistorik saknas.';
+  lineChart(d.recent_history);
+}
 async function load(){
   try{
     const r=await fetch('./data/fuel_model.json?t='+Date.now(),{cache:'no-store'});
     if(!r.ok)throw new Error('Datafilen saknas');
     const d=await r.json();
-    if(d.status!=='ok'||d.kind!=='scenario_model_not_observed_pump_price'||!valid(d.estimate_sek_per_l)||!valid(d.reference_brent_usd_per_barrel)||!valid(d.reference_usdsek)||!valid(d.crude_pass_through_multiplier)||!valid(d.litres_per_barrel)){
-      throw new Error(d.reason||'Inväntar tillräckligt många observationer');
-    }
     const age=Date.now()-Date.parse(d.generated_at||'');
     if(!Number.isFinite(age)||age< -3600000||age>7*86400000)throw new Error('Modellen är inte nyligen uppdaterad');
-    model=d;
-    set('modelPrice',fmt(d.estimate_sek_per_l));
-    if(valid(d.indicative_lower_sek_per_l)&&valid(d.indicative_upper_sek_per_l)){
-      set('modelBand',`Indikativt spann ${fmt(d.indicative_lower_sek_per_l)}–${fmt(d.indicative_upper_sek_per_l)} kr/l · historiskt medelfel ${fmt(d.rolling_backtest_mae_sek_per_l)} kr`);
-    }else set('modelBand','Osäkerhetsdata saknas');
-    set('modelBrent',fmt(d.reference_brent_usd_per_barrel,1));
-    set('modelBrentDate',`USD/fat · ${date(d.brent_latest_date)}`);
-    set('modelUsdsek',fmt(d.reference_usdsek));
-    set('modelUsdDate',date(d.usdsek_latest_date));
-    set('modelWeekly',fmt(d.latest_official_sek_per_l_approx));
-    set('modelWeeklyDate',date(d.last_official_observation));
-    set('modelStatus',`Kalibrerad mot ${d.calibration_weeks} EU-veckor · ${d.backtest_weeks} veckor i efterhandskontroll. Modellberäkning, ej faktiskt pumppris.`);
-    brent.value=String(Math.min(Number(brent.max),Math.max(Number(brent.min),d.reference_brent_usd_per_barrel)));
-    usd.value=String(Math.min(Number(usd.max),Math.max(Number(usd.min),d.reference_usdsek)));
-    brent.disabled=false;usd.disabled=false;$('scenarioReset').disabled=false;
-    brent.addEventListener('input',scenario);usd.addEventListener('input',scenario);
-    $('scenarioReset').addEventListener('click',()=>{brent.value=String(d.reference_brent_usd_per_barrel);usd.value=String(d.reference_usdsek);scenario();});
-    scenario();lineChart(d.recent_history);
+    fileData=d;
+    renderFuel();
   }catch(error){
-    set('modelPrice','—');set('modelBand','Inget tillförlitligt estimat just nu');
-    set('modelStatus',`Modellen visas först när historiken för Brent, valuta och EU-priser räcker. ${error.message}`);
+    fileData=null;renderFuel();
+    set('modelStatus',`Kan inte läsa aktuella modellvärden: ${error.message}`);
   }
 }
+for(const b of document.querySelectorAll('.fuel-type-tabs button[data-fuel]')){
+  b.addEventListener('click',()=>{selectedFuel=b.dataset.fuel==='diesel'?'diesel':'petrol';renderFuel();});
+}
+brent.addEventListener('input',scenario);usd.addEventListener('input',scenario);
+$('scenarioReset').addEventListener('click',()=>{
+  if(!model)return;
+  brent.value=String(model.reference_brent_usd_per_barrel);
+  usd.value=String(model.reference_usdsek);
+  scenario();
+});
 function clock(){const n=new Date();set('clock',n.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Stockholm'}));set('copyrightYear',n.getFullYear());}
 clock();setInterval(clock,30000);load();
 })();
