@@ -7,8 +7,8 @@
   <meta name="description" content="Sverige idag – elpriser, Stockholmsbörsen, bensin, diesel, räntor och inflation på en enda skärm.">
   <title>Sverige idag – Svensk Makropuls</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/styles.css?v=9">
-  <script defer src="./assets/home.js?v=9"></script>
+  <link rel="stylesheet" href="./assets/styles.css?v=10">
+  <script defer src="./assets/home.js?v=10"></script>
 </head>
 <body class="home-screen">
 <header class="site-header">
@@ -47,16 +47,16 @@
         <div class="electricity-mini"><div class="electricity-area"><strong>SE3</strong><span>Stockholm</span></div><div class="electricity-price" id="homePowerSE3">—</div><div class="electricity-unit">öre/kWh</div></div>
         <div class="electricity-mini"><div class="electricity-area"><strong>SE4</strong><span>Malmö</span></div><div class="electricity-price" id="homePowerSE4">—</div><div class="electricity-unit">öre/kWh</div></div>
       </div>
-      <div class="today-source" id="homePowerNote">Day-ahead · pågående kvart · exkl. moms och avgifter</div>
+      <div class="today-source"><a href="https://spotwatts.com/" target="_blank" rel="noopener noreferrer">Prices: Spotwatts</a> · <span id="homePowerNote">Pågående kvart · inkl. moms, exkl. övriga avgifter</span></div>
     </article>
 
     <article class="surface today-box today-fuel">
-      <div class="today-box-header"><div><span class="today-kicker">DRIVMEDEL</span><h2>Bensin &amp; diesel</h2></div><a class="today-open" href="https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en" target="_blank" rel="noopener noreferrer" aria-label="Visa källa för drivmedelspriser">Källa <span aria-hidden="true">↗</span></a></div>
+      <div class="today-box-header"><div><span class="today-kicker">DRIVMEDEL</span><h2>Bensin &amp; diesel</h2></div><a class="today-open" href="https://www.circlek.se/foretag/drivmedel/priser" id="homeFuelLink" target="_blank" rel="noopener noreferrer" aria-label="Visa källa för drivmedelspriser">Källa <span aria-hidden="true">↗</span></a></div>
       <div class="fuel-mini-list">
         <div class="fuel-mini"><div><span class="fuel-type">Bensin 95</span><span class="fuel-unit">kr/l</span></div><strong id="homePetrol">—</strong></div>
         <div class="fuel-mini"><div><span class="fuel-type">Diesel</span><span class="fuel-unit">kr/l</span></div><strong id="homeDiesel">—</strong></div>
       </div>
-      <div class="today-source" id="homeFuelNote">EU:s rikssnitt · veckopris inkl. skatt och moms</div>
+      <div class="today-source" id="homeFuelNote">Kontrollerar aktuella företagslistpriser · inkl. moms</div>
     </article>
   </section>
 

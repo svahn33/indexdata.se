@@ -7,9 +7,9 @@
   <meta name="theme-color" content="#ffffff"/>
   <title>Råvaror – Svensk Makropuls</title>
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg"/>
-  <link rel="stylesheet" href="./assets/styles.css?v=8"/>
+  <link rel="stylesheet" href="./assets/styles.css?v=10"/>
   <script defer src="./assets/app.js?v=8"></script>
-  <script defer src="./assets/commodities.js?v=8"></script>
+  <script defer src="./assets/commodities.js?v=10"></script>
 </head>
 <body>
 <header class="site-header">
@@ -70,7 +70,7 @@
           <div class="commodity-chart-foot"><span id="agriculturePeriod">—</span><span>TradingView · indikativa instrument</span></div>
         </article>
         <article class="surface commodity-chart-card" data-chart="electricity">
-          <div class="commodity-chart-heading"><div><div class="overline">SVENSKA ELPRISER</div><h3 id="electricityTitle">Elområde SE3</h3><div id="electricityValue" class="commodity-chart-number">—</div><div id="electricityMeta" class="commodity-chart-meta">Pågående 15-minuterspris · öre/kWh exkl. moms</div></div>
+          <div class="commodity-chart-heading"><div><div class="overline">SVENSKA ELPRISER</div><h3 id="electricityTitle">Elområde SE3</h3><div id="electricityValue" class="commodity-chart-number">—</div><div id="electricityMeta" class="commodity-chart-meta">Pågående 15-minuterspris · öre/kWh inkl. moms</div></div>
             <label>Visa<select id="electricitySelect" aria-label="Välj elområde"><option value="power_se3">SE3 – Stockholm</option><option value="power_se4">SE4 – Malmö</option><option value="power_se2">SE2 – Sundsvall</option><option value="power_se1">SE1 – Luleå</option></select></label></div>
           <div id="electricityChart" class="commodity-chart-area"><div class="chart-empty">Dagens kvartpriser laddas automatiskt.</div></div>
           <div class="commodity-chart-foot"><span id="electricityPeriod">—</span><a href="https://spotwatts.com/" target="_blank" rel="noopener">Prices: Spotwatts ↗</a></div>
@@ -79,7 +79,7 @@
     </section>
 
     <section class="commodity-section" aria-labelledby="powerAreasTitle">
-      <div class="block-head"><div><h2 id="powerAreasTitle">Svenska elområden</h2><p>Priset för pågående kvart i öre/kWh, exklusive moms, skatter och elnätsavgift.</p></div>
+      <div class="block-head"><div><h2 id="powerAreasTitle">Svenska elområden</h2><p>Priset för pågående kvart i öre/kWh, inklusive 25 % moms men exklusive energiskatt, elnätsavgifter och påslag.</p></div>
         <a class="source-link" href="https://spotwatts.com/" target="_blank" rel="noopener">Prices: Spotwatts ↗</a></div>
       <div id="powerAreaCards" class="power-area-cards" aria-live="polite"><div class="commodity-skeleton">Inväntar elpriser…</div></div>
     </section>
@@ -90,7 +90,7 @@
         <thead><tr><th>Råvara</th><th>Pris</th><th>Datum / period</th><th>Datakälla</th></tr></thead>
         <tbody id="commodityTable"><tr><td colspan="4">Inväntar data…</td></tr></tbody>
       </table></div>
-      <p class="micro-note">Elpriserna avser det pågående 15-minutersintervallet i öre/kWh exklusive moms. Framtida kvartpriser i eldiagrammet är publicerade day-ahead-priser. Olja och gas visas som senaste tillgängliga dagsnotering. Världsbankens månadsgenomsnitt behålls som historiska referenser i tabellen, inte som aktuella marknadskurser. Grafer för metaller och jordbruk använder indikativa marknadsinstrument från TradingView och kan vara fördröjda.</p>
+      <p class="micro-note">Elpriserna avser det pågående 15-minutersintervallet i öre/kWh inklusive moms. Framtida kvartpriser i eldiagrammet är publicerade day-ahead-priser. Olja och gas visas som senaste tillgängliga dagsnotering. Världsbankens månadsgenomsnitt behålls som historiska referenser i tabellen, inte som aktuella marknadskurser. Grafer för metaller och jordbruk använder indikativa marknadsinstrument från TradingView och kan vara fördröjda.</p>
     </section>
 
     <section class="commodity-section commodity-market-preview" aria-labelledby="commodityLiveTitle">
