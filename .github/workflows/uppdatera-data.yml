@@ -38,16 +38,51 @@ jobs:
       - name: Beräkna bensinprisestimat från officiell veckodata och Brent
         run: python scripts/update_fuel_model.py
       - name: Spara data i repositoryt
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name 'makropuls-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/market.json data/commodities.json data/fuel.json data/fuel_model.json
-          if ! git diff --cached --quiet; then
+
+          # Bevara ENBART de fyra genererade datafilerna innan vi
+          # hämtar senaste main. Här i GitHub Actions är arbetskatalogen tillfällig.
+          snapshot="$(mktemp -d)"
+          trap 'rm -rf "$snapshot"' EXIT
+          for filename in market.json commodities.json fuel.json fuel_model.json; do
+            test -f "data/$filename"
+            cp "data/$filename" "$snapshot/$filename"
+          done
+
+          # En annan commit kan ha tillkommit medan uppdateringen kördes.
+          # Utgå varje gång från senaste main; skriv aldrig över historiken
+          # med force push. Behåll bara våra nygenererade datafiler.
+          for attempt in 1 2 3; do
+            git fetch --no-tags origin main
+            git reset --hard FETCH_HEAD
+            mkdir -p data
+            for filename in market.json commodities.json fuel.json fuel_model.json; do
+              cp "$snapshot/$filename" "data/$filename"
+            done
+            git add -- data/market.json data/commodities.json data/fuel.json data/fuel_model.json
+
+            if git diff --cached --quiet; then
+              echo 'Ingen förändring av data att spara.'
+              break
+            fi
+
             git commit -m 'chore: uppdatera makrodata'
-            git push
-          else
-            echo 'Inga förändringar'
-          fi
+            if git push origin HEAD:main; then
+              echo 'Data sparade på senaste main.'
+              break
+            fi
+
+            if [[ "$attempt" -eq 3 ]]; then
+              echo '::error::Kunde inte spara data efter tre försök. Inga ändringar har tvångspushats.'
+              exit 1
+            fi
+            echo 'main ändrades samtidigt; hämtar senaste och försöker igen.'
+            sleep $((attempt * 2))
+          done
       - name: Skapa webbpaket
         run: |
           mkdir -p public/assets public/data
