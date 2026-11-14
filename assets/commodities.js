@@ -45,6 +45,14 @@ const valid=id=>typeof quote(id)?.value==='number'&&Number.isFinite(quote(id).va
 const labelDate=id=>fmtDate(quote(id)?.date,quote(id)?.frequency==='month');
 let data={quotes:{},history:{},sources:{},power_intervals:{}};
 const lastWidgets={};
+// Cached intervals are in öre/kWh excluding VAT; value_vat, when present,
+// is the source's own price including VAT. Never apply VAT twice.
+function priceInclVat(point){
+  if(!point)return null;
+  if(typeof point.value_vat==='number'&&Number.isFinite(point.value_vat))return point.value_vat;
+  if(typeof point.value==='number'&&Number.isFinite(point.value))return Math.round(point.value*125)/100;
+  return null;
+}
 
 function validPowerDay(day){
   return !!day&&day.date===localDay()&&Array.isArray(day.intervals)&&day.intervals.length>0;
@@ -54,7 +62,7 @@ function activePower(key,now=Date.now()){
   if(!validPowerDay(day))return null;
   const cur=day.intervals.find(p=>Date.parse(p.start)<=now&&now<Date.parse(p.end)&&Number.isFinite(p.value));
   if(!cur)return null;
-  return {date:day.date,start:cur.start,end:cur.end,value:cur.value,unit:'öre/kWh',
+  return {date:day.date,start:cur.start,end:cur.end,value:priceInclVat(cur),unit:'öre/kWh',
     frequency:'quarter',source:'Spotwatts / ENTSO-E'};
 }
 function current(id){return id.startsWith('power_')?activePower(id):quote(id);}
@@ -62,7 +70,7 @@ function currentValid(id){return typeof current(id)?.value==='number'&&Number.is
 function observation(id){
   if(id.startsWith('power_')){
     const q=current(id);
-    return q?`Idag ${fmtClock(q.start)}–${fmtClock(q.end)} · exkl. moms`:'Inget pris för pågående kvart';
+    return q?`Idag ${fmtClock(q.start)}–${fmtClock(q.end)} · inkl. moms`:'Inget pris för pågående kvart';
   }
   return `${quote(id)?.frequency==='month'?'Månadsgenomsnitt':SERIES[id].frequency} · ${labelDate(id)}`;
 }
@@ -122,15 +130,15 @@ function renderPowerChart(id){
   const q=current(id),day=data.power_intervals?.[id],host=$('electricityChart');
   set('electricityTitle',`Elområde ${SERIES[id].name}`);
   set('electricityValue',q?`${num(q.value,2)} öre/kWh`:'—');
-  set('electricityMeta',q?`Aktuellt kvart ${fmtClock(q.start)}–${fmtClock(q.end)} · exkl. moms`:'Inväntar aktuellt kvartpris');
+  set('electricityMeta',q?`Aktuellt kvart ${fmtClock(q.start)}–${fmtClock(q.end)} · inkl. moms`:'Inväntar aktuellt kvartpris');
   if(!host)return;
   if(!validPowerDay(day)){
     host.innerHTML='<div class="chart-empty">Inga kvartpriser för idag. Aktuell data hämtas automatiskt.</div>';
     set('electricityPeriod','Ingen aktuell dagskurva');return;
   }
-  const pts=day.intervals.filter(p=>Number.isFinite(p.value)&&Number.isFinite(Date.parse(p.start))&&Number.isFinite(Date.parse(p.end)));
+  const pts=day.intervals.filter(p=>Number.isFinite(priceInclVat(p))&&Number.isFinite(Date.parse(p.start))&&Number.isFinite(Date.parse(p.end))).map(p=>({...p,value:priceInclVat(p)}));
   host.innerHTML=lineChart(pts,'electricity',{intraday:true})||'<div class="chart-empty">Dagens kvartpriser saknas.</div>';
-  set('electricityPeriod',`${fmtDate(day.date)} · ${pts.length} prisintervall · öre/kWh exkl. moms`);
+  set('electricityPeriod',`${fmtDate(day.date)} · ${pts.length} prisintervall · öre/kWh inkl. moms`);
 }
 function renderChart(group){
   const choice=$(group+'Select');if(!choice)return;
@@ -164,7 +172,7 @@ function renderPower(){
     const q=current(key),card=element('article','power-area-card');
     card.append(element('h3','',SERIES[key].name),element('span','place',ZONE_NAMES[key]),
       element('strong','',q?num(q.value,2):'—'),
-      element('div','unit','öre/kWh · exkl. moms'),
+      element('div','unit','öre/kWh · inkl. moms'),
       element('time','date',observation(key)));
     return card;
   }));
@@ -210,7 +218,8 @@ async function loadPowerLive(){
       const body=await response.json();
       if(body?.date!==localDay()||body.zone?.toLowerCase()!==zone||body.unit!=='SEK/kWh'||!Array.isArray(body.intervals))return;
       const intervals=body.intervals.map(p=>({
-        start:p.start,end:p.end,value:typeof p.price==='number'?Math.round(p.price*100000)/1000:NaN
+        start:p.start,end:p.end,value:typeof p.price==='number'?Math.round(p.price*100000)/1000:NaN,
+        value_vat:typeof p.price_vat==='number'?Math.round(p.price_vat*100000)/1000:(typeof p.price==='number'?Math.round(p.price*125000)/1000:NaN)
       })).filter(p=>Number.isFinite(p.value)&&Number.isFinite(Date.parse(p.start))&&Number.isFinite(Date.parse(p.end))&&Date.parse(p.start)<Date.parse(p.end));
       if(!intervals.length)return;
       data.power_intervals[`power_${zone}`]={date:body.date,unit:'öre/kWh',intervals};

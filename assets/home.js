@@ -37,25 +37,46 @@ function paintMarket(){
 }
 function paintFuel(){
   const eur=latest(market,'SEKEURPMI');
-  // EU Weekly Oil Bulletin is in EUR/litre. Use a dated Riksbank rate for an
-  // approximate SEK/litre conversion, never present it as an exact pump price.
+  // Use a freshly verified published corporate list price before the EU weekly
+  // average. A corporate list price must never be presented as a retail pump price.
+  const daily=fuel?.daily_reference;
+  const checked=Date.parse(daily?.checked_at||'');
+  const fresh=Number.isFinite(checked)&&checked<=Date.now()+5*60000&&
+    Date.now()-checked < 72*3600000;
+  const validDaily=q=>q&&isNum(q.value_sek_per_l)&&
+    q.value_sek_per_l>5&&q.value_sek_per_l<45&&
+    /^\d{4}-\d{2}-\d{2}$/.test(q.date||'');
+  const dailyOK=fresh&&validDaily(daily?.petrol)&&validDaily(daily?.diesel);
+  const link=$('homeFuelLink');
+  if(dailyOK){
+    set('homePetrol',fmt(daily.petrol.value_sek_per_l,2));
+    set('homeDiesel',fmt(daily.diesel.value_sek_per_l,2));
+    const checkedText=new Date(checked).toLocaleDateString('sv-SE',{
+      day:'numeric',month:'short',timeZone:'Europe/Stockholm'
+    });
+    set('homeFuelNote',`${daily.source==='OKQ8'?'OKQ8':'Circle K'} företagspris · kollat ${checkedText} · inkl. moms (ej pumppris)`);
+    if(link)link.href=daily.source==='OKQ8'?'https://www.okq8.se/foretag/priser':'https://www.circlek.se/foretag/drivmedel/priser';
+    return;
+  }
+  // If daily data cannot be verified, retain existing EU weekly fallback.
   const rate=eur?.value;
-  const petrol=fuel?.petrol, diesel=fuel?.diesel;
-  const validQuote=q=>q&&isNum(q.value_eur_per_l)&&q.value_eur_per_l>0&&q.value_eur_per_l<5&&/^\d{4}-\d{2}-\d{2}$/.test(q.date||'');
+  const validQuote=q=>q&&isNum(q.value_eur_per_l)&&q.value_eur_per_l>0&&
+    q.value_eur_per_l<5&&/^\d{4}-\d{2}-\d{2}$/.test(q.date||'');
   for(const [name,key] of [['petrol','homePetrol'],['diesel','homeDiesel']]){
     const q=fuel?.[name];
     set(key,validQuote(q)&&isNum(rate)?fmt(q.value_eur_per_l*rate,2):'—');
   }
-  const latestDates=[petrol,diesel].filter(validQuote).map(q=>q.date).sort();
-  const date=latestDates.at(-1);
-  if(!date){set('homeFuelNote','EU:s veckosnitt · data inväntas');return;}
+  const dates=[fuel?.petrol,fuel?.diesel].filter(validQuote).map(q=>q.date).sort();
+  const date=dates.at(-1);
+  if(link)link.href='https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en';
+  if(!date){set('homeFuelNote','Drivmedelsdata är tillfälligt otillgänglig');return;}
   const age=Math.max(0,Math.floor((Date.now()-new Date(date+'T12:00:00Z').getTime())/86400000));
   if(age>28){
     set('homePetrol','—');set('homeDiesel','—');
-    set('homeFuelNote',`Veckodata är äldre än 28 dagar (${fmtFullDate(date)})`);
+    set('homeFuelNote',`Senaste veckodata är äldre än 28 dagar (${fmtFullDate(date)})`);
     return;
   }
-  set('homeFuelNote',`Veckosnitt ${fmtFullDate(date)} · ca kr/l inkl. moms`);
+  set('homeFuelNote',`EU:s veckosnitt ${fmtFullDate(date)} · ca kr/l inkl. moms`);
 }
 function refreshTime(){
   const now=new Date();
@@ -73,6 +94,12 @@ function activePrice(d){
   });
   return active||null;
 }
+function powerInclVat(p){
+  if(!p)return null;
+  if(isNum(p.value_vat))return p.value_vat;
+  if(isNum(p.value))return Math.round(p.value*125)/100;
+  return null;
+}
 function paintPower(){
   const map={'SE1':'homePowerSE1','SE2':'homePowerSE2','SE3':'homePowerSE3','SE4':'homePowerSE4'};
   const seen=[];
@@ -80,11 +107,11 @@ function paintPower(){
     const key='power_'+zone.toLowerCase();
     const day=powerLive[key]||commodities?.power_intervals?.[key];
     const interval=activePrice(day);
-    set(id,interval?fmt(interval.value,1):'—');
+    set(id,interval?fmt(powerInclVat(interval),1):'—');
     if(interval)seen.push(interval);
   });
   const q=seen[0];
-  set('homePowerNote',q?`Spotwatts · ${fmtTime(q.start)}–${fmtTime(q.end)} · exkl. moms/avgifter`:'Spotwatts · dagens kvartpriser saknas');
+  set('homePowerNote',q?`${fmtTime(q.start)}–${fmtTime(q.end)} · inkl. 25 % moms, exkl. elnät/skatt/påslag`:'Dagens kvartpriser saknas · inkl. moms visas när tillgängligt');
 }
 async function json(url){
   const response=await fetch(url,{cache:'no-store'});
@@ -107,7 +134,7 @@ async function loadPowerLive(){
   const result=await Promise.allSettled(['SE1','SE2','SE3','SE4'].map(async z=>{
     const obj=await json(`https://spotwatts.com/api/v1/${z}/today.json?t=${Date.now()}`);
     if(obj.zone!==z||obj.date!==localDate()||obj.currency!=='SEK'||obj.unit!=='SEK/kWh'||!Array.isArray(obj.intervals))throw new Error('Unexpected power format');
-    const intervals=obj.intervals.filter(p=>typeof p.price==='number'&&Number.isFinite(p.price)&&Number.isFinite(Date.parse(p.start))&&Number.isFinite(Date.parse(p.end))).map(p=>({start:p.start,end:p.end,value:Math.round(p.price*1000)/10}));
+    const intervals=obj.intervals.filter(p=>typeof p.price==='number'&&Number.isFinite(p.price)&&Number.isFinite(Date.parse(p.start))&&Number.isFinite(Date.parse(p.end))).map(p=>({start:p.start,end:p.end,value:Math.round(p.price*100000)/1000,value_vat:Math.round((typeof p.price_vat==='number'?p.price_vat:p.price*1.25)*100000)/1000}));
     if(!intervals.length)throw new Error('No valid intervals');
     return {key:'power_'+z.toLowerCase(),day:{date:obj.date,intervals}};
   }));
