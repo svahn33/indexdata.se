@@ -16,6 +16,7 @@ const quoteText=(d,id,places,unit='')=>{const q=latest(d,id);return q?`${fmt(q.v
 let market={indicators:{},generated_at:null};
 let commodities={power_intervals:{}};
 let fuel={};
+let fuelModel={};
 let powerLive={};
 
 function paintMarket(){
@@ -36,48 +37,27 @@ function paintMarket(){
   paintFuel();
 }
 function paintFuel(){
+  // Den här rutan visar bensin som ett MODELLVÄRDE, aldrig som rapporterat pumppris.
+  const modelOk=fuelModel?.status==='ok'&&fuelModel?.kind==='scenario_model_not_observed_pump_price'&&
+    isNum(fuelModel.estimate_sek_per_l)&&fuelModel.estimate_sek_per_l>=7&&fuelModel.estimate_sek_per_l<=45&&
+    Number.isFinite(Date.parse(fuelModel.generated_at||''))&&
+    Date.now()-Date.parse(fuelModel.generated_at)<=7*86400000&&
+    Date.now()>=Date.parse(fuelModel.generated_at)-3600000;
+  set('homePetrol',modelOk?fmt(fuelModel.estimate_sek_per_l):'—');
   const eur=latest(market,'SEKEURPMI');
-  // Use a freshly verified published corporate list price before the EU weekly
-  // average. A corporate list price must never be presented as a retail pump price.
-  const daily=fuel?.daily_reference;
-  const checked=Date.parse(daily?.checked_at||'');
-  const fresh=Number.isFinite(checked)&&checked<=Date.now()+5*60000&&
-    Date.now()-checked < 72*3600000;
-  const validDaily=q=>q&&isNum(q.value_sek_per_l)&&
-    q.value_sek_per_l>5&&q.value_sek_per_l<45&&
-    /^\d{4}-\d{2}-\d{2}$/.test(q.date||'');
-  const dailyOK=fresh&&validDaily(daily?.petrol)&&validDaily(daily?.diesel);
-  const link=$('homeFuelLink');
-  if(dailyOK){
-    set('homePetrol',fmt(daily.petrol.value_sek_per_l,2));
-    set('homeDiesel',fmt(daily.diesel.value_sek_per_l,2));
-    const checkedText=new Date(checked).toLocaleDateString('sv-SE',{
-      day:'numeric',month:'short',timeZone:'Europe/Stockholm'
-    });
-    set('homeFuelNote',`${daily.source==='OKQ8'?'OKQ8':'Circle K'} företagspris · kollat ${checkedText} · inkl. moms (ej pumppris)`);
-    if(link)link.href=daily.source==='OKQ8'?'https://www.okq8.se/foretag/priser':'https://www.circlek.se/foretag/drivmedel/priser';
-    return;
+  const d=fuel?.diesel;
+  const dieselDay=/^\d{4}-\d{2}-\d{2}$/.test(d?.date||'')?Date.parse(d.date+'T12:00:00Z'):NaN;
+  const dieselOk=d&&isNum(d.value_eur_per_l)&&d.value_eur_per_l>.25&&d.value_eur_per_l<5&&
+    eur&&isNum(eur.value)&&Number.isFinite(dieselDay)&&Date.now()-dieselDay<=28*86400000;
+  set('homeDiesel',dieselOk?fmt(d.value_eur_per_l*eur.value):'—');
+  if(modelOk){
+    const range=isNum(fuelModel.indicative_band_sek_per_l)?` ±${fmt(fuelModel.indicative_band_sek_per_l)} kr` : '';
+    set('homeFuelNote',`Bensin: modell${range} · Brent + USD/SEK · Diesel: EU ${dieselOk?fmtShortDate(d.date):'saknas'} · inkl. skatter`);
+  }else{
+    set('homeFuelNote',`Bensinmodellen inväntar historik · Diesel: ${dieselOk?'EU:s veckosnitt '+fmtShortDate(d.date):'data saknas'}`);
   }
-  // If daily data cannot be verified, retain existing EU weekly fallback.
-  const rate=eur?.value;
-  const validQuote=q=>q&&isNum(q.value_eur_per_l)&&q.value_eur_per_l>0&&
-    q.value_eur_per_l<5&&/^\d{4}-\d{2}-\d{2}$/.test(q.date||'');
-  for(const [name,key] of [['petrol','homePetrol'],['diesel','homeDiesel']]){
-    const q=fuel?.[name];
-    set(key,validQuote(q)&&isNum(rate)?fmt(q.value_eur_per_l*rate,2):'—');
-  }
-  const dates=[fuel?.petrol,fuel?.diesel].filter(validQuote).map(q=>q.date).sort();
-  const date=dates.at(-1);
-  if(link)link.href='https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en';
-  if(!date){set('homeFuelNote','Drivmedelsdata är tillfälligt otillgänglig');return;}
-  const age=Math.max(0,Math.floor((Date.now()-new Date(date+'T12:00:00Z').getTime())/86400000));
-  if(age>28){
-    set('homePetrol','—');set('homeDiesel','—');
-    set('homeFuelNote',`Senaste veckodata är äldre än 28 dagar (${fmtFullDate(date)})`);
-    return;
-  }
-  set('homeFuelNote',`EU:s veckosnitt ${fmtFullDate(date)} · ca kr/l inkl. moms`);
 }
+
 function refreshTime(){
   const now=new Date();
   set('sverigeDate',now.toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'long',timeZone:'Europe/Stockholm'}));
@@ -120,14 +100,16 @@ async function json(url){
 }
 async function readStatic(){
   const prefix='./data/';
-  const [m,c,f]=await Promise.allSettled([
+  const [m,c,f,model]=await Promise.allSettled([
     json(prefix+'market.json?t='+Date.now()),
     json(prefix+'commodities.json?t='+Date.now()),
-    json(prefix+'fuel.json?t='+Date.now())
+    json(prefix+'fuel.json?t='+Date.now()),
+    json(prefix+'fuel_model.json?t='+Date.now())
   ]);
   if(m.status==='fulfilled')market=m.value;
   if(c.status==='fulfilled')commodities=c.value;
   if(f.status==='fulfilled')fuel=f.value;
+  if(model.status==='fulfilled')fuelModel=model.value;
   paintMarket();paintPower();
 }
 async function loadPowerLive(){

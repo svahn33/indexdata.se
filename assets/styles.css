@@ -306,3 +306,49 @@ h1,h2,.brand-wordmark,.market-link-name,.kpi-value,.rate-value,.fx-price,.inflat
 .electricity-area strong,.fuel-type,.rate-name,.fx-label,.commodity-price-name{color:var(--deep-green)}
 .orange-period,.overline,.today-kicker{color:var(--orange)}
 .commodity-chart-foot a,.see-more,.source-link{color:var(--green)}
+
+/* VERSION 13: bensinprismodell, konsekvent grön/teal/guld, responsiv */
+.fuel-page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.fuel-back-link{font-size:12px;font-weight:750;color:var(--green);white-space:nowrap;margin-bottom:10px}
+.fuel-model-layout{display:grid;grid-template-columns:1.13fr 0.87fr;gap:14px;align-items:stretch;margin:18px 0 20px}
+.fuel-model-layout>.surface{padding:22px 24px;min-width:0}
+.fuel-model-header,.fuel-model-chart-title{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.fuel-model-tag{font-size:10px;letter-spacing:.5px;font-weight:800;background:#f4efe5;color:#6e634d;border:1px solid #e9dfcc;border-radius:20px;padding:5px 9px;white-space:nowrap}
+.fuel-model-big{display:flex;align-items:baseline;gap:10px;margin:24px 0 6px}
+.fuel-model-big strong{font-family:'Manrope',sans-serif;font-size:clamp(52px,6vw,77px);color:var(--deep-green);font-weight:800;letter-spacing:-3.5px;line-height:1.04;font-variant-numeric:tabular-nums}
+.fuel-model-big span{font-weight:700;font-size:15px;color:var(--muted)}
+.fuel-model-band{font-weight:700;color:var(--green);font-size:13px;line-height:1.5;min-height:20px}
+.fuel-model-rule{height:1px;background:var(--border);margin:20px 0}
+.fuel-model-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.fuel-model-stats>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fuel-model-stats small{font-size:11px;color:var(--muted);line-height:1.25}
+.fuel-model-stats strong{font-family:'Manrope',sans-serif;font-size:23px;font-weight:800;color:var(--deep-green);font-variant-numeric:tabular-nums}
+.fuel-model-status{font-size:11px;color:var(--muted);margin:20px 0 0;line-height:1.5}
+.fuel-model-subtitle h2,.fuel-model-chart h2,.fuel-model-explain h2{font-size:22px;letter-spacing:-.6px;margin:5px 0 10px}
+.fuel-muted{font-size:12px;line-height:1.6;color:var(--muted)}
+.fuel-slider-label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:22px;font-size:13px;color:var(--deep-green);font-weight:700}
+.fuel-slider-label strong{font-variant-numeric:tabular-nums}
+.fuel-model-scenarios input[type=range]{width:100%;accent-color:var(--green);margin:13px 0 4px;cursor:pointer}
+.fuel-model-scenarios input[type=range]:disabled{opacity:.45}
+.fuel-model-result{display:flex;align-items:baseline;justify-content:space-between;background:#f4efe5;border-radius:12px;padding:16px;margin-top:22px}
+.fuel-model-result>div{display:flex;flex-direction:column;gap:5px}
+.fuel-model-result small{color:var(--muted);font-size:11px}
+.fuel-model-result strong{color:var(--deep-green);font-size:27px;font-family:'Manrope',sans-serif;font-variant-numeric:tabular-nums}
+.fuel-model-result>span{font-size:12px;color:var(--muted)}
+.fuel-model-reset{width:100%;background:transparent;color:var(--green);border:1px solid var(--border-strong);border-radius:10px;cursor:pointer;font-size:12px;font-weight:800;margin:13px 0 10px;padding:12px}
+.fuel-model-reset:hover:not(:disabled){background:#f4efe5}
+.fuel-model-reset:disabled{opacity:.5;cursor:default}
+.fuel-model-disclaimer{display:block;color:var(--muted);font-size:10px;line-height:1.5}
+.fuel-chart-wrap{width:100%;height:auto;aspect-ratio:740/250;display:flex;align-items:center;justify-content:center;min-height:145px;color:var(--muted);font-size:12px}
+.fuel-chart-wrap svg{width:100%;height:100%;overflow:visible}
+.fuel-model-chart-title{align-items:flex-end}
+.fuel-chart-foot{margin-top:10px}
+.fuel-method-list{margin:16px 0;padding-left:19px;font-size:13px;line-height:1.8;color:var(--text)}
+.fuel-method-list li{margin-bottom:8px;padding-left:4px}
+.fuel-method-list li::marker{color:var(--green);font-weight:750}
+.fuel-model-sources{display:flex;gap:9px 17px;flex-wrap:wrap;margin-top:17px}
+.fuel-model-sources a{color:var(--green);font-size:12px;font-weight:750}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.today-fuel .fuel-mini strong{color:var(--deep-green)}
+@media(max-width:930px){.fuel-model-layout{grid-template-columns:1fr}.fuel-model-hero{min-height:0}}
+@media(max-width:620px){.fuel-page-heading{align-items:flex-start;flex-direction:column;gap:5px}.fuel-model-layout>.surface{padding:18px}.fuel-model-stats{gap:8px}.fuel-model-stats strong{font-size:19px}.fuel-model-stats small{font-size:10px}.fuel-model-big{margin-top:18px}.fuel-model-tag{font-size:9px}.fuel-model-big strong{font-size:53px}}
