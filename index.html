@@ -1,99 +1,89 @@
 <!doctype html>
-
-<html data-page="oversikt" lang="sv">
+<html lang="sv" data-page="oversikt">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="Svensk Makropuls – aktuella svenska räntor, inflation, valutakurser och globala marknader på en plats." name="description"/>
-<meta content="#ffffff" name="theme-color"/>
-<title>Översikt – Svensk Makropuls</title>
-<link href="./assets/favicon.svg" rel="icon" type="image/svg+xml"/>
-<link href="./assets/styles.css?v=6" rel="stylesheet"/>
-<script defer="" src="./assets/app.js?v=6"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Sverige idag – elpriser, Stockholmsbörsen, bensin, diesel, räntor och inflation på en enda skärm.">
+  <title>Sverige idag – Svensk Makropuls</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/styles.css?v=9">
+  <script defer src="./assets/home.js?v=9"></script>
 </head>
-<body>
+<body class="home-screen">
 <header class="site-header">
-<div class="header-inner">
-<a aria-label="Svensk Makropuls, startsida" class="brand" href="./index.html">
-<span aria-hidden="true" class="brand-icon">m<span>.</span></span>
-<span class="brand-wordmark">makropuls<span class="brand-dot">.</span><small>SVENSK EKONOMI</small></span>
-</a>
-<nav aria-label="Huvudmeny" class="main-nav">
-<a aria-current="page" class="active" href="./index.html">Översikt</a>
-<a class="" href="./marknader.html">Marknader</a>
-<a class="" href="./ravaror.html">Råvaror</a>
-<a class="" href="./rantor.html">Räntor</a>
-<a class="" href="./inflation.html">Inflation</a>
-<a class="" href="./valutor.html">Valutor</a>
-<a class="" href="./kallor.html">Källor</a>
-</nav>
-<span aria-label="Klockslag i Sverige" class="header-time" id="clock">–</span>
-</div>
+  <div class="header-inner">
+    <a class="brand" href="./index.html" aria-label="Svensk Makropuls – startsida"><span class="brand-icon" aria-hidden="true">m<span>.</span></span><span class="brand-wordmark">makropuls<span class="brand-dot">.</span><small>SVENSK EKONOMI</small></span></a>
+    <nav class="main-nav" aria-label="Huvudmeny">
+      <a class="active" aria-current="page" href="./index.html">Översikt</a>
+      <a href="./marknader.html">Marknader</a>
+      <a href="./ravaror.html">Råvaror</a>
+      <a href="./rantor.html">Räntor</a>
+      <a href="./inflation.html">Inflation</a>
+      <a href="./valutor.html">Valutor</a>
+      <a href="./kallor.html">Källor</a>
+    </nav>
+    <span id="clock" class="header-time" aria-label="Klockslag i Sverige">–</span>
+  </div>
 </header>
-<main class="main" id="mainContent">
-<!-- ÖVERSIKT -->
-<section aria-labelledby="overviewTitle" class="current-page" id="oversikt">
-<div class="page-heading landing-heading">
-<div>
-<div class="overline">SVENSK EKONOMI</div>
-<h1 id="overviewTitle">Makroöversikt</h1>
-<p>Räntor, inflation, valutor och globala marknader.</p>
-</div>
-<div class="update-info">
-<span class="update-label"><span aria-hidden="true" class="status-dot"></span> Senaste datauppdatering</span>
-<strong id="lastUpdate">–</strong>
-</div>
-</div>
-<div aria-live="polite" class="kpi-grid" id="kpiGrid"></div>
-<section aria-labelledby="overviewMarketsTitle" class="surface market-strip">
-<div class="block-head">
-<h2 id="overviewMarketsTitle">Marknader</h2>
-<a class="see-more" href="./marknader.html">Visa marknader <span aria-hidden="true">→</span></a>
-</div>
-<div class="ticker-slot" id="homeTicker">
-<div class="ticker-placeholder">Marknadskurser via TradingView</div>
-</div>
-<p class="micro-note">Marknadsnoteringar kan vara fördröjda.</p>
-</section>
-<div class="overview-grid">
-<section aria-labelledby="homeRatesTitle" class="surface overview-rates">
-<div class="block-head">
-<div>
-<div class="overline">RÄNTOR</div>
-<h2 id="homeRatesTitle">Sverige 10 år</h2>
-</div>
-<a class="see-more" href="./rantor.html">Alla räntor <span aria-hidden="true">→</span></a>
-</div>
-<div class="chart-box chart-box-home" id="overviewRateChart"><div class="chart-empty">Ingen historik tillgänglig</div></div>
-<div class="panel-foot"><span>Riksbanken</span><span id="overviewRatePeriod">–</span></div>
-</section>
-<section aria-labelledby="homeInflationTitle" class="surface overview-inflation">
-<div class="block-head">
-<div>
-<div class="overline">INFLATION</div>
-<h2 id="homeInflationTitle">Senaste inflationen</h2>
-</div>
-<a class="see-more" href="./inflation.html">Visa inflation <span aria-hidden="true">→</span></a>
-</div>
-<div class="mini-metric-group">
-<div class="mini-metric"><span>KPIF</span><strong id="overviewKpif">—</strong><small id="overviewKpifDate">–</small></div>
-<div class="mini-metric"><span>KPI</span><strong id="overviewKpi">—</strong><small id="overviewKpiDate">–</small></div>
-</div>
-<div class="panel-foot"><span>SCB</span><span>Årsförändring</span></div>
-</section>
-</div>
-</section>
-<!-- MARKNADER -->
+<main class="main sverige-main" id="mainContent">
+  <div class="sverige-heading">
+    <div><div class="overline">SNABBÖVERSIKT</div><h1>Sverige idag<span class="orange-period">.</span></h1></div>
+    <div class="sverige-date"><span id="sverigeDate">–</span><span class="overview-pulse"><span class="status-dot" aria-hidden="true"></span> Automatisk datahämtning</span></div>
+  </div>
 
-<!-- RÄNTOR -->
+  <section class="today-primary" aria-label="Marknad, el och drivmedel">
+    <article class="surface today-box today-exchange">
+      <div class="today-box-header"><div><span class="today-kicker">BÖRSEN</span><h2>Stockholmsbörsen</h2></div><a class="today-open" href="./marknader.html" aria-label="Visa alla marknader">Mer <span aria-hidden="true">↗</span></a></div>
+      <div class="omx-widget" id="homeOmxWidget"><span class="loading-value">Hämtar OMXS30 …</span></div>
+      <div class="today-source">OMXS30 · TradingView · kan vara fördröjd</div>
+    </article>
 
-<!-- INFLATION -->
+    <article class="surface today-box today-electricity">
+      <div class="today-box-header"><div><span class="today-kicker">ELPRISER</span><h2>El just nu</h2></div><a class="today-open" href="./ravaror.html" aria-label="Visa alla elpriser">Mer <span aria-hidden="true">↗</span></a></div>
+      <div class="electricity-mini-grid" aria-live="polite">
+        <div class="electricity-mini"><div class="electricity-area"><strong>SE1</strong><span>Luleå</span></div><div class="electricity-price" id="homePowerSE1">—</div><div class="electricity-unit">öre/kWh</div></div>
+        <div class="electricity-mini"><div class="electricity-area"><strong>SE2</strong><span>Sundsvall</span></div><div class="electricity-price" id="homePowerSE2">—</div><div class="electricity-unit">öre/kWh</div></div>
+        <div class="electricity-mini"><div class="electricity-area"><strong>SE3</strong><span>Stockholm</span></div><div class="electricity-price" id="homePowerSE3">—</div><div class="electricity-unit">öre/kWh</div></div>
+        <div class="electricity-mini"><div class="electricity-area"><strong>SE4</strong><span>Malmö</span></div><div class="electricity-price" id="homePowerSE4">—</div><div class="electricity-unit">öre/kWh</div></div>
+      </div>
+      <div class="today-source" id="homePowerNote">Day-ahead · pågående kvart · exkl. moms och avgifter</div>
+    </article>
 
-<!-- VALUTOR -->
+    <article class="surface today-box today-fuel">
+      <div class="today-box-header"><div><span class="today-kicker">DRIVMEDEL</span><h2>Bensin &amp; diesel</h2></div><a class="today-open" href="https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en" target="_blank" rel="noopener noreferrer" aria-label="Visa källa för drivmedelspriser">Källa <span aria-hidden="true">↗</span></a></div>
+      <div class="fuel-mini-list">
+        <div class="fuel-mini"><div><span class="fuel-type">Bensin 95</span><span class="fuel-unit">kr/l</span></div><strong id="homePetrol">—</strong></div>
+        <div class="fuel-mini"><div><span class="fuel-type">Diesel</span><span class="fuel-unit">kr/l</span></div><strong id="homeDiesel">—</strong></div>
+      </div>
+      <div class="today-source" id="homeFuelNote">EU:s rikssnitt · veckopris inkl. skatt och moms</div>
+    </article>
+  </section>
 
-<!-- KÄLLOR -->
+  <section class="today-secondary" aria-label="Räntor, krona och inflation">
+    <article class="surface today-box today-small">
+      <div class="today-box-header"><div><span class="today-kicker">RÄNTOR</span><h2>Ränteläget</h2></div><a class="today-open" href="./rantor.html">Mer ↗</a></div>
+      <div class="today-two-values"><div><span>Styrränta</span><strong id="homePolicy">—</strong></div><div><span>Sverige 10 år</span><strong id="homeTenYear">—</strong></div></div>
+      <div class="today-source" id="homeRateDate">Riksbanken · senaste notering</div>
+    </article>
+    <article class="surface today-box today-small">
+      <div class="today-box-header"><div><span class="today-kicker">KRONAN</span><h2>Valutakurser</h2></div><a class="today-open" href="./valutor.html">Mer ↗</a></div>
+      <div class="today-two-values"><div><span>USD/SEK</span><strong id="homeUSD">—</strong></div><div><span>EUR/SEK</span><strong id="homeEUR">—</strong></div></div>
+      <div class="today-source" id="homeCurrencyDate">Riksbanken · indikativa kurser</div>
+    </article>
+    <article class="surface today-box today-small">
+      <div class="today-box-header"><div><span class="today-kicker">PRISER</span><h2>Inflation</h2></div><a class="today-open" href="./inflation.html">Mer ↗</a></div>
+      <div class="today-two-values"><div><span>KPIF</span><strong id="homeKPIF">—</strong></div><div><span>KPI</span><strong id="homeKPI">—</strong></div></div>
+      <div class="today-source" id="homeInflationDate">SCB · senaste referensmånad</div>
+    </article>
+  </section>
 
+  <section class="surface today-ticker" aria-label="Globala marknader">
+    <div class="today-ticker-title"><span class="today-kicker">VÄRLDEN</span><span>Index, olja &amp; guld</span></div>
+    <div id="homeCompactTicker" class="today-ticker-content"><span class="loading-value">Hämtar marknadsnoteringar …</span></div>
+  </section>
+  <div class="today-footer"><span>Senaste uppdatering: <span id="homeUpdated">—</span></span><span>Olika källor har olika uppdateringsintervall. <a href="./kallor.html">Datakällor ↗</a></span></div>
 </main>
-<footer class="site-footer"><span>Svensk Makropuls</span><span>© <span id="copyrightYear">2026</span> · Oberoende marknadsöversikt · Ej investeringsrådgivning</span></footer>
+<footer class="site-footer sverige-footer"><span>Svensk Makropuls</span><span>© <span id="copyrightYear">2026</span> · Ej investeringsrådgivning</span></footer>
 </body>
 </html>
