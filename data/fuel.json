@@ -1,1 +1,736 @@
-{}
+{
+  "generated_at": "2026-11-14T22:30:16.934543+00:00",
+  "source": "EU EnergyPrices / EU Commission Weekly Oil Bulletin",
+  "source_url": "https://www.euenergyprices.eu/en/data",
+  "license": "CC BY 4.0",
+  "history": [
+    {
+      "date": "2025-05-05",
+      "diesel": {
+        "value_eur_per_l": 1.4131
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4009
+      }
+    },
+    {
+      "date": "2025-05-12",
+      "diesel": {
+        "value_eur_per_l": 1.4177
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3991
+      }
+    },
+    {
+      "date": "2025-05-19",
+      "diesel": {
+        "value_eur_per_l": 1.4522
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4405
+      }
+    },
+    {
+      "date": "2025-05-26",
+      "diesel": {
+        "value_eur_per_l": 1.4426
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4309
+      }
+    },
+    {
+      "date": "2025-06-02",
+      "diesel": {
+        "value_eur_per_l": 1.4412
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4293
+      }
+    },
+    {
+      "date": "2025-06-09",
+      "diesel": {
+        "value_eur_per_l": 1.4291
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4163
+      }
+    },
+    {
+      "date": "2025-06-16",
+      "diesel": {
+        "value_eur_per_l": 1.4711
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4457
+      }
+    },
+    {
+      "date": "2025-06-23",
+      "diesel": {
+        "value_eur_per_l": 1.5197
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4424
+      }
+    },
+    {
+      "date": "2025-06-30",
+      "diesel": {
+        "value_eur_per_l": 1.5128
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4306
+      }
+    },
+    {
+      "date": "2025-07-07",
+      "diesel": {
+        "value_eur_per_l": 1.494
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3986
+      }
+    },
+    {
+      "date": "2025-07-14",
+      "diesel": {
+        "value_eur_per_l": 1.5082
+      },
+      "petrol": {
+        "value_eur_per_l": 1.403
+      }
+    },
+    {
+      "date": "2025-07-21",
+      "diesel": {
+        "value_eur_per_l": 1.5324
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4187
+      }
+    },
+    {
+      "date": "2025-07-28",
+      "diesel": {
+        "value_eur_per_l": 1.5155
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4097
+      }
+    },
+    {
+      "date": "2025-08-04",
+      "diesel": {
+        "value_eur_per_l": 1.5108
+      },
+      "petrol": {
+        "value_eur_per_l": 1.431
+      }
+    },
+    {
+      "date": "2025-08-11",
+      "diesel": {
+        "value_eur_per_l": 1.4624
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4057
+      }
+    },
+    {
+      "date": "2025-08-18",
+      "diesel": {
+        "value_eur_per_l": 1.4483
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4053
+      }
+    },
+    {
+      "date": "2025-08-25",
+      "diesel": {
+        "value_eur_per_l": 1.4792
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4313
+      }
+    },
+    {
+      "date": "2025-09-01",
+      "diesel": {
+        "value_eur_per_l": 1.4894
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4367
+      }
+    },
+    {
+      "date": "2025-09-08",
+      "diesel": {
+        "value_eur_per_l": 1.5083
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4506
+      }
+    },
+    {
+      "date": "2025-09-15",
+      "diesel": {
+        "value_eur_per_l": 1.4946
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4449
+      }
+    },
+    {
+      "date": "2025-09-22",
+      "diesel": {
+        "value_eur_per_l": 1.4926
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4354
+      }
+    },
+    {
+      "date": "2025-09-29",
+      "diesel": {
+        "value_eur_per_l": 1.5259
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4383
+      }
+    },
+    {
+      "date": "2025-10-06",
+      "diesel": {
+        "value_eur_per_l": 1.4759
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4229
+      }
+    },
+    {
+      "date": "2025-10-13",
+      "diesel": {
+        "value_eur_per_l": 1.4881
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4399
+      }
+    },
+    {
+      "date": "2025-10-20",
+      "diesel": {
+        "value_eur_per_l": 1.4741
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4387
+      }
+    },
+    {
+      "date": "2025-10-27",
+      "diesel": {
+        "value_eur_per_l": 1.5326
+      },
+      "petrol": {
+        "value_eur_per_l": 1.453
+      }
+    },
+    {
+      "date": "2025-11-03",
+      "diesel": {
+        "value_eur_per_l": 1.55
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4337
+      }
+    },
+    {
+      "date": "2025-11-10",
+      "diesel": {
+        "value_eur_per_l": 1.5689
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4388
+      }
+    },
+    {
+      "date": "2025-11-17",
+      "diesel": {
+        "value_eur_per_l": 1.5646
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4561
+      }
+    },
+    {
+      "date": "2025-11-24",
+      "diesel": {
+        "value_eur_per_l": 1.6073
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4296
+      }
+    },
+    {
+      "date": "2025-12-01",
+      "diesel": {
+        "value_eur_per_l": 1.5205
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4151
+      }
+    },
+    {
+      "date": "2025-12-08",
+      "diesel": {
+        "value_eur_per_l": 1.4985
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4034
+      }
+    },
+    {
+      "date": "2025-12-15",
+      "diesel": {
+        "value_eur_per_l": 1.5032
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3724
+      }
+    },
+    {
+      "date": "2025-12-22",
+      "diesel": {
+        "value_eur_per_l": 1.4605
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3559
+      }
+    },
+    {
+      "date": "2025-12-29",
+      "diesel": {
+        "value_eur_per_l": 1.4651
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3695
+      }
+    },
+    {
+      "date": "2026-01-05",
+      "diesel": {
+        "value_eur_per_l": 1.4709
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3742
+      }
+    },
+    {
+      "date": "2026-01-12",
+      "diesel": {
+        "value_eur_per_l": 1.4903
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3847
+      }
+    },
+    {
+      "date": "2026-01-19",
+      "diesel": {
+        "value_eur_per_l": 1.5038
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3812
+      }
+    },
+    {
+      "date": "2026-01-26",
+      "diesel": {
+        "value_eur_per_l": 1.5368
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4033
+      }
+    },
+    {
+      "date": "2026-02-02",
+      "diesel": {
+        "value_eur_per_l": 1.53
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4164
+      }
+    },
+    {
+      "date": "2026-02-09",
+      "diesel": {
+        "value_eur_per_l": 1.4973
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3912
+      }
+    },
+    {
+      "date": "2026-02-16",
+      "diesel": {
+        "value_eur_per_l": 1.5296
+      },
+      "petrol": {
+        "value_eur_per_l": 1.422
+      }
+    },
+    {
+      "date": "2026-02-23",
+      "diesel": {
+        "value_eur_per_l": 1.5712
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4335
+      }
+    },
+    {
+      "date": "2026-03-02",
+      "diesel": {
+        "value_eur_per_l": 1.5786
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4366
+      }
+    },
+    {
+      "date": "2026-03-09",
+      "diesel": {
+        "value_eur_per_l": 1.7828
+      },
+      "petrol": {
+        "value_eur_per_l": 1.5115
+      }
+    },
+    {
+      "date": "2026-03-16",
+      "diesel": {
+        "value_eur_per_l": 1.9884
+      },
+      "petrol": {
+        "value_eur_per_l": 1.6545
+      }
+    },
+    {
+      "date": "2026-03-23",
+      "diesel": {
+        "value_eur_per_l": 2.2446
+      },
+      "petrol": {
+        "value_eur_per_l": 1.7749
+      }
+    },
+    {
+      "date": "2026-03-30",
+      "diesel": {
+        "value_eur_per_l": 2.1489
+      },
+      "petrol": {
+        "value_eur_per_l": 1.7115
+      }
+    },
+    {
+      "date": "2026-04-06",
+      "diesel": {
+        "value_eur_per_l": 2.1995
+      },
+      "petrol": {
+        "value_eur_per_l": 1.7472
+      }
+    },
+    {
+      "date": "2026-04-13",
+      "diesel": {
+        "value_eur_per_l": 2.1294
+      },
+      "petrol": {
+        "value_eur_per_l": 1.7123
+      }
+    },
+    {
+      "date": "2026-04-20",
+      "diesel": {
+        "value_eur_per_l": 2.0171
+      },
+      "petrol": {
+        "value_eur_per_l": 1.7162
+      }
+    },
+    {
+      "date": "2026-04-27",
+      "diesel": {
+        "value_eur_per_l": 2.0071
+      },
+      "petrol": {
+        "value_eur_per_l": 1.7599
+      }
+    },
+    {
+      "date": "2026-05-04",
+      "diesel": {
+        "value_eur_per_l": 2.0528
+      },
+      "petrol": {
+        "value_eur_per_l": 1.742
+      }
+    },
+    {
+      "date": "2026-05-11",
+      "diesel": {
+        "value_eur_per_l": 1.8859
+      },
+      "petrol": {
+        "value_eur_per_l": 1.6777
+      }
+    },
+    {
+      "date": "2026-05-18",
+      "diesel": {
+        "value_eur_per_l": 1.8963
+      },
+      "petrol": {
+        "value_eur_per_l": 1.716
+      }
+    },
+    {
+      "date": "2026-05-25",
+      "diesel": {
+        "value_eur_per_l": 1.9419
+      },
+      "petrol": {
+        "value_eur_per_l": 1.7412
+      }
+    },
+    {
+      "date": "2026-06-01",
+      "diesel": {
+        "value_eur_per_l": 1.8197
+      },
+      "petrol": {
+        "value_eur_per_l": 1.6145
+      }
+    },
+    {
+      "date": "2026-06-08",
+      "diesel": {
+        "value_eur_per_l": 1.8471
+      },
+      "petrol": {
+        "value_eur_per_l": 1.5885
+      }
+    },
+    {
+      "date": "2026-06-15",
+      "diesel": {
+        "value_eur_per_l": 1.8214
+      },
+      "petrol": {
+        "value_eur_per_l": 1.6198
+      }
+    },
+    {
+      "date": "2026-06-22",
+      "diesel": {
+        "value_eur_per_l": 1.7019
+      },
+      "petrol": {
+        "value_eur_per_l": 1.5352
+      }
+    },
+    {
+      "date": "2026-06-29",
+      "diesel": {
+        "value_eur_per_l": 1.6839
+      },
+      "petrol": {
+        "value_eur_per_l": 1.5418
+      }
+    },
+    {
+      "date": "2026-07-06",
+      "diesel": {
+        "value_eur_per_l": 1.4765
+      },
+      "petrol": {
+        "value_eur_per_l": 1.329
+      }
+    },
+    {
+      "date": "2026-07-13",
+      "diesel": {
+        "value_eur_per_l": 1.5705
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3818
+      }
+    },
+    {
+      "date": "2026-07-20",
+      "diesel": {
+        "value_eur_per_l": 1.7068
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4391
+      }
+    },
+    {
+      "date": "2026-07-27",
+      "diesel": {
+        "value_eur_per_l": 1.8246
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4546
+      }
+    },
+    {
+      "date": "2026-08-03",
+      "diesel": {
+        "value_eur_per_l": 1.8248
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4525
+      }
+    },
+    {
+      "date": "2026-08-10",
+      "diesel": {
+        "value_eur_per_l": 1.6802
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3076
+      }
+    },
+    {
+      "date": "2026-08-17",
+      "diesel": {
+        "value_eur_per_l": 1.7798
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4082
+      }
+    },
+    {
+      "date": "2026-08-24",
+      "diesel": {
+        "value_eur_per_l": 1.8174
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4352
+      }
+    },
+    {
+      "date": "2026-08-31",
+      "diesel": {
+        "value_eur_per_l": 1.7303
+      },
+      "petrol": {
+        "value_eur_per_l": 1.471
+      }
+    },
+    {
+      "date": "2026-09-07",
+      "diesel": {
+        "value_eur_per_l": 1.904
+      },
+      "petrol": {
+        "value_eur_per_l": 1.5876
+      }
+    },
+    {
+      "date": "2026-09-14",
+      "diesel": {
+        "value_eur_per_l": 1.9809
+      },
+      "petrol": {
+        "value_eur_per_l": 1.5137
+      }
+    },
+    {
+      "date": "2026-09-21",
+      "diesel": {
+        "value_eur_per_l": 2.0902
+      },
+      "petrol": {
+        "value_eur_per_l": 1.5792
+      }
+    },
+    {
+      "date": "2026-09-28",
+      "diesel": {
+        "value_eur_per_l": 2.1352
+      },
+      "petrol": {
+        "value_eur_per_l": 1.5948
+      }
+    },
+    {
+      "date": "2026-10-05",
+      "diesel": {
+        "value_eur_per_l": 2.1179
+      },
+      "petrol": {
+        "value_eur_per_l": 1.5893
+      }
+    },
+    {
+      "date": "2026-10-12",
+      "diesel": {
+        "value_eur_per_l": 2.0497
+      },
+      "petrol": {
+        "value_eur_per_l": 1.6925
+      }
+    },
+    {
+      "date": "2026-10-19",
+      "diesel": {
+        "value_eur_per_l": 2.0403
+      },
+      "petrol": {
+        "value_eur_per_l": 1.6399
+      }
+    },
+    {
+      "date": "2026-10-26",
+      "diesel": {
+        "value_eur_per_l": 2.0373
+      },
+      "petrol": {
+        "value_eur_per_l": 1.5604
+      }
+    },
+    {
+      "date": "2026-11-02",
+      "diesel": {
+        "value_eur_per_l": 2.0607
+      },
+      "petrol": {
+        "value_eur_per_l": 1.555
+      }
+    },
+    {
+      "date": "2026-11-09",
+      "diesel": {
+        "value_eur_per_l": 1.9535
+      },
+      "petrol": {
+        "value_eur_per_l": 1.4368
+      }
+    }
+  ],
+  "petrol": {
+    "date": "2026-11-09",
+    "value_eur_per_l": 1.4368
+  },
+  "diesel": {
+    "date": "2026-11-09",
+    "value_eur_per_l": 1.9535
+  }
+}
