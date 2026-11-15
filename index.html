@@ -7,9 +7,9 @@
   <meta name="description" content="Sverige idag – elpriser, Stockholmsbörsen, bensinestimat, diesel, räntor och inflation på en enda skärm.">
   <title>Sverige idag – Svensk Makropuls</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/styles.css?v=16">
-  <script defer src="./assets/omx.js?v=16"></script>
-  <script defer src="./assets/home.js?v=16"></script>
+  <link rel="stylesheet" href="./assets/styles.css?v=17">
+  <script defer src="./assets/omx.js?v=17"></script>
+  <script defer src="./assets/home.js?v=17"></script>
 </head>
 <body class="home-screen">
 <header class="site-header">
@@ -34,24 +34,16 @@
   </div>
 
   <section class="today-primary" aria-label="Marknad, el och drivmedel">
-    <article class="surface today-box today-exchange today-exchange-v16" aria-labelledby="overviewOmxTitle">
-      <div class="today-box-header omx-heading">
-        <div><span class="today-kicker">BÖRSEN · OMXS30</span><h2 id="overviewOmxTitle">Stockholmsbörsen</h2></div>
-        <span class="today-open omx-link-hint" aria-hidden="true">Se graf <span aria-hidden="true">↗</span></span>
-      </div>
-      <div class="omx-quick-overview">
-        <div class="omx-quick-caption" id="omxQuoteLabel">Senaste notering · dagens utveckling</div>
-        <div class="omx-quick-ticker" id="homeOmxQuote" aria-label="OMXS30, senaste kurs och dagens procentuella förändring via TradingView">
-          <span class="loading-value">Hämtar indexkurs …</span>
+    <a class="surface today-box today-exchange today-exchange-v17" href="./marknader.html#omxs30" aria-label="Visa OMX Stockholm 30 och den stora kursgrafen på Marknader">
+      <div class="omx-snapshot">
+        <span class="omx-snapshot-flag" aria-hidden="true">🇸🇪</span>
+        <div class="omx-snapshot-content">
+          <h2>OMX Stockholm 30</h2>
+          <p id="homeOmxStatusLine" aria-live="polite">Kontrollerar börsens öppettider …</p>
         </div>
-        <div class="omx-market-line" aria-live="polite">
-          <span class="omx-market-status" id="omxMarketStatus" data-state="unknown"><span class="omx-market-dot" aria-hidden="true"></span><span id="omxMarketStatusText">Kontrollerar …</span></span>
-          <span class="omx-market-next" id="omxMarketDetail">Nasdaq Stockholm · svensk tid</span>
-        </div>
+        <span class="omx-snapshot-change" id="homeOmxChange" data-trend="unknown" aria-label="Senaste dagsförändringen är ännu inte tillgänglig">—</span>
       </div>
-      <div class="today-source omx-source">Källa: <a class="omx-tv-source-link" href="https://www.tradingview.com/symbols/OMXSTO-OMXS30/" target="_blank" rel="noopener noreferrer">TradingView</a> · kursen kan vara fördröjd</div>
-      <a class="omx-card-hit" href="./marknader.html#omxs30" aria-label="Öppna den stora, interaktiva OMX30-grafen på Marknader"><span class="sr-only">Visa OMX30-grafen på Marknader</span></a>
-    </article>
+    </a>
 
     <article class="surface today-box today-electricity">
       <div class="today-box-header"><div><span class="today-kicker">ELPRISER</span><h2>El just nu</h2></div><div class="power-header-controls"><div class="vat-toggle" role="group" aria-label="Visa elpris med eller utan moms"><button type="button" data-vat="incl" aria-pressed="true">Inkl.</button><button type="button" data-vat="excl" aria-pressed="false">Exkl.</button></div><a class="today-open" href="./ravaror.html" aria-label="Visa alla elpriser">Mer <span aria-hidden="true">↗</span></a></div></div>
