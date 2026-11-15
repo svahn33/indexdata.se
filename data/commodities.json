@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T16:25:11+00:00",
+  "generated_at": "2026-11-15T22:52:03+00:00",
   "history": {
     "aluminum": [
       {
@@ -8361,43 +8361,43 @@
     },
     "power_se1": {
       "date": "2026-11-15",
-      "end": "2026-11-15T17:30:00+01:00",
+      "end": "2026-11-16T00:00:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-15T17:15:00+01:00",
+      "start": "2026-11-15T23:45:00+01:00",
       "unit": "öre/kWh",
-      "value": 14.506,
-      "value_vat": 18.133
+      "value": 16.861,
+      "value_vat": 21.076
     },
     "power_se2": {
       "date": "2026-11-15",
-      "end": "2026-11-15T17:30:00+01:00",
+      "end": "2026-11-16T00:00:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-15T17:15:00+01:00",
+      "start": "2026-11-15T23:45:00+01:00",
       "unit": "öre/kWh",
-      "value": 13.129,
-      "value_vat": 16.411
+      "value": 16.65,
+      "value_vat": 20.813
     },
     "power_se3": {
       "date": "2026-11-15",
-      "end": "2026-11-15T17:30:00+01:00",
+      "end": "2026-11-16T00:00:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-15T17:15:00+01:00",
+      "start": "2026-11-15T23:45:00+01:00",
       "unit": "öre/kWh",
-      "value": 116.495,
-      "value_vat": 145.619
+      "value": 73.243,
+      "value_vat": 91.554
     },
     "power_se4": {
       "date": "2026-11-15",
-      "end": "2026-11-15T17:30:00+01:00",
+      "end": "2026-11-16T00:00:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-15T17:15:00+01:00",
+      "start": "2026-11-15T23:45:00+01:00",
       "unit": "öre/kWh",
-      "value": 195.348,
-      "value_vat": 244.185
+      "value": 116.395,
+      "value_vat": 145.494
     },
     "silver": {
       "date": "2026-10-01",
@@ -8431,19 +8431,19 @@
   "sources": {
     "eia": {
       "count": 3,
-      "last_success": "2026-11-15T16:25:11+00:00",
+      "last_success": "2026-11-15T22:52:03+00:00",
       "message": "Alla tillgängliga serier uppdaterades",
       "status": "ok"
     },
     "power": {
       "count": 4,
-      "last_success": "2026-11-15T16:25:11+00:00",
+      "last_success": "2026-11-15T22:52:03+00:00",
       "message": "Alla tillgängliga serier uppdaterades",
       "status": "ok"
     },
     "worldbank": {
       "count": 7,
-      "last_success": "2026-11-15T16:25:11+00:00",
+      "last_success": "2026-11-15T22:52:03+00:00",
       "message": "Alla tillgängliga serier uppdaterades",
       "status": "ok"
     }
