@@ -234,6 +234,61 @@ def get_scb(client, result):
     return count, errors
 
 
+def normalize_omxs30_chart(payload, now=None):
+    """Validate a current-day or recent close quote with previous-close comparison.
+
+    The external response is optional: failing it never fabricates a percent.
+    """
+    now = now or datetime.now(timezone.utc)
+    entries = payload.get('chart', {}).get('result') if isinstance(payload, dict) else None
+    if not isinstance(entries, list) or not entries or not isinstance(entries[0], dict):
+        raise ValueError('OMXS30 quote response missing chart result')
+    result = entries[0]
+    meta = result.get('meta') or {}
+    if str(meta.get('symbol','')).upper() not in ('^OMXS30', '^OMX'):
+        raise ValueError('OMXS30 unexpected symbol')
+    current = to_float(meta.get('regularMarketPrice'))
+    previous = to_float(meta.get('previousClose'))
+    if previous is None:
+        # chartPreviousClose is not always yesterday when range spans several days.
+        quotes=(result.get('indicators') or {}).get('quote') or []
+        closes=[to_float(x) for x in (quotes[0].get('close') or [])] if quotes else []
+        closes=[x for x in closes if x is not None]
+        if len(closes)>=2:
+            previous=closes[-2]
+    try: timestamp=int(meta.get('regularMarketTime'))
+    except (TypeError,ValueError):timestamp=0
+    stamp=datetime.fromtimestamp(timestamp, timezone.utc)
+    if not (current and previous and 300 < current < 20000 and 300 < previous < 20000):
+        raise ValueError('OMXS30 invalid current or previous close')
+    if stamp > now+timedelta(hours=1) or now-stamp > timedelta(days=8):
+        raise ValueError('OMXS30 quote is stale')
+    change=(current/previous-1)*100
+    if not math.isfinite(change) or abs(change)>=50:
+        raise ValueError('OMXS30 implausible daily change')
+    return {'price':round(current,2),'previous_close':round(previous,2),
+            'change_percent':round(change,4),'price_time':stamp.isoformat(timespec='seconds'),
+            'source':'Yahoo Finance (fördröjd notering)'}
+
+
+def update_omxs30(client, result):
+    # Avsiktligt bästa-försök: ett externt quote-API kan begränsa anrop.
+    # Om det fallerar sparas senast giltigt resultat med ursprunglig tidsstämpel.
+    url='https://query1.finance.yahoo.com/v8/finance/chart/%5EOMXS30?range=5d&interval=1d'
+    try:
+        # Optional quote feed: do not let a rate limit delay every other official source.
+        request=Request(url, headers={'Accept':'application/json',
+            'User-Agent':'Mozilla/5.0 (compatible; Indexdata/1.0)'})
+        with urlopen(request,timeout=8) as response:
+            payload=json.loads(response.read(500_000))
+        quote=normalize_omxs30_chart(payload)
+        result['omxs30']=quote
+        return 1, []
+    except Exception as exc:
+        LOG.warning('OMXS30 quote unavailable: %s',exc)
+        return 0, [f'OMXS30: {str(exc)[:100]}']
+
+
 def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
     if OUTPUT.exists():
@@ -245,7 +300,7 @@ def main():
     result.setdefault('sources', {})
     result['generated_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds')
     client = RateLimitedClient(min_interval=float(os.environ.get('RIKSBANK_INTERVAL_SECONDS', '13')))
-    for source, func in [('riksbank', get_riksbank), ('scb', get_scb)]:
+    for source, func in [('riksbank', get_riksbank), ('scb', get_scb), ('omxs30', update_omxs30)]:
         count, errors = func(client, result)
         old = result['sources'].get(source, {})
         result['sources'][source] = {
