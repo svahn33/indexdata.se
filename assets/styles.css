@@ -435,3 +435,28 @@ h1,h2,.brand-wordmark,.market-link-name,.kpi-value,.rate-value,.fx-price,.inflat
 @media(max-width:620px){.today-primary>.today-exchange-v16{height:205px;min-height:205px}.omx-quick-ticker{height:73px;min-height:65px}.market-omx-header{flex-direction:column;gap:10px}.market-omx-right{align-items:flex-start;margin-top:0;flex-direction:row;flex-wrap:wrap;gap:9px}.market-omx-graph{height:390px;min-height:390px}.market-omx-feature{margin-bottom:15px}.market-omx-periods{justify-content:flex-start;gap:0}.market-omx-periods button{padding:11px 9px;font-size:11px}}
 
 .today-exchange-v16 .omx-tv-source-link{position:relative;z-index:8;text-decoration:underline;text-decoration-color:#b6c7bf;text-underline-offset:2px}
+
+
+/* INDEXDATA v17 – avskalad OMX30-ruta: titel, börsstatus/nästa öppning och dagsförändring. */
+.today-exchange-v17{display:flex;justify-content:center;position:relative;min-width:0;color:var(--text);text-decoration:none;
+  border-color:#e1e4e4;transition:box-shadow .17s ease,border-color .17s ease}
+.today-exchange-v17:hover{border-color:#b1c6bd;box-shadow:0 5px 16px rgba(18,63,54,.09)}
+.today-exchange-v17:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.omx-snapshot{display:flex;align-items:center;gap:9px;min-width:0;width:100%}
+.omx-snapshot-flag{font-size:24px;line-height:1;flex:none}
+.omx-snapshot-content{min-width:0;flex:1}
+.today-exchange-v17 .omx-snapshot-content h2{font:700 clamp(16px,1.7vw,23px)/1.2 'Manrope','DM Sans',sans-serif;
+  letter-spacing:-.5px;color:var(--text);margin:0 0 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.omx-snapshot-content p{font-size:clamp(11px,1.1vw,14px);font-weight:550;color:#737b7b;margin:0;line-height:1.35}
+.omx-snapshot-change{display:inline-flex;align-items:center;justify-content:center;flex:none;min-width:68px;
+  padding:9px 10px;border-radius:10px;font-size:clamp(15px,1.6vw,20px);line-height:1;font-weight:800;
+  font-variant-numeric:tabular-nums;background:#f0f1f0;color:#63716b;white-space:nowrap}
+.omx-snapshot-change[data-trend="up"]{background:#e4f5ea;color:#138343}
+.omx-snapshot-change[data-trend="down"]{background:#fde8ed;color:#d71949}
+.omx-snapshot-change[data-trend="flat"]{background:#eef3f1;color:#526e60}
+@media(max-width:620px){.today-primary>.today-exchange-v17{height:124px;min-height:124px}
+ .omx-snapshot-flag{font-size:22px}.omx-snapshot{gap:7px}
+ .today-exchange-v17 .omx-snapshot-content h2{font-size:17px}
+ .omx-snapshot-content p{font-size:11px}
+ .omx-snapshot-change{padding:8px;font-size:17px;min-width:62px}}
+@media(max-width:360px){.omx-snapshot-content p{font-size:10px}.omx-snapshot-flag{font-size:19px}}

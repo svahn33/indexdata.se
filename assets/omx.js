@@ -1,5 +1,5 @@
-/* Indexdata v16: Nasdaq Stockholm-kalender och OMXS30-widgetar.
-   Indexpriserna återges av TradingView. Inga kurser eller procentsatser skapas här. */
+/* Indexdata v17: Nasdaq Stockholm-kalender och stor OMX30-graf på Marknader.
+   Översiktens procenttal läses från data/market.json, TradingView visar grafen. */
 (()=>{
 'use strict';
 const $=id=>document.getElementById(id);
@@ -34,34 +34,41 @@ function nextOpen(date){
     // Mitt på dagen UTC för att inte påverkas av omställning mellan vinter-/sommartid.
     const day=new Date(Date.UTC(p.year,p.month-1,p.day+i,12));
     const s=schedule(day);
+    if(!s.verified)return 'Nästa öppningstid ej fastställd';
     if(s.closed)continue;
     if(i===0&&p.minutes>=540)continue;
     const weekday=day.toLocaleDateString('sv-SE',{weekday:'long',timeZone:'Europe/Stockholm'});
     if(i===0)return 'Öppnar idag 09:00';
+    if(i===1&&new Date(Date.UTC(p.year,p.month-1,p.day)).getUTCDay()!==0)return 'Öppnar imorgon 09:00';
     return 'Öppnar '+weekday+' 09:00';
   }
   return 'Nästa öppningstid ej fastställd';
 }
 function updateStatus(now=new Date()){
   const state=schedule(now);
-  const statusText=state.open?'Öppen':'Stängd';
+  const statusText=!state.verified?'Status okänd':state.open?'Öppen':'Stängd';
   const detail=state.open?(state.halfDay?'Stänger idag 13:00':'Stänger idag 17:30'):nextOpen(now);
+  const homeStatus=$('homeOmxStatusLine');
+  if(homeStatus){
+    // Visa en enda tydlig mening. Klockslag och veckodagar anges i svensk tid.
+    const opening=nextOpen(now).replace(/^Öppnar /,'');
+    let next='';
+    if(opening.startsWith('idag '))next='Öppnar igen idag '+opening.slice(5);
+    else if(opening.startsWith('imorgon '))next='Öppnar igen imorgon '+opening.slice(8);
+    else if(opening.startsWith('Nästa '))next=opening;
+    else next='Öppnar igen på '+opening;
+    homeStatus.textContent=!state.verified?'Börsens öppettider behöver uppdateras':state.open?'Börsen öppen':`Börsen stängd. ${next}`;
+  }
   for(const cfg of [
     ['omxMarketStatus','omxMarketStatusText','omxMarketDetail'],
     ['marketOmxStatus','marketOmxStatusText','marketOmxDetail']
   ]){
     const badge=$(cfg[0]);if(!badge)continue;
-    badge.dataset.state=state.open?'open':'closed';
+    badge.dataset.state=!state.verified?'unknown':state.open?'open':'closed';
     const text=$(cfg[1]),sub=$(cfg[2]);
     if(text)text.textContent=statusText;
     if(sub)sub.textContent=detail;
     badge.title='Schemalagd handelsstatus enligt Nasdaq Stockholm. Handelsstopp kan förekomma.';
-  }
-  const label=$('omxQuoteLabel');
-  if(label){
-    // Eftersom noteringar kan ha fördröjning lovar vi inte ett fastställt stängningsvärde direkt kl. 17.30.
-    label.textContent=state.open?'Senaste notering · dagens utveckling':
-      'Senaste stängningsnotering · dagens förändring';
   }
   return {state,detail};
 }
@@ -75,11 +82,6 @@ function widget(hostId,url,config){
     host.innerHTML='<span class="widget-placeholder">Kursdata kunde inte hämtas. Försök igen senare.</span>';
   });
   wrap.append(body,script);host.replaceChildren(wrap);
-}
-function quote(){
-  widget('homeOmxQuote','https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js',{
-    symbol:'OMXSTO:OMXS30',width:'100%',locale:'sv',colorTheme:'light',isTransparent:true
-  });
 }
 function chart(period){
   if(!PERIODS.has(period))return;
@@ -105,10 +107,9 @@ function chart(period){
   });
 }
 function init(){
-  const hasHome=Boolean($('homeOmxQuote')),hasMarket=Boolean($('marketOmxChart'));
+  const hasHome=Boolean($('homeOmxStatusLine')),hasMarket=Boolean($('marketOmxChart'));
   if(!hasHome&&!hasMarket)return;
   updateStatus();setInterval(updateStatus,30000);
-  if(hasHome)quote();
   if(hasMarket){
     document.querySelectorAll('[data-omx-market-period]').forEach(button=>{
       button.addEventListener('click',()=>chart(button.dataset.omxMarketPeriod));

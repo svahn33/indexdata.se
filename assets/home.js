@@ -35,7 +35,51 @@ function setupVatToggle(){
   applyVatButtons();
 }
 
+function paintOmxChange(){
+  const el=$('homeOmxChange');
+  if(!el)return;
+  const q=market?.omxs30;
+  const now=Date.now();
+  const timestamp=Date.parse(q?.price_time||'');
+  const value=q?.change_percent;
+  // Data måste ha en faktisk tidsstämpel; visa aldrig gamla siffror som om de vore dagens.
+  const valid=isNum(value)&&Math.abs(value)<50&&Number.isFinite(timestamp)&&
+    timestamp<=now+3600000&&now-timestamp<8*86400000;
+  const dateInStockholm=stamp=>new Intl.DateTimeFormat('sv-SE',{
+    year:'numeric',month:'2-digit',day:'2-digit',timeZone:'Europe/Stockholm'
+  }).format(new Date(stamp));
+  // Använd endast procentförändringen för den senaste påbörjade handelsdagen.
+  // Under helger och på morgonen före öppning gäller senaste föregående handelsdag.
+  let expectedSession=null;
+  const omx=window.IndexdataOmx;
+  if(typeof omx?.schedule==='function'){
+    const current=omx.schedule(new Date());
+    if(current.verified){
+      if(!current.closed&&current.parts.minutes>=540){
+        expectedSession=dateInStockholm(now);
+      }else{
+        const p=current.parts;
+        for(let i=1;i<12;i++){
+          const d=new Date(Date.UTC(p.year,p.month-1,p.day-i,12));
+          const day=omx.schedule(d);
+          if(!day.verified)break;
+          if(!day.closed){expectedSession=dateInStockholm(d);break;}
+        }
+      }
+    }
+  }
+  const good=valid&&expectedSession!==null&&dateInStockholm(timestamp)===expectedSession;
+  el.dataset.trend=good?(value>0.004?'up':value<-.004?'down':'flat'):'unknown';
+  const number=good?Math.abs(value).toLocaleString('sv-SE',{
+    minimumFractionDigits:2,maximumFractionDigits:2}):null;
+  el.textContent=number===null?'—':(value>0.004?'+':value<-.004?'−':'')+number+'%';
+  el.setAttribute('aria-label',good?`Senaste handelsdagens förändring ${el.textContent}. Källa: ${q.source||'marknadsdata'}`:
+    'Börsförändringen är tillfälligt otillgänglig');
+  el.title=good?'Senaste tillgängliga dagsförändringen · data kan vara fördröjda':'Dagsförändring saknas';
+}
+
 function paintMarket(){
+  paintOmxChange();
   set('homePolicy',quoteText(market,'SECBREPOEFF',2,' %'));
   set('homeTenYear',quoteText(market,'SEGVB10YC',2,' %'));
   set('homeUSD',quoteText(market,'SEKUSDPMI',2));
@@ -170,5 +214,6 @@ loadPowerLive();
 setInterval(paintPower,60000);
 setInterval(loadPowerLive,15*60000);
 setInterval(readStatic,60*60000);
+setInterval(paintOmxChange,30000);
 requestAnimationFrame(marketWidgets);
 })();
