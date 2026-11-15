@@ -460,3 +460,66 @@ h1,h2,.brand-wordmark,.market-link-name,.kpi-value,.rate-value,.fx-price,.inflat
  .omx-snapshot-content p{font-size:11px}
  .omx-snapshot-change{padding:8px;font-size:17px;min-width:62px}}
 @media(max-width:360px){.omx-snapshot-content p{font-size:10px}.omx-snapshot-flag{font-size:19px}}
+
+/* INDEXDATA v18 – godkänd börsruta. Ingen flagga, ingen stängningskurs:
+   rubrik överst, stor upp-/nedgång i mitten, börsstatus längst ned. */
+.today-exchange-v18{
+  display:block;
+  padding:20px 21px 17px;
+  border-color:#b8d1c6;
+  color:var(--text);
+  text-decoration:none;
+  transition:border-color .18s ease,box-shadow .18s ease;
+}
+.today-exchange-v18:hover{
+  border-color:#8db4a3;
+  box-shadow:0 5px 18px rgba(18,63,54,.09);
+}
+.today-exchange-v18:focus-visible{
+  outline:3px solid var(--orange);
+  outline-offset:3px;
+}
+.omx-brief{display:flex;flex-direction:column;align-items:stretch;width:100%;height:100%;min-width:0;min-height:0}
+.today-exchange-v18 h2.omx-brief-title{
+  margin:0;
+  color:var(--deep-green);
+  font-family:'Manrope','DM Sans',sans-serif;
+  font-size:clamp(17px,1.75vw,23px);
+  font-weight:800;
+  letter-spacing:-.65px;
+  line-height:1.2;
+}
+.omx-brief-main{display:flex;align-items:center;justify-content:flex-start;flex:1;min-height:0;padding:6px 0}
+.today-exchange-v18 .omx-snapshot-change{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:max-content;max-width:100%;min-width:0;
+  padding:9px 16px 11px;
+  border-radius:13px;
+  background:#f0f1f0;
+  color:#687771;
+  font-family:'Manrope','DM Sans',sans-serif;
+  font-size:clamp(35px,3.5vw,52px);
+  font-weight:800;
+  letter-spacing:-2.2px;
+  line-height:1.08;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+.today-exchange-v18 .omx-snapshot-change[data-trend="up"]{background:#e4f5ea;color:#138343}
+.today-exchange-v18 .omx-snapshot-change[data-trend="down"]{background:#fde8ed;color:#d71949}
+.today-exchange-v18 .omx-snapshot-change[data-trend="flat"]{background:#eef3f1;color:#526e60}
+.omx-brief-footer{width:100%;border-top:1px solid #dbe7e1;padding-top:11px}
+.omx-brief-footer p{font-size:clamp(11px,1.02vw,13px);line-height:1.5;font-weight:600;color:#637470;margin:0}
+@media(max-width:620px){
+  .today-primary>.today-exchange-v18{height:172px;min-height:172px}
+  .today-exchange-v18{padding:17px 18px 14px}
+  .today-exchange-v18 h2.omx-brief-title{font-size:19px}
+  .today-exchange-v18 .omx-snapshot-change{font-size:41px;padding:8px 15px 10px;letter-spacing:-1.5px}
+  .omx-brief-footer{padding-top:9px}
+  .omx-brief-footer p{font-size:12px;line-height:1.4}
+}
+@media(max-width:360px){
+  .today-exchange-v18 h2.omx-brief-title{font-size:18px}
+  .today-exchange-v18 .omx-snapshot-change{font-size:37px}
+}
+@media(prefers-reduced-motion:reduce){.today-exchange-v18{transition:none}}
