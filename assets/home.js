@@ -150,12 +150,96 @@ function addWidget(targetId,src,config){
   script.addEventListener('error',()=>{host.innerHTML='<span class="loading-value">Marknadsdata är tillfälligt otillgänglig</span>';});
   wrap.append(inner,script);host.replaceChildren(wrap);
 }
-function marketWidgets(){
-  addWidget('homeOmxWidget','https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js',{
-    symbol:'OMXSTO:OMXS30',width:'100%',height:'100%',locale:'sv',dateRange:'1D',colorTheme:'light',
-    isTransparent:true,autosize:true,noTimeScale:true,
-    trendLineColor:'rgba(252,89,31,1)',underLineColor:'rgba(252,89,31,.14)',underLineBottomColor:'rgba(252,89,31,0)'
+// Schemalagda handelsdagar för aktier, enligt Nasdaq Stockholm (2026–2027).
+// Statusen är kalenderbaserad; oförutsedda handelsstopp kan inte avläsas här.
+const OMX_CLOSED={
+  2026:new Set(['01-01','01-06','04-03','04-06','05-01','05-14','06-19','12-24','12-25','12-31']),
+  2027:new Set(['01-01','01-06','03-26','03-29','05-06','06-25','12-24','12-31'])
+};
+const OMX_HALF_DAYS={
+  2026:new Set(['01-05','04-02','04-30','05-13','10-30']),
+  2027:new Set(['01-05','03-25','04-30','05-05','11-05'])
+};
+const OMX_RANGES={
+  '1D':'1D','1W':'1W','1M':'1M','3M':'3M','YTD':'YTD','12M':'12M','60M':'60M'
+};
+let currentOmxRange='1D';
+function stockParts(date){
+  const parts=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{
+    year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',
+    hourCycle:'h23',timeZone:'Europe/Stockholm'
+  }).formatToParts(date).map(x=>[x.type,x.value]));
+  return {year:Number(parts.year),month:Number(parts.month),day:Number(parts.day),
+    time:Number(parts.hour)*60+Number(parts.minute)};
+}
+function omxSchedule(date){
+  const p=stockParts(date);
+  const dayOfWeek=new Date(Date.UTC(p.year,p.month-1,p.day)).getUTCDay();
+  const key=String(p.month).padStart(2,'0')+'-'+String(p.day).padStart(2,'0');
+  const closed=dayOfWeek===0||dayOfWeek===6||Boolean(OMX_CLOSED[p.year]?.has(key));
+  const halfDay=Boolean(OMX_HALF_DAYS[p.year]?.has(key));
+  const end=halfDay?13*60:17*60+30;
+  const open=!closed&&p.time>=9*60&&p.time<end;
+  return {open,closed,halfDay,end,parts:p,calendarVerified:!!OMX_CLOSED[p.year]};
+}
+function omxNextOpen(date){
+  // Datumräkning i UTC mitt på dagen undviker övergången sommartid/vintertid.
+  const p=stockParts(date);
+  for(let i=0;i<15;i++){
+    const probe=new Date(Date.UTC(p.year,p.month-1,p.day+i,12));
+    const s=omxSchedule(probe);
+    if(!s.closed&&(i>0||p.time<s.end)){
+      if(i===0&&p.time<9*60)return 'Öppnar 09.00';
+      if(i===0)return 'Handel till '+(s.halfDay?'13.00':'17.30');
+      const day=probe.toLocaleDateString('sv-SE',{weekday:'long',timeZone:'Europe/Stockholm'});
+      return 'Öppnar '+day+' 09.00';
+    }
+  }
+  return 'Handel normalt 09.00–17.30';
+}
+function updateOmxStatus(now=new Date()){
+  const el=$('omxMarketStatus'); if(!el)return;
+  const status=omxSchedule(now);
+  el.dataset.state=status.open?'open':'closed';
+  set('omxMarketStatusText',status.open?'Öppen':'Stängd');
+  const detail=status.open?(status.halfDay?'Halvdag · stänger 13.00':'Stänger 17.30'):omxNextOpen(now);
+  set('omxMarketDetail',detail+' · Nasdaq Stockholm');
+  el.title='Schemalagd handelsstatus enligt Nasdaq Stockholm. Inte en livekontroll av handelsstopp.';
+  return status;
+}
+function omxWidgetConfig(range){
+  // Pris och procentuell förändring färgsätts av TradingView: grönt upp, rött ned.
+  return {
+    symbols:[['OMXS30','OMXSTO:OMXS30|'+OMX_RANGES[range]]],
+    chartOnly:false,width:'100%',height:'100%',autosize:true,locale:'sv',
+    colorTheme:'light',isTransparent:true,backgroundColor:'#fffdf9',
+    widgetFontColor:'#123F36',fontColor:'#6d756f',gridLineColor:'rgba(18,63,54,0.055)',
+    chartType:'area',lineType:0,lineWidth:2,lineColor:'#2A6B5C',
+    topColor:'rgba(42,107,92,0.20)',bottomColor:'rgba(42,107,92,0.015)',
+    upColor:'#238553',downColor:'#BF3B49',borderUpColor:'#238553',borderDownColor:'#BF3B49',
+    hideDateRanges:true,hideMarketStatus:true,hideSymbolLogo:true,noTimeScale:true,
+    showVolume:false,showMA:false,valuesTracking:'1',changeMode:'price-and-percent',
+    scalePosition:'right',fontSize:'10',headerFontSize:'small'
+  };
+}
+function renderOmxWidget(range){
+  if(!Object.prototype.hasOwnProperty.call(OMX_RANGES,range))return;
+  currentOmxRange=range;
+  document.querySelectorAll('button[data-omx-period]').forEach(btn=>{
+    btn.setAttribute('aria-pressed',String(btn.dataset.omxPeriod===range));
   });
+  addWidget('homeOmxWidget','https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js',omxWidgetConfig(range));
+}
+function initOmxWidget(){
+  document.querySelectorAll('button[data-omx-period]').forEach(btn=>{
+    btn.addEventListener('click',()=>renderOmxWidget(btn.dataset.omxPeriod));
+  });
+  updateOmxStatus();
+  setInterval(updateOmxStatus,30000);
+  renderOmxWidget(currentOmxRange);
+}
+function marketWidgets(){
+  initOmxWidget();
   addWidget('homeCompactTicker','https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js',{
     symbols:[
       {proName:'OMXSTO:OMXS30',title:'OMXS30'},

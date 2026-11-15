@@ -368,3 +368,34 @@ h1,h2,.brand-wordmark,.market-link-name,.kpi-value,.rate-value,.fx-price,.inflat
 .fuel-type-tabs button[aria-pressed="true"]{background:var(--deep-green);color:white;box-shadow:0 2px 6px #0002}
 @media(max-width:620px){.today-electricity .power-header-controls{gap:6px}.today-electricity .today-open{font-size:10px}.vat-toggle button{padding:6px 7px}.power-source-controls{justify-content:flex-start}}
 @media(max-width:390px){.today-electricity .today-box-header{gap:5px}.today-electricity .power-header-controls{gap:4px}.today-electricity .vat-toggle button{padding:5px;font-size:9px}}
+
+
+/* INDEXDATA v15 – OMXS30: tidsperioder, kalenderstatus och grön kursgraf */
+.today-exchange .omx-heading{margin-bottom:7px;gap:7px}
+.omx-heading-right{display:flex;gap:9px;align-items:center;flex-shrink:0;padding-top:2px}
+.omx-heading-right .today-open{padding-top:0}
+.omx-market-status{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:4px 8px;
+  background:#f0efe8;color:#62706b;font-size:10px;font-weight:800;white-space:nowrap;border:1px solid #e5e0d6}
+.omx-market-dot{display:block;width:6px;height:6px;border-radius:50%;background:#86918c;flex:none}
+.omx-market-status[data-state="open"]{background:#e8f3eb;border-color:#cfe4d4;color:#1c7045}
+.omx-market-status[data-state="open"] .omx-market-dot{background:#238553}
+.omx-market-status[data-state="closed"]{background:#f3ece7;border-color:#e5d9d0;color:#8a5d50}
+.omx-market-status[data-state="closed"] .omx-market-dot{background:#ad7967}
+.omx-periods{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;margin:0 0 3px;
+  background:#f1ebde;padding:2px;border-radius:8px;flex-shrink:0}
+.omx-periods button{border:0;border-radius:6px;background:transparent;color:#5a726a;font-weight:800;font-size:10px;line-height:1.1;
+  padding:6px 0;min-width:0;white-space:nowrap}
+.omx-periods button[aria-pressed="true"]{background:#123F36;color:#fff;box-shadow:0 1px 3px #0002}
+.omx-periods button:hover:not([aria-pressed="true"]){color:#123F36;background:#e3d9c9}
+.omx-periods button:focus-visible{outline:2px solid #C49A45;outline-offset:1px}
+.today-exchange .omx-widget{flex:1;height:auto;min-height:110px;margin-top:0;overflow:hidden}
+.today-exchange .omx-source{display:flex;justify-content:space-between;gap:5px;padding-top:4px;align-items:center;
+ font-size:9px;line-height:1.2}
+.today-exchange .omx-source span:first-child{max-width:63%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.today-exchange .omx-source span:last-child{white-space:nowrap}
+@media(max-width:1050px){.today-primary>.today-exchange{min-height:260px}}
+@media(max-width:620px){.today-primary>.today-exchange{height:267px;min-height:267px}
+  .omx-heading-right{gap:7px}.omx-market-status{padding:4px 7px;font-size:10px}
+  .omx-periods button{font-size:11px;padding:8px 0}.today-exchange .omx-source{font-size:9px}}
+@media(max-width:390px){.omx-heading-right{gap:4px}.omx-market-status{padding:3px 5px;font-size:9px}
+  .today-exchange .omx-source span:last-child{font-size:8px}}
