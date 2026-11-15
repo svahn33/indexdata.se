@@ -8,8 +8,9 @@
 <meta content="#ffffff" name="theme-color"/>
 <title>Marknader – Svensk Makropuls</title>
 <link href="./assets/favicon.svg" rel="icon" type="image/svg+xml"/>
-<link href="./assets/styles.css?v=6" rel="stylesheet"/>
-<script defer="" src="./assets/app.js?v=6"></script>
+<link href="./assets/styles.css?v=16" rel="stylesheet"/>
+<script defer src="./assets/app.js?v=6"></script>
+<script defer src="./assets/omx.js?v=16"></script>
 </head>
 <body>
 <header class="site-header">
@@ -35,8 +36,41 @@
 
 <!-- MARKNADER -->
 <section aria-labelledby="marketTitle" class="current-page" id="marknader">
-<div class="page-heading"><div><div class="overline">FINANSMARKNADER</div><h1 id="marketTitle">Marknader</h1><p>Börsindex, råvaror och valutor – direkt på sidan.</p></div></div>
+<div class="page-heading"><div><div class="overline">FINANSMARKNADER</div><h1 id="marketTitle">Marknader</h1><p>Följ OMXS30 med en stor interaktiv graf. Utforska sedan övriga index och marknadskurser.</p></div></div>
 
+
+<section class="surface market-omx-feature" id="omxs30" aria-labelledby="marketOmxTitle">
+  <div class="market-omx-header">
+    <div>
+      <div class="overline">STOCKHOLMSBÖRSEN · NASDAQ STOCKHOLM</div>
+      <h2 id="marketOmxTitle">OMX Stockholm 30</h2>
+      <p>OMXS30 · Index över 30 av de mest omsatta aktierna på Stockholmsbörsen</p>
+    </div>
+    <div class="market-omx-right" aria-live="polite">
+      <span class="omx-market-status" id="marketOmxStatus" data-state="unknown"><span class="omx-market-dot" aria-hidden="true"></span><span id="marketOmxStatusText">Kontrollerar …</span></span>
+      <span class="market-omx-hours" id="marketOmxDetail">Svensk börstid</span>
+    </div>
+  </div>
+  <div class="market-omx-graph" id="marketOmxChart" aria-label="Interaktivt diagram med senaste OMXS30-kursen och historisk kursutveckling">
+    <div class="widget-placeholder">Hämtar OMX Stockholm 30 …</div>
+  </div>
+  <div class="market-omx-periods" role="group" aria-label="Välj tidsperiod för OMX30-grafen">
+    <button type="button" data-omx-market-period="1D" aria-pressed="true">1 dag</button>
+    <button type="button" data-omx-market-period="1W" aria-pressed="false">1 vecka</button>
+    <button type="button" data-omx-market-period="1M" aria-pressed="false">1 mån</button>
+    <button type="button" data-omx-market-period="3M" aria-pressed="false">3 mån</button>
+    <button type="button" data-omx-market-period="6M" aria-pressed="false">6 mån</button>
+    <button type="button" data-omx-market-period="YTD" aria-pressed="false">I år</button>
+    <button type="button" data-omx-market-period="12M" aria-pressed="false">1 år</button>
+    <button type="button" data-omx-market-period="36M" aria-pressed="false">3 år</button>
+    <button type="button" data-omx-market-period="60M" aria-pressed="false">5 år</button>
+    <button type="button" data-omx-market-period="ALL" aria-pressed="false">Max</button>
+  </div>
+  <div class="market-omx-footer">
+    <span>Grön kursgraf · rött vid nedgång och grönt vid uppgång i kursfältet</span>
+    <span>TradingView · data kan vara fördröjd · inte investeringsrådgivning</span>
+  </div>
+</section>
 
 <section aria-labelledby="marketTickerTitle" class="surface market-strip market-strip-detail">
   <div class="block-head"><h2 id="marketTickerTitle">Marknadspuls</h2><span class="quotes-label">Löpande noteringar</span></div>

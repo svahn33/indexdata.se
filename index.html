@@ -7,8 +7,9 @@
   <meta name="description" content="Sverige idag – elpriser, Stockholmsbörsen, bensinestimat, diesel, räntor och inflation på en enda skärm.">
   <title>Sverige idag – Svensk Makropuls</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/styles.css?v=15">
-  <script defer src="./assets/home.js?v=15"></script>
+  <link rel="stylesheet" href="./assets/styles.css?v=16">
+  <script defer src="./assets/omx.js?v=16"></script>
+  <script defer src="./assets/home.js?v=16"></script>
 </head>
 <body class="home-screen">
 <header class="site-header">
@@ -33,22 +34,23 @@
   </div>
 
   <section class="today-primary" aria-label="Marknad, el och drivmedel">
-    <article class="surface today-box today-exchange">
+    <article class="surface today-box today-exchange today-exchange-v16" aria-labelledby="overviewOmxTitle">
       <div class="today-box-header omx-heading">
-        <div><span class="today-kicker">BÖRSEN · OMXS30</span><h2>Stockholmsbörsen</h2></div>
-        <div class="omx-heading-right"><span class="omx-market-status" id="omxMarketStatus" data-state="unknown" aria-live="polite"><span class="omx-market-dot" aria-hidden="true"></span><span id="omxMarketStatusText">Kontrollerar …</span></span><a class="today-open" href="./marknader.html" aria-label="Visa alla marknader">Mer <span aria-hidden="true">↗</span></a></div>
+        <div><span class="today-kicker">BÖRSEN · OMXS30</span><h2 id="overviewOmxTitle">Stockholmsbörsen</h2></div>
+        <span class="today-open omx-link-hint" aria-hidden="true">Se graf <span aria-hidden="true">↗</span></span>
       </div>
-      <div class="omx-periods" role="group" aria-label="Välj tidsperiod för OMXS30-grafen">
-        <button type="button" data-omx-period="1D" aria-pressed="true" title="En handelsdag">1D</button>
-        <button type="button" data-omx-period="1W" aria-pressed="false" title="En vecka">1V</button>
-        <button type="button" data-omx-period="1M" aria-pressed="false" title="En månad">1M</button>
-        <button type="button" data-omx-period="3M" aria-pressed="false" title="Tre månader">3M</button>
-        <button type="button" data-omx-period="YTD" aria-pressed="false" title="Hittills i år">I år</button>
-        <button type="button" data-omx-period="12M" aria-pressed="false" title="Ett år">1Å</button>
-        <button type="button" data-omx-period="60M" aria-pressed="false" title="Fem år">5Å</button>
+      <div class="omx-quick-overview">
+        <div class="omx-quick-caption" id="omxQuoteLabel">Senaste notering · dagens utveckling</div>
+        <div class="omx-quick-ticker" id="homeOmxQuote" aria-label="OMXS30, senaste kurs och dagens procentuella förändring via TradingView">
+          <span class="loading-value">Hämtar indexkurs …</span>
+        </div>
+        <div class="omx-market-line" aria-live="polite">
+          <span class="omx-market-status" id="omxMarketStatus" data-state="unknown"><span class="omx-market-dot" aria-hidden="true"></span><span id="omxMarketStatusText">Kontrollerar …</span></span>
+          <span class="omx-market-next" id="omxMarketDetail">Nasdaq Stockholm · svensk tid</span>
+        </div>
       </div>
-      <div class="omx-widget" id="homeOmxWidget" aria-label="Interaktivt diagram för OMXS30"><span class="loading-value">Hämtar OMXS30 …</span></div>
-      <div class="today-source omx-source"><span id="omxMarketDetail">Nasdaq Stockholm · svensk tid</span><span>TradingView · % daglig · ev. fördröjning</span></div>
+      <div class="today-source omx-source">Källa: <a class="omx-tv-source-link" href="https://www.tradingview.com/symbols/OMXSTO-OMXS30/" target="_blank" rel="noopener noreferrer">TradingView</a> · kursen kan vara fördröjd</div>
+      <a class="omx-card-hit" href="./marknader.html#omxs30" aria-label="Öppna den stora, interaktiva OMX30-grafen på Marknader"><span class="sr-only">Visa OMX30-grafen på Marknader</span></a>
     </article>
 
     <article class="surface today-box today-electricity">
