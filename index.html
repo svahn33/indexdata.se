@@ -7,7 +7,7 @@
   <meta name="description" content="Sverige idag – elpriser, Stockholmsbörsen, bensinestimat, diesel, räntor och inflation på en enda skärm.">
   <title>Sverige idag – Svensk Makropuls</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/styles.css?v=17">
+  <link rel="stylesheet" href="./assets/styles.css?v=18">
   <script defer src="./assets/omx.js?v=17"></script>
   <script defer src="./assets/home.js?v=17"></script>
 </head>
@@ -34,14 +34,15 @@
   </div>
 
   <section class="today-primary" aria-label="Marknad, el och drivmedel">
-    <a class="surface today-box today-exchange today-exchange-v17" href="./marknader.html#omxs30" aria-label="Visa OMX Stockholm 30 och den stora kursgrafen på Marknader">
-      <div class="omx-snapshot">
-        <span class="omx-snapshot-flag" aria-hidden="true">🇸🇪</span>
-        <div class="omx-snapshot-content">
-          <h2>OMX Stockholm 30</h2>
+    <a class="surface today-box today-exchange today-exchange-v18" href="./marknader.html#omxs30" aria-label="Visa OMX Stockholm 30 och den stora kursgrafen på Marknader">
+      <div class="omx-brief">
+        <h2 class="omx-brief-title">OMX Stockholm 30</h2>
+        <div class="omx-brief-main">
+          <span class="omx-snapshot-change" id="homeOmxChange" data-trend="unknown" aria-label="Senaste dagsförändringen är ännu inte tillgänglig">—</span>
+        </div>
+        <div class="omx-brief-footer">
           <p id="homeOmxStatusLine" aria-live="polite">Kontrollerar börsens öppettider …</p>
         </div>
-        <span class="omx-snapshot-change" id="homeOmxChange" data-trend="unknown" aria-label="Senaste dagsförändringen är ännu inte tillgänglig">—</span>
       </div>
     </a>
 
