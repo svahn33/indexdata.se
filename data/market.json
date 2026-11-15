@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T10:10:25+00:00",
+  "generated_at": "2026-11-15T10:13:52+00:00",
   "history": {
     "DEGVB10Y": [
       {
@@ -8006,15 +8006,21 @@
   },
   "note": "Verifierade startvärden för valutor (13 nov 2026) och inflation (okt 2026). Övriga värden hämtas vid första schemalagda körningen.",
   "sources": {
+    "omxs30": {
+      "count": 0,
+      "last_success": null,
+      "message": "OMXS30: OMXS30 invalid current or previous close",
+      "status": "error"
+    },
     "riksbank": {
       "count": 27,
-      "last_success": "2026-11-15T10:10:25+00:00",
+      "last_success": "2026-11-15T10:13:52+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "scb": {
       "count": 2,
-      "last_success": "2026-11-15T10:10:25+00:00",
+      "last_success": "2026-11-15T10:13:52+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     }
