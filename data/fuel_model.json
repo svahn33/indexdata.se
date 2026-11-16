@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T06:32:52+00:00",
+  "generated_at": "2026-11-16T17:57:55+00:00",
   "kind": "scenario_model_not_observed_pump_price",
   "fuel": "petrol_95",
   "unit": "SEK/l",
@@ -16,7 +16,7 @@
   "brent_latest_date": "2026-11-11",
   "reference_usdsek": 9.9317,
   "usdsek_latest_date": "2026-11-11",
-  "eursek_latest_date": "2026-11-13",
+  "eursek_latest_date": "2026-11-16",
   "calibration_weeks": 10,
   "calibration_offset_sek_per_l": 8.312,
   "crude_pass_through_multiplier": 1.25,
@@ -132,7 +132,7 @@
   "method": "rullande median av senaste 10 officiella veckopriser minus råoljeproxy; aktuell råoljeproxy adderas; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873",
   "disclaimer": "Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.",
   "diesel_model": {
-    "generated_at": "2026-11-16T06:32:52+00:00",
+    "generated_at": "2026-11-16T17:57:55+00:00",
     "kind": "scenario_model_not_observed_pump_price",
     "fuel": "diesel",
     "unit": "SEK/l",
@@ -149,7 +149,7 @@
     "brent_latest_date": "2026-11-11",
     "reference_usdsek": 9.9317,
     "usdsek_latest_date": "2026-11-11",
-    "eursek_latest_date": "2026-11-13",
+    "eursek_latest_date": "2026-11-16",
     "calibration_weeks": 10,
     "calibration_offset_sek_per_l": 13.63386,
     "crude_pass_through_multiplier": 1.25,
