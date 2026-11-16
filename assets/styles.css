@@ -585,3 +585,19 @@ h1,h2,.brand-wordmark,.market-link-name,.kpi-value,.rate-value,.fx-price,.inflat
   .today-currency .fx-inline-quote strong{font-size:19px;letter-spacing:-1px}
   .today-currency .fx-inline-quote .market-trend{font-size:9px;padding:3px 4px}
 }
+
+/* V24 – bränslemodell, läsbar information och metodjämförelse */
+.fuel-model-validation{font-size:11px;line-height:1.55;color:var(--muted);margin:8px 0 0}
+.fuel-station-explainer{grid-column:1 / -1;background:#faf7f0!important;border-color:#e8ddca!important;position:relative}
+.fuel-station-explainer h2{font-size:clamp(21px,2.5vw,28px);color:var(--deep-green);letter-spacing:-.65px;margin:8px 0 12px}
+.fuel-station-explainer>p{font-size:13px;line-height:1.75;color:var(--text);margin:0;max-width:920px}
+.fuel-station-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:17px 0}
+.fuel-station-grid>div{background:#fffdf8;border:1px solid #ebdfce;border-radius:12px;padding:15px 17px}
+.fuel-station-grid h3{font-size:14px;font-weight:800;letter-spacing:-.15px;color:var(--deep-green);margin:0 0 7px}
+.fuel-station-grid p{font-size:12px;line-height:1.65;color:var(--muted);margin:0}
+.fuel-station-explainer .fuel-station-bottom{border-top:1px solid #e7d9c3;padding-top:14px;font-size:12px;max-width:none}
+.fuel-station-bottom a{font-weight:800;color:var(--green);margin-left:5px;white-space:normal}
+.fuel-method-verification{border:1px solid #d8e5df;border-left:3px solid var(--green);border-radius:10px;background:#f4f9f6;padding:13px 15px;margin:12px 0 17px}
+.fuel-method-verification strong{display:block;color:var(--deep-green);font-size:13px;margin-bottom:6px}
+.fuel-method-verification p{font-size:12px;line-height:1.65;margin:0;color:var(--text)}
+@media(max-width:680px){.fuel-station-grid{grid-template-columns:1fr}.fuel-station-explainer h2{font-size:22px}.fuel-station-explainer>p{font-size:12px}}
