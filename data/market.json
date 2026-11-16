@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T19:05:28+00:00",
+  "generated_at": "2026-11-16T19:09:00+00:00",
   "history": {
     "DEGVB10Y": [
       {
@@ -8000,25 +8000,25 @@
   "sources": {
     "ecb": {
       "count": 2,
-      "last_success": "2026-11-16T19:05:28+00:00",
+      "last_success": "2026-11-16T19:09:00+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "omxs30": {
-      "count": 1,
-      "last_success": "2026-11-16T19:05:28+00:00",
-      "message": "Alla anrop lyckades",
-      "status": "ok"
+      "count": 0,
+      "last_success": "2026-11-16T18:48:04+00:00",
+      "message": "%5EOMX: HTTP 429",
+      "status": "error"
     },
     "riksbank": {
       "count": 27,
-      "last_success": "2026-11-16T19:05:28+00:00",
+      "last_success": "2026-11-16T19:09:00+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "scb": {
       "count": 2,
-      "last_success": "2026-11-16T19:05:28+00:00",
+      "last_success": "2026-11-16T19:09:00+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     }
