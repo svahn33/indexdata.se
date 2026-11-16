@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#0b1018"/><path d="M14 42V24h7v4c3-4 9-6 13-2 4-4 14-3 14 6v10h-7V32c0-5-8-6-8 0v10h-7V32c0-5-8-6-8 0v10z" fill="#f4f4ee"/><circle cx="52" cy="44" r="5" fill="#b9f084"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Indexdata ID">
+<defs><linearGradient id="d" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#123F36"/><stop offset="1" stop-color="#2A6B5C"/></linearGradient><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#C49A45"/><stop offset="1" stop-color="#DEB65E"/></linearGradient></defs>
+<rect x="1.5" y="1.5" width="125" height="125" rx="28" fill="#FFF8EF"/>
+<path d="M31 49C33 33 44 24 59 24V49H31Z" fill="url(#g)"/>
+<path d="M31 54H54V107H31Z" fill="#123F36"/>
+<path d="M64 24H75C98 24 110 41 110 65.5C110 91 97 107 75 107H59V88H73C86 88 90 79 90 65.5C90 52 83 44 72 44H64V24Z" fill="url(#d)"/>
+</svg>
