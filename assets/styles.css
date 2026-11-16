@@ -568,3 +568,20 @@ h1,h2,.brand-wordmark,.market-link-name,.kpi-value,.rate-value,.fx-price,.inflat
   .today-fuel .price-and-trend strong{font-size:22px;}
 }
 @media(max-width:620px){.today-fuel .fuel-mini{justify-content:space-between;}}
+
+/* Indexdata v23 – centrera OMX30 och placera valutaförändring bredvid kurs. */
+.today-exchange-v18 .omx-brief-main{justify-content:center}
+.today-currency .today-two-values{gap:10px}
+.today-currency .fx-inline-quote{display:flex;align-items:center;gap:8px;min-width:0;white-space:nowrap}
+.today-currency .fx-inline-quote strong{font-size:clamp(19px,1.55vw,24px);line-height:1.18;letter-spacing:-.7px}
+.today-currency .fx-inline-quote .market-trend{display:inline-flex;margin:0;font-size:10px;padding:4px 6px;flex-shrink:0}
+@media(max-width:620px){
+  .today-currency .fx-inline-quote{gap:7px}
+  .today-currency .fx-inline-quote strong{font-size:clamp(19px,5.8vw,24px)}
+}
+@media(max-width:380px){
+  .today-currency .today-two-values{gap:6px}
+  .today-currency .fx-inline-quote{gap:4px}
+  .today-currency .fx-inline-quote strong{font-size:19px;letter-spacing:-1px}
+  .today-currency .fx-inline-quote .market-trend{font-size:9px;padding:3px 4px}
+}
