@@ -1,118 +1,135 @@
 {
-  "generated_at": "2026-11-16T18:31:30+00:00",
+  "generated_at": "2026-11-16T18:34:59+00:00",
   "kind": "scenario_model_not_observed_pump_price",
   "fuel": "petrol_95",
   "unit": "SEK/l",
   "includes_taxes": "via weekly reference prices",
-  "estimate_sek_per_l": 15.64,
-  "indicative_lower_sek_per_l": 15.14,
-  "indicative_upper_sek_per_l": 16.14,
-  "indicative_band_sek_per_l": 0.5,
-  "rolling_backtest_mae_sek_per_l": 0.33,
+  "estimate_sek_per_l": 16.04,
+  "change_percent": 0.106,
+  "change_reference_date": "2026-11-13",
+  "market_observation_date": "2026-11-16",
+  "brent_source": "EIA via FRED (dagligt spotpris)",
+  "fx_source": "Sveriges riksbank",
+  "indicative_lower_sek_per_l": 15.47,
+  "indicative_upper_sek_per_l": 16.61,
+  "indicative_band_sek_per_l": 0.57,
+  "rolling_backtest_mae_sek_per_l": 0.38,
   "backtest_weeks": 8,
   "last_official_observation": "2026-11-09",
   "latest_official_sek_per_l_approx": 15.8,
-  "reference_brent_usd_per_barrel": 93.824,
+  "reference_brent_usd_per_barrel": 92.14,
   "brent_latest_date": "2026-11-11",
-  "reference_usdsek": 9.9317,
-  "usdsek_latest_date": "2026-11-11",
+  "reference_usdsek": 10.07354,
+  "usdsek_latest_date": "2026-11-16",
   "eursek_latest_date": "2026-11-16",
   "calibration_weeks": 10,
-  "calibration_offset_sek_per_l": 8.312,
+  "calibration_offset_sek_per_l": 8.74345,
   "crude_pass_through_multiplier": 1.25,
   "litres_per_barrel": 158.9873,
   "recent_history": [
     {
       "date": "2026-10-12",
-      "value": 18.41
+      "value": 18.97
     },
     {
       "date": "2026-10-13",
-      "value": 18.39
+      "value": 18.62
     },
     {
       "date": "2026-10-14",
-      "value": 18.38
+      "value": 18.66
     },
     {
       "date": "2026-10-15",
-      "value": 18.33
+      "value": 18.65
     },
     {
       "date": "2026-10-16",
-      "value": 18.09
-    },
-    {
-      "date": "2026-10-19",
-      "value": 17.91
-    },
-    {
-      "date": "2026-10-20",
-      "value": 17.77
-    },
-    {
-      "date": "2026-10-21",
-      "value": 17.59
-    },
-    {
-      "date": "2026-10-22",
-      "value": 17.61
-    },
-    {
-      "date": "2026-10-23",
-      "value": 17.77
-    },
-    {
-      "date": "2026-10-26",
-      "value": 17.93
-    },
-    {
-      "date": "2026-10-27",
       "value": 18.04
     },
     {
+      "date": "2026-10-19",
+      "value": 17.98
+    },
+    {
+      "date": "2026-10-20",
+      "value": 17.73
+    },
+    {
+      "date": "2026-10-21",
+      "value": 17.86
+    },
+    {
+      "date": "2026-10-22",
+      "value": 18.52
+    },
+    {
+      "date": "2026-10-23",
+      "value": 18.77
+    },
+    {
+      "date": "2026-10-26",
+      "value": 18.77
+    },
+    {
+      "date": "2026-10-27",
+      "value": 18.36
+    },
+    {
       "date": "2026-10-28",
-      "value": 18.06
+      "value": 18.05
     },
     {
       "date": "2026-10-29",
-      "value": 17.85
+      "value": 17.7
     },
     {
       "date": "2026-10-30",
-      "value": 17.67
+      "value": 18.03
     },
     {
       "date": "2026-11-02",
-      "value": 17.29
+      "value": 16.98
     },
     {
       "date": "2026-11-03",
-      "value": 17.08
+      "value": 16.99
     },
     {
       "date": "2026-11-04",
-      "value": 16.61
+      "value": 15.78
     },
     {
       "date": "2026-11-05",
-      "value": 16.38
+      "value": 16.28
     },
     {
       "date": "2026-11-06",
-      "value": 16.11
+      "value": 16.34
     },
     {
       "date": "2026-11-09",
-      "value": 15.81
+      "value": 15.77
     },
     {
       "date": "2026-11-10",
-      "value": 15.54
+      "value": 15.69
     },
     {
       "date": "2026-11-11",
-      "value": 15.64
+      "value": 15.94
+    },
+    {
+      "date": "2026-11-12",
+      "value": 15.98
+    },
+    {
+      "date": "2026-11-13",
+      "value": 16.02
+    },
+    {
+      "date": "2026-11-16",
+      "value": 16.04
     }
   ],
   "sources": [
@@ -125,127 +142,144 @@
       "url": "https://fred.stlouisfed.org/series/DCOILBRENTEU"
     },
     {
-      "name": "Valutor / Sveriges riksbank",
+      "name": "Valutor / Sveriges riksbank och ECB",
       "url": "https://www.riksbank.se/sv/statistik/rantor-och-valutakurser/hamta-rantor-och-valutakurser-via-api/"
     }
   ],
-  "method": "rullande median av senaste 10 officiella veckopriser minus råoljeproxy; aktuell råoljeproxy adderas; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873",
-  "disclaimer": "Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.",
+  "method": "median av senaste 10 officiella veckopriser minus historisk råoljeproxy; senaste publicerade Brent-spotpris och senaste publicerade USD/SEK; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873",
+  "disclaimer": "Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Brent-källan kan vara fördröjd flera dagar. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.",
   "diesel_model": {
-    "generated_at": "2026-11-16T18:31:30+00:00",
+    "generated_at": "2026-11-16T18:34:59+00:00",
     "kind": "scenario_model_not_observed_pump_price",
     "fuel": "diesel",
     "unit": "SEK/l",
     "includes_taxes": "via weekly reference prices",
-    "estimate_sek_per_l": 20.96,
-    "indicative_lower_sek_per_l": 19.7,
-    "indicative_upper_sek_per_l": 22.22,
-    "indicative_band_sek_per_l": 1.26,
-    "rolling_backtest_mae_sek_per_l": 0.84,
+    "estimate_sek_per_l": 20.97,
+    "change_percent": 0.081,
+    "change_reference_date": "2026-11-13",
+    "market_observation_date": "2026-11-16",
+    "brent_source": "EIA via FRED (dagligt spotpris)",
+    "fx_source": "Sveriges riksbank",
+    "indicative_lower_sek_per_l": 19.54,
+    "indicative_upper_sek_per_l": 22.4,
+    "indicative_band_sek_per_l": 1.43,
+    "rolling_backtest_mae_sek_per_l": 0.95,
     "backtest_weeks": 8,
     "last_official_observation": "2026-11-09",
     "latest_official_sek_per_l_approx": 21.48,
-    "reference_brent_usd_per_barrel": 93.824,
+    "reference_brent_usd_per_barrel": 92.14,
     "brent_latest_date": "2026-11-11",
-    "reference_usdsek": 9.9317,
-    "usdsek_latest_date": "2026-11-11",
+    "reference_usdsek": 10.07354,
+    "usdsek_latest_date": "2026-11-16",
     "eursek_latest_date": "2026-11-16",
     "calibration_weeks": 10,
-    "calibration_offset_sek_per_l": 13.63386,
+    "calibration_offset_sek_per_l": 13.66764,
     "crude_pass_through_multiplier": 1.25,
     "litres_per_barrel": 158.9873,
     "recent_history": [
       {
         "date": "2026-10-12",
-        "value": 23.74
+        "value": 23.9
       },
       {
         "date": "2026-10-13",
-        "value": 23.71
+        "value": 23.54
       },
       {
         "date": "2026-10-14",
-        "value": 23.7
+        "value": 23.58
       },
       {
         "date": "2026-10-15",
-        "value": 23.65
+        "value": 23.57
       },
       {
         "date": "2026-10-16",
-        "value": 23.41
+        "value": 22.96
       },
       {
         "date": "2026-10-19",
-        "value": 23.23
-      },
-      {
-        "date": "2026-10-20",
-        "value": 23.09
-      },
-      {
-        "date": "2026-10-21",
         "value": 22.91
       },
       {
+        "date": "2026-10-20",
+        "value": 22.65
+      },
+      {
+        "date": "2026-10-21",
+        "value": 22.78
+      },
+      {
         "date": "2026-10-22",
-        "value": 22.93
+        "value": 23.44
       },
       {
         "date": "2026-10-23",
-        "value": 23.1
+        "value": 23.7
       },
       {
         "date": "2026-10-26",
-        "value": 23.25
+        "value": 23.7
       },
       {
         "date": "2026-10-27",
-        "value": 23.36
+        "value": 23.28
       },
       {
         "date": "2026-10-28",
-        "value": 23.38
+        "value": 22.97
       },
       {
         "date": "2026-10-29",
-        "value": 23.18
+        "value": 22.62
       },
       {
         "date": "2026-10-30",
-        "value": 23.0
+        "value": 22.95
       },
       {
         "date": "2026-11-02",
-        "value": 22.61
+        "value": 21.91
       },
       {
         "date": "2026-11-03",
-        "value": 22.4
+        "value": 21.91
       },
       {
         "date": "2026-11-04",
-        "value": 21.93
+        "value": 20.7
       },
       {
         "date": "2026-11-05",
-        "value": 21.7
+        "value": 21.21
       },
       {
         "date": "2026-11-06",
-        "value": 21.43
+        "value": 21.26
       },
       {
         "date": "2026-11-09",
-        "value": 21.14
+        "value": 20.7
       },
       {
         "date": "2026-11-10",
-        "value": 20.86
+        "value": 20.62
       },
       {
         "date": "2026-11-11",
-        "value": 20.96
+        "value": 20.86
+      },
+      {
+        "date": "2026-11-12",
+        "value": 20.9
+      },
+      {
+        "date": "2026-11-13",
+        "value": 20.95
+      },
+      {
+        "date": "2026-11-16",
+        "value": 20.97
       }
     ],
     "sources": [
@@ -258,12 +292,12 @@
         "url": "https://fred.stlouisfed.org/series/DCOILBRENTEU"
       },
       {
-        "name": "Valutor / Sveriges riksbank",
+        "name": "Valutor / Sveriges riksbank och ECB",
         "url": "https://www.riksbank.se/sv/statistik/rantor-och-valutakurser/hamta-rantor-och-valutakurser-via-api/"
       }
     ],
-    "method": "rullande median av senaste 10 officiella veckopriser minus råoljeproxy; aktuell råoljeproxy adderas; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873",
-    "disclaimer": "Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.",
+    "method": "median av senaste 10 officiella veckopriser minus historisk råoljeproxy; senaste publicerade Brent-spotpris och senaste publicerade USD/SEK; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873",
+    "disclaimer": "Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Brent-källan kan vara fördröjd flera dagar. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.",
     "status": "ok"
   },
   "status": "ok"
