@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T17:57:55+00:00",
+  "generated_at": "2026-11-16T18:01:19+00:00",
   "kind": "scenario_model_not_observed_pump_price",
   "fuel": "petrol_95",
   "unit": "SEK/l",
@@ -132,7 +132,7 @@
   "method": "rullande median av senaste 10 officiella veckopriser minus råoljeproxy; aktuell råoljeproxy adderas; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873",
   "disclaimer": "Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.",
   "diesel_model": {
-    "generated_at": "2026-11-16T17:57:55+00:00",
+    "generated_at": "2026-11-16T18:01:19+00:00",
     "kind": "scenario_model_not_observed_pump_price",
     "fuel": "diesel",
     "unit": "SEK/l",
