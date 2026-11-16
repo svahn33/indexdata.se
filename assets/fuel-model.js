@@ -71,7 +71,7 @@ function renderFuel(){
     for(const id of ['modelPrice','modelBrent','modelUsdsek','modelWeekly','scenarioPrice'])set(id,'—');
     set('modelBand','Inget tillförlitligt estimat just nu');
     set('modelStatus',`${name}: ${explanation}.`);
-    set('modelBrentDate','USD/fat');set('modelUsdDate','Riksbanken');set('modelWeeklyDate','Senaste observation');
+    set('modelBrentDate','USD/fat');set('modelUsdDate','Riksbanken/ECB');set('modelWeeklyDate','Senaste observation');
     for(const id of ['scenarioBrentValue','scenarioUsdValue'])set(id,'—');
     brent.disabled=true;usd.disabled=true;$('scenarioReset').disabled=true;
     $('fuelChart').textContent='Diagram visas när tillräckligt med data finns.';
@@ -85,10 +85,10 @@ function renderFuel(){
   set('modelBrent',fmt(d.reference_brent_usd_per_barrel,1));
   set('modelBrentDate',`USD/fat · ${date(d.brent_latest_date)}`);
   set('modelUsdsek',fmt(d.reference_usdsek));
-  set('modelUsdDate',date(d.usdsek_latest_date));
+  set('modelUsdDate',`${date(d.usdsek_latest_date)} · ${String(d.fx_source||'Riksbanken/ECB').includes('centralbanken')?'ECB':'Riksbanken'}`);
   set('modelWeekly',fmt(d.latest_official_sek_per_l_approx));
   set('modelWeeklyDate',date(d.last_official_observation));
-  set('modelStatus',`${name.charAt(0).toUpperCase()+name.slice(1)}: kalibrerad mot ${d.calibration_weeks} EU-veckor · ${d.backtest_weeks} veckor i efterhandskontroll. Modellberäkning, ej faktiskt pumppris.`);
+  set('modelStatus',`${name.charAt(0).toUpperCase()+name.slice(1)}: ${Number.isFinite(d.change_percent)?(d.change_percent>=0?'+':'')+fmt(d.change_percent,2)+' % sedan föregående marknadsnotering · ':''}olja ${date(d.brent_latest_date)} · valuta ${date(d.usdsek_latest_date)} · ${d.calibration_weeks} EU-veckor. Modellberäkning, inte faktiskt pumppris.`);
   brent.value=String(Math.min(Number(brent.max),Math.max(Number(brent.min),d.reference_brent_usd_per_barrel)));
   usd.value=String(Math.min(Number(usd.max),Math.max(Number(usd.min),d.reference_usdsek)));
   brent.disabled=false;usd.disabled=false;$('scenarioReset').disabled=false;

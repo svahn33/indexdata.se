@@ -14,6 +14,7 @@ const isNum=n=>typeof n==='number'&&Number.isFinite(n);
 const latest=(d,id)=>{const item=d?.indicators?.[id];return item&&isNum(item.value)?item:null;};
 const quoteText=(d,id,places,unit='')=>{const q=latest(d,id);return q?`${fmt(q.value,places)}${unit}`:'—';};
 let market={indicators:{},generated_at:null};
+let omxLastVerified=null;
 let commodities={power_intervals:{}};
 let fuel={};
 let fuelModel={};
@@ -38,13 +39,9 @@ function setupVatToggle(){
 function paintOmxChange(){
   const el=$('homeOmxChange');
   if(!el)return;
-  const q=market?.omxs30;
+  const candidates=[market?.omxs30,omxLastVerified].filter(x=>x&&typeof x==='object');
   const now=Date.now();
-  const timestamp=Date.parse(q?.price_time||'');
-  const value=q?.change_percent;
-  // Data måste ha en faktisk tidsstämpel; visa aldrig gamla siffror som om de vore dagens.
-  const valid=isNum(value)&&Math.abs(value)<50&&Number.isFinite(timestamp)&&
-    timestamp<=now+3600000&&now-timestamp<8*86400000;
+  // Visa bara procent för senaste giltiga handelsdag, aldrig från en äldre session.
   const dateInStockholm=stamp=>new Intl.DateTimeFormat('sv-SE',{
     year:'numeric',month:'2-digit',day:'2-digit',timeZone:'Europe/Stockholm'
   }).format(new Date(stamp));
@@ -68,7 +65,17 @@ function paintOmxChange(){
       }
     }
   }
-  const good=valid&&expectedSession!==null&&dateInStockholm(timestamp)===expectedSession;
+  // Välj senast giltiga observation för rätt handelsdag. Om API:t misslyckats
+  // fungerar det datumkontrollerade reservvärdet, men aldrig för fel dag.
+  const eligible=candidates.filter(item=>{
+    const t=Date.parse(item.price_time||'');
+    return isNum(item.change_percent)&&Math.abs(item.change_percent)<50&&
+      Number.isFinite(t)&&t<=now+3600000&&now-t<8*86400000&&
+      expectedSession!==null&&dateInStockholm(t)===expectedSession;
+  }).sort((a,b)=>Date.parse(b.price_time)-Date.parse(a.price_time));
+  const q=eligible[0];
+  const value=q?.change_percent;
+  const good=Boolean(q);
   el.dataset.trend=good?(value>0.004?'up':value<-.004?'down':'flat'):'unknown';
   const number=good?Math.abs(value).toLocaleString('sv-SE',{
     minimumFractionDigits:2,maximumFractionDigits:2}):null;
@@ -78,16 +85,40 @@ function paintOmxChange(){
   el.title=good?'Senaste tillgängliga dagsförändringen · data kan vara fördröjda':'Dagsförändring saknas';
 }
 
+function paintTrend(id, pct, context){
+  const el=$(id);
+  if(!el)return;
+  const ok=isNum(pct)&&Math.abs(pct)<=50;
+  el.dataset.trend=ok?(pct>0.004?'up':pct<-.004?'down':'flat'):'unknown';
+  el.textContent=ok?`${pct>0.004?'+':pct<-.004?'−':''}${fmt(Math.abs(pct),2)} %`:'—';
+  el.title=ok?`${context} · ${el.textContent}`:`${context} · underlag saknas`;
+  el.setAttribute('aria-label',el.title);
+}
+function fxDailyChange(series){
+  const pts=market?.history?.[series];
+  if(!Array.isArray(pts)||pts.length<2)return null;
+  const seriesPoints=pts.filter(p=>/^\d{4}-\d{2}-\d{2}$/.test(p?.date||'')&&isNum(p?.value)&&p.value>0)
+    .sort((a,b)=>a.date.localeCompare(b.date));
+  if(seriesPoints.length<2)return null;
+  const last=seriesPoints.at(-1),previous=seriesPoints.at(-2);
+  const current=latest(market,series);
+  if(!current||current.date!==last.date)return null;
+  if((Date.parse(last.date+'T12:00:00Z')-Date.parse(previous.date+'T12:00:00Z'))/86400000>7)return null;
+  return 100*(last.value/previous.value-1);
+}
 function paintMarket(){
   paintOmxChange();
   set('homePolicy',quoteText(market,'SECBREPOEFF',2,' %'));
   set('homeTenYear',quoteText(market,'SEGVB10YC',2,' %'));
   set('homeUSD',quoteText(market,'SEKUSDPMI',2));
+  paintTrend('homeUSDChange',fxDailyChange('SEKUSDPMI'),'USD/SEK sedan föregående dagsnotering');
   set('homeEUR',quoteText(market,'SEKEURPMI',2));
+  paintTrend('homeEURChange',fxDailyChange('SEKEURPMI'),'EUR/SEK sedan föregående dagsnotering');
   set('homeKPIF',quoteText(market,'KPIF_YOY',1,' %'));
   set('homeKPI',quoteText(market,'KPI_YOY',1,' %'));
   set('homeRateDate',`Riksbanken · ${fmtShortDate(latest(market,'SEGVB10YC')?.date)}`);
-  set('homeCurrencyDate',`Riksbanken · ${fmtShortDate(latest(market,'SEKEURPMI')?.date)}`);
+  const eurSource=latest(market,'SEKEURPMI')?.source||'Riksbanken/ECB';
+  set('homeCurrencyDate',`${eurSource.includes('centralbanken')?'ECB':'Riksbanken'} · ${fmtShortDate(latest(market,'SEKEURPMI')?.date)} · ändring sedan föregående notering`);
   const kpif=latest(market,'KPIF_YOY');
   set('homeInflationDate',kpif?.date?`SCB · ${new Date(kpif.date+'T12:00:00Z').toLocaleDateString('sv-SE',{month:'long',year:'numeric',timeZone:'Europe/Stockholm'})}`:'SCB · inväntar statistik');
   if(market.generated_at){
@@ -109,8 +140,11 @@ function paintFuel(){
     diesel?.fuel==='diesel'&&isNum(diesel.estimate_sek_per_l)&&
     diesel.estimate_sek_per_l>=7&&diesel.estimate_sek_per_l<=45&&modelOk;
   set('homeDiesel',dieselModelOk?fmt(diesel.estimate_sek_per_l):'—');
+  paintTrend('homePetrolChange',modelOk?fuelModel.change_percent:null,'Bensinmodell sedan föregående marknadsnotering');
+  paintTrend('homeDieselChange',dieselModelOk?diesel.change_percent:null,'Dieselmodell sedan föregående marknadsnotering');
   if(modelOk&&dieselModelOk){
-    set('homeFuelNote',`Bensin & diesel: modellestimat · Brent + USD/SEK · EU-kalibrering · inkl. skatter`);
+    const oil=fmtShortDate(fuelModel.brent_latest_date),fx=fmtShortDate(fuelModel.usdsek_latest_date);
+    set('homeFuelNote',`Modellestimat · olja ${oil} · valuta ${fx} · ej pumppriser`);
   }else if(modelOk){
     set('homeFuelNote','Bensin: estimat · Diesel: inväntar modellunderlag · ej faktiska pumppriser');
   }else{
@@ -161,16 +195,18 @@ async function json(url){
 }
 async function readStatic(){
   const prefix='./data/';
-  const [m,c,f,model]=await Promise.allSettled([
+  const [m,c,f,model,omxLast]=await Promise.allSettled([
     json(prefix+'market.json?t='+Date.now()),
     json(prefix+'commodities.json?t='+Date.now()),
     json(prefix+'fuel.json?t='+Date.now()),
-    json(prefix+'fuel_model.json?t='+Date.now())
+    json(prefix+'fuel_model.json?t='+Date.now()),
+    json('./assets/omxs30-last-verified.json?t='+Date.now())
   ]);
   if(m.status==='fulfilled')market=m.value;
   if(c.status==='fulfilled')commodities=c.value;
   if(f.status==='fulfilled')fuel=f.value;
   if(model.status==='fulfilled')fuelModel=model.value;
+  if(omxLast.status==='fulfilled')omxLastVerified=omxLast.value;
   paintMarket();paintPower();
 }
 async function loadPowerLive(){

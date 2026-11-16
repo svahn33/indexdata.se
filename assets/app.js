@@ -110,7 +110,7 @@ function renderStatus(){
   const stamp=values.generated_at;
   setText('lastUpdate',stamp&&!Number.isNaN(new Date(stamp).getTime())?new Date(stamp).toLocaleString('sv-SE',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Stockholm'}):'Uppdatering saknas');
   const entries=Object.entries(values.sources||{});
-  setText('healthStatus',entries.length?entries.map(([name,s])=>`${name==='riksbank'?'Riksbanken':name==='scb'?'SCB':name}: ${s.status==='ok'?'Uppdaterad':s.status==='initial'?'Väntar':s.status==='partial'?'Delvis tillgänglig':'Kontrollera källan'}`).join(' · '):'Ingen status tillgänglig');
+  setText('healthStatus',entries.length?entries.map(([name,s])=>`${name==='riksbank'?'Riksbanken':name==='scb'?'SCB':name==='ecb'?'ECB':name}: ${s.status==='ok'?'Uppdaterad':s.status==='initial'?'Väntar':s.status==='partial'?'Delvis tillgänglig':'Kontrollera källan'}`).join(' · '):'Ingen status tillgänglig');
   setText('copyrightYear',new Date().getFullYear());
 }
 function render(){renderOverview();renderRates();renderInflation();renderCurrencies();renderStatus();}

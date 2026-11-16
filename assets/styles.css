@@ -549,3 +549,22 @@ h1,h2,.brand-wordmark,.market-link-name,.kpi-value,.rate-value,.fx-price,.inflat
 .home-screen .sverige-footer{display:flex;justify-content:space-between;gap:6px;padding:4px 36px 9px;max-width:1360px;font-size:10px;line-height:1.3}
 @media(max-width:810px){.home-screen .sverige-footer{padding:12px 18px;gap:10px}}
 @media(max-width:620px){.home-screen .sverige-footer{display:flex;justify-content:flex-start;flex-direction:column;padding:13px 16px;gap:8px}.site-footer{align-items:flex-start}}
+
+/* v22 – jämförbar procentförändring för drivmedelsmodeller och valutakurser */
+.market-trend{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;font-size:11px;font-weight:800;line-height:1.25;white-space:nowrap;border-radius:7px;padding:4px 6px;color:#61706a;background:#e9eeeb;font-variant-numeric:tabular-nums}
+.market-trend[data-trend="up"]{background:#e4f5ea;color:#138343}
+.market-trend[data-trend="down"]{background:#fde8ed;color:#c9244c}
+.market-trend[data-trend="flat"]{background:#edf1ef;color:#526e60}
+.price-and-trend{display:flex;flex-direction:column!important;align-items:flex-end;gap:3px!important;flex-shrink:0;min-width:0}
+.today-fuel .fuel-mini{align-items:center;flex-direction:row}
+.today-fuel .price-and-trend strong{font-size:21px;line-height:1.12}
+.today-two-values .market-trend{margin-top:5px;font-size:10px;padding:3px 6px}
+@media(max-width:620px){.today-fuel .fuel-mini{align-items:center;flex-direction:row;gap:8px}.today-fuel .price-and-trend{align-items:flex-end}}
+/* På mobil visas drivmedlen på två egna rader så att procentbrickorna får plats. */
+@media(max-width:620px){
+  .today-fuel .fuel-mini-list{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(2,minmax(62px,1fr));}
+  .today-fuel .fuel-mini{min-width:0;padding:8px 10px;}
+  .today-fuel .fuel-type{white-space:normal;line-height:1.15;}
+  .today-fuel .price-and-trend strong{font-size:22px;}
+}
+@media(max-width:620px){.today-fuel .fuel-mini{justify-content:space-between;}}

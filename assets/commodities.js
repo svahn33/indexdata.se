@@ -168,6 +168,17 @@ function makeCard(key){
     element('div','commodity-price-unit',meta.unit),
     element('span','commodity-price-date',isDaily?observation(key):'Dagsnotering saknas'),
     element('span','commodity-price-source',isDaily?(q?.source||'Ingen aktuell notering'):'Historiska referenser finns i tabellen'));
+  if((key==='brent'||key==='wti')&&currentValid(key)){
+    const history=historyFor(key);
+    const last=history.at(-1),prev=history.at(-2);
+    if(last&&prev&&last.date===q.date&&prev.value>0){
+      const pct=100*(last.value/prev.value-1);
+      const badge=element('span','market-trend',`${pct>0?'+':pct<0?'−':''}${num(Math.abs(pct),2)} %`);
+      badge.dataset.trend=pct>0.004?'up':pct<-.004?'down':'flat';
+      badge.title=`Förändring sedan föregående publicerade oljeprisnotering (${prev.date})`;
+      card.append(badge);
+    }
+  }
   return card;
 }
 function renderHighlights(){
