@@ -53,7 +53,7 @@
       <div class="fuel-model-band" id="modelBand">Beräknar indikativt spann …</div>
       <div class="fuel-model-rule"></div>
       <div class="fuel-model-stats">
-        <div><small>Brent (5 noteringar)</small><strong id="modelBrent">—</strong><small id="modelBrentDate">USD/fat</small></div>
+        <div><small>Brent (senaste spot)</small><strong id="modelBrent">—</strong><small id="modelBrentDate">USD/fat</small></div>
         <div><small>USD/SEK</small><strong id="modelUsdsek">—</strong><small id="modelUsdDate">Riksbanken</small></div>
         <div><small>Officiellt veckopris*</small><strong id="modelWeekly">—</strong><small id="modelWeeklyDate">Senaste observation</small></div>
       </div>
@@ -78,9 +78,9 @@
     <section class="surface fuel-model-explain" aria-labelledby="modelMethodTitle">
       <div class="today-kicker">METOD &amp; OSÄKERHET</div><h2 id="modelMethodTitle">Hur räknar vi?</h2>
       <ol class="fuel-method-list">
-        <li>Vi omvandlar Brent från USD per fat till en råoljeindikator i kr per liter med Riksbankens USD/SEK. Antagen känslighet är 1,25 gånger råoljeindikatorn.</li>
+        <li>Vi omvandlar Brent från USD per fat till en råoljeindikator i kr per liter med senast publicerade USD/SEK från Riksbanken eller ECB. Antagen känslighet är 1,25 gånger råoljeindikatorn.</li>
         <li>Vi jämför den separat med de senaste <strong>10</strong> veckornas svenska konsumentpris för antingen bensin 95 eller diesel, inklusive skatter, från EU:s Oil Bulletin. Veckopriserna omvandlas ungefärligt till SEK med historiska EUR/SEK.</li>
-        <li>Medianen av skillnaderna blir ett kalibrerat påslag. Detta påslag adderas till dagens råoljeindikator, som jämnas ut över fem oljenoteringar.</li>
+        <li>Medianen av skillnaderna blir ett kalibrerat påslag. Detta påslag adderas till dagens råoljeindikator, från den senast publicerade dagsnoteringen.</li>
         <li>Vi jämför tidigare veckors beräkningar med då faktiskt publicerade veckopriser för att få ett <strong>indikativt felspann</strong>.</li>
       </ol>
       <p class="fuel-muted">* Det officiella veckopriset är en separat statistisk observation och inte dagens pumppris. Bensin och diesel kalibreras var för sig, men använder samma antagna känslighet för Brent. Modellen är förenklad: särskilt dieselns produktmarginaler, raffinering, distribution, biokomponenter, skatteförändringar, valutaförskjutning och marknadens eftersläpning fångas inte fullständigt. Felspannet är inte ett 95-procentigt konfidensintervall.</p>
