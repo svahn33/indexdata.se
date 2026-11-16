@@ -80,19 +80,24 @@ def latest_before(series, when, max_age=7):
 
 
 def daily_crude_proxy(brent, usd, when, require_oil_today=False):
-    # Five last *observations* in previous 8 calendar days: reduces one-day jumps.
-    recent = [(d, v) for d, v in brent if 0 <= (when - d).days <= 8]
-    oil = recent[-5:]
-    if len(oil) < 3 or (when - oil[-1][0]).days > 5:
+    """Latest eligible published Brent and USD/SEK values as of `when`.
+
+    Brent and FX publish independently. A new USD/SEK observation must affect
+    the estimate even when the latest Brent fixing was several days earlier.
+    No synthetic intraday oil prices are made up.
+    """
+    oil=latest_before(brent,when,7)
+    fx=latest_before(usd,when,7)
+    if not oil or not fx:
         return None
-    fx = latest_before(usd, when, 7)
-    if not fx:
+    if require_oil_today and oil[0]!=when:
         return None
-    oil_avg = statistics.mean(v for d, v in oil)
-    return {'date':oil[-1][0], 'oil_usd_per_barrel':oil_avg,
-            'oil_latest_date':oil[-1][0], 'fx_usdsek':fx[1],
-            'fx_latest_date':fx[0],
-            'proxy':PASS_THROUGH * oil_avg * fx[1] / BARREL_LITRES}
+    oil_day,oil_value=oil
+    fx_day,fx_value=fx
+    return {'date':max(oil_day,fx_day), 'oil_usd_per_barrel':oil_value,
+            'oil_latest_date':oil_day, 'fx_usdsek':fx_value,
+            'fx_latest_date':fx_day,
+            'proxy':PASS_THROUGH*oil_value*fx_value/BARREL_LITRES}
 
 
 def weekly_observations(fuel, brent, usd, eur, today, fuel_kind='petrol'):
@@ -153,7 +158,7 @@ def build_single(market, commodities, fuel, now=None, fuel_kind='petrol'):
     current_eur = latest_before(eur, today, 7)
     if not (current_brent and current_usd and current_eur):
         raise ValueError('Current oil or currency data too old (>7 days)')
-    crude = daily_crude_proxy(brent, usd, current_brent[0])
+    crude = daily_crude_proxy(brent, usd, today)
     if not crude:
         raise ValueError('Not enough recent Brent observations')
     # The historical official observations are the only price anchors.
@@ -173,19 +178,31 @@ def build_single(market, commodities, fuel, now=None, fuel_kind='petrol'):
     mae = statistics.mean(errors)
     # At minimum 0.50 kr and generous scaling; descriptive not 95% probability.
     band = min(4.0, max(0.5, round(1.5*mae,2)))
+    # Date changes can come from *either* official series. Include a new FX
+    # day even if Brent hasn't released a new fixing yet.
     timeline=[]
-    for d, _ in brent:
-        if not 0<=(today-d).days<=35:
-            continue
+    observation_days=sorted({d for d,_ in brent if 0<=(today-d).days<=35}|
+                            {d for d,_ in usd if 0<=(today-d).days<=35})
+    for d in observation_days:
         v=daily_crude_proxy(brent,usd,d)
         if v:
-            timeline.append({'date':d.isoformat(),'value':round(offset+v['proxy'],2)})
+            timeline.append({'date':d.isoformat(),'value':round(offset+v['proxy'],4)})
+    # Compare latest market observation with the preceding one using the SAME
+    # calibration offset. This is a *modelled* change, not a pump-price change.
+    prior = timeline[-2] if len(timeline)>=2 else None
+    last = timeline[-1] if timeline else None
+    change = ((estimate/prior['value'])-1)*100 if prior and prior['value']>0 else None
     latest_week = weekly[-1]
     return {
         'generated_at':now.isoformat(timespec='seconds'),
         'kind':'scenario_model_not_observed_pump_price',
         'fuel':'petrol_95' if fuel_kind=='petrol' else 'diesel', 'unit':'SEK/l', 'includes_taxes':'via weekly reference prices',
         'estimate_sek_per_l':round(estimate,2),
+        'change_percent':round(change,3) if change is not None else None,
+        'change_reference_date':prior['date'] if prior else None,
+        'market_observation_date':crude['date'].isoformat(),
+        'brent_source':'EIA via FRED (dagligt spotpris)',
+        'fx_source':market.get('indicators',{}).get('SEKUSDPMI',{}).get('source','Riksbanken/ECB'),
         'indicative_lower_sek_per_l':round(max(0,estimate-band),2),
         'indicative_upper_sek_per_l':round(estimate+band,2),
         'indicative_band_sek_per_l':band,
@@ -202,14 +219,14 @@ def build_single(market, commodities, fuel, now=None, fuel_kind='petrol'):
         'calibration_offset_sek_per_l':round(offset,5),
         'crude_pass_through_multiplier':PASS_THROUGH,
         'litres_per_barrel':BARREL_LITRES,
-        'recent_history':timeline[-35:],
+        'recent_history':[{'date':p['date'],'value':round(p['value'],2)} for p in timeline[-35:]],
         'sources':[
             {'name':'EU Oil Bulletin via EU EnergyPrices','url':'https://www.euenergyprices.eu/en/data'},
             {'name':'Brent / EIA via FRED','url':'https://fred.stlouisfed.org/series/DCOILBRENTEU'},
-            {'name':'Valutor / Sveriges riksbank','url':'https://www.riksbank.se/sv/statistik/rantor-och-valutakurser/hamta-rantor-och-valutakurser-via-api/'},
+            {'name':'Valutor / Sveriges riksbank och ECB','url':'https://www.riksbank.se/sv/statistik/rantor-och-valutakurser/hamta-rantor-och-valutakurser-via-api/'},
         ],
-        'method': 'rullande median av senaste 10 officiella veckopriser minus råoljeproxy; aktuell råoljeproxy adderas; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873',
-        'disclaimer': 'Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.',
+        'method': 'median av senaste 10 officiella veckopriser minus historisk råoljeproxy; senaste publicerade Brent-spotpris och senaste publicerade USD/SEK; oljeproxy = 1,25 × Brent × USD/SEK ÷ 158,9873',
+        'disclaimer': 'Modellestimat, inte uppmätt pumppris eller statistiskt konfidensintervall. Brent-källan kan vara fördröjd flera dagar. Förändrad beskattning, raffinaderimarginaler, biokomponenter och tidsförskjutningar fångas inte i realtid. Diesel kan påverkas särskilt av produktmarginaler som inte fångas av Brent.',
     }
 
 
@@ -236,7 +253,7 @@ def run(market_path=DATA/'market.json', commodities_path=DATA/'commodities.json'
     try:
         result = build(market, com, fuel, now=now)
         result['status']='ok'
-        LOG.info('Modelled petrol95 = %.2f SEK/l, diesel status = %s',result['estimate_sek_per_l'], result['diesel_model']['status'])
+        LOG.info('Modelled petrol95 %.2f SEK/l, diesel %s, Brent observation %s, USD/SEK observation %s',result['estimate_sek_per_l'], result['diesel_model']['status'], result['brent_latest_date'], result['usdsek_latest_date'])
     except (ValueError, TypeError, KeyError, ZeroDivisionError) as exc:
         # Explicitly clear stale model output instead of leaving a misleading price.
         result={'status':'unavailable', 'generated_at':(now or datetime.now(timezone.utc)).isoformat(timespec='seconds'),
