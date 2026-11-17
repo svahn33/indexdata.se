@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T20:20:53+00:00",
+  "generated_at": "2026-11-17T03:57:34+00:00",
   "kind": "scenario_model_not_observed_pump_price",
   "model_version": 2,
   "model_selection": "legacy",
@@ -34,10 +34,6 @@
   "litres_per_barrel": 158.9873,
   "market_oil_smoothing": "75 % senaste publicerade Brent + 25 % median av tre publicerade Brent-noteringar",
   "recent_history": [
-    {
-      "date": "2026-10-12",
-      "value": 18.89
-    },
     {
       "date": "2026-10-13",
       "value": 18.61
@@ -156,7 +152,7 @@
   "method": "Ankrar till senaste officiella svenska EU-veckopriset och väger samman med 10-veckors medianavvikelse; beräknar separat, regulariserad Brent/SEK-känslighet för bensin och diesel. Jämför mot äldre medianmodell på tidigare, ej använda EU-veckor och väljer den enklare om den nya visar mer än 5 procent högre historiskt fel.",
   "disclaimer": "Modellestimat, inte uppmätt stationspris eller ett statistiskt konfidensintervall. Oljepriset och valutor kan vara fördröjda. Lokal konkurrens, skatter, raffineringsmarginaler, biodrivmedelsinblandning och prissättningsfördröjningar modelleras inte fullständigt.",
   "diesel_model": {
-    "generated_at": "2026-11-16T20:20:53+00:00",
+    "generated_at": "2026-11-17T03:57:34+00:00",
     "kind": "scenario_model_not_observed_pump_price",
     "model_version": 2,
     "model_selection": "anchored",
@@ -191,10 +187,6 @@
     "litres_per_barrel": 158.9873,
     "market_oil_smoothing": "75 % senaste publicerade Brent + 25 % median av tre publicerade Brent-noteringar",
     "recent_history": [
-      {
-        "date": "2026-10-12",
-        "value": 23.9
-      },
       {
         "date": "2026-10-13",
         "value": 23.67
