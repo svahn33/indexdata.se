@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-11-18T18:03:24+00:00",
+  "generated_at": "2026-11-18T18:27:31+00:00",
   "kind": "scenario_model_not_observed_pump_price",
   "model_version": 2,
   "model_selection": "legacy",
   "fuel": "petrol_95",
   "unit": "SEK/l",
   "includes_taxes": "via weekly reference prices",
-  "estimate_sek_per_l": 15.99,
-  "change_percent": 0.224,
+  "estimate_sek_per_l": 16.08,
+  "change_percent": 0.225,
   "change_reference_date": "2026-11-17",
   "market_observation_date": "2026-11-18",
   "brent_source": "EIA via FRED (dagligt spotpris)",
   "fx_source": "Sveriges riksbank",
-  "indicative_lower_sek_per_l": 15.23,
-  "indicative_upper_sek_per_l": 16.75,
+  "indicative_lower_sek_per_l": 15.32,
+  "indicative_upper_sek_per_l": 16.84,
   "indicative_band_sek_per_l": 0.76,
   "rolling_backtest_mae_sek_per_l": 0.5,
   "rolling_backtest_mae_refined_sek_per_l": 0.61,
@@ -21,9 +21,9 @@
   "backtest_weeks": 12,
   "last_official_observation": "2026-11-09",
   "latest_official_sek_per_l_approx": 15.8,
-  "reference_brent_usd_per_barrel": 92.14,
-  "reference_smoothed_brent_usd_per_barrel": 91.8625,
-  "brent_latest_date": "2026-11-11",
+  "reference_brent_usd_per_barrel": 92.94,
+  "reference_smoothed_brent_usd_per_barrel": 92.94,
+  "brent_latest_date": "2026-11-17",
   "reference_usdsek": 10.15956,
   "usdsek_latest_date": "2026-11-18",
   "eursek_latest_date": "2026-11-18",
@@ -120,23 +120,23 @@
     },
     {
       "date": "2026-11-12",
-      "value": 15.86
+      "value": 16.08
     },
     {
       "date": "2026-11-13",
-      "value": 15.91
+      "value": 16.17
     },
     {
       "date": "2026-11-16",
-      "value": 15.93
+      "value": 16.06
     },
     {
       "date": "2026-11-17",
-      "value": 15.96
+      "value": 16.04
     },
     {
       "date": "2026-11-18",
-      "value": 15.99
+      "value": 16.08
     }
   ],
   "sources": [
@@ -156,21 +156,21 @@
   "method": "Ankrar till senaste officiella svenska EU-veckopriset och väger samman med 10-veckors medianavvikelse; beräknar separat, regulariserad Brent/SEK-känslighet för bensin och diesel. Jämför mot äldre medianmodell på tidigare, ej använda EU-veckor och väljer den enklare om den nya visar mer än 5 procent högre historiskt fel.",
   "disclaimer": "Modellestimat, inte uppmätt stationspris eller ett statistiskt konfidensintervall. Oljepriset och valutor kan vara fördröjda. Lokal konkurrens, skatter, raffineringsmarginaler, biodrivmedelsinblandning och prissättningsfördröjningar modelleras inte fullständigt.",
   "diesel_model": {
-    "generated_at": "2026-11-18T18:03:24+00:00",
+    "generated_at": "2026-11-18T18:27:31+00:00",
     "kind": "scenario_model_not_observed_pump_price",
     "model_version": 2,
     "model_selection": "anchored",
     "fuel": "diesel",
     "unit": "SEK/l",
     "includes_taxes": "via weekly reference prices",
-    "estimate_sek_per_l": 21.54,
-    "change_percent": 0.135,
+    "estimate_sek_per_l": 21.61,
+    "change_percent": 0.136,
     "change_reference_date": "2026-11-17",
     "market_observation_date": "2026-11-18",
     "brent_source": "EIA via FRED (dagligt spotpris)",
     "fx_source": "Sveriges riksbank",
-    "indicative_lower_sek_per_l": 20.51,
-    "indicative_upper_sek_per_l": 22.57,
+    "indicative_lower_sek_per_l": 20.58,
+    "indicative_upper_sek_per_l": 22.64,
     "indicative_band_sek_per_l": 1.03,
     "rolling_backtest_mae_sek_per_l": 0.68,
     "rolling_backtest_mae_refined_sek_per_l": 0.68,
@@ -178,9 +178,9 @@
     "backtest_weeks": 12,
     "last_official_observation": "2026-11-09",
     "latest_official_sek_per_l_approx": 21.48,
-    "reference_brent_usd_per_barrel": 92.14,
-    "reference_smoothed_brent_usd_per_barrel": 91.8625,
-    "brent_latest_date": "2026-11-11",
+    "reference_brent_usd_per_barrel": 92.94,
+    "reference_smoothed_brent_usd_per_barrel": 92.94,
+    "brent_latest_date": "2026-11-17",
     "reference_usdsek": 10.15956,
     "usdsek_latest_date": "2026-11-18",
     "eursek_latest_date": "2026-11-18",
@@ -277,23 +277,23 @@
       },
       {
         "date": "2026-11-12",
-        "value": 21.44
+        "value": 21.62
       },
       {
         "date": "2026-11-13",
-        "value": 21.48
+        "value": 21.69
       },
       {
         "date": "2026-11-16",
-        "value": 21.49
+        "value": 21.6
       },
       {
         "date": "2026-11-17",
-        "value": 21.52
+        "value": 21.59
       },
       {
         "date": "2026-11-18",
-        "value": 21.54
+        "value": 21.61
       }
     ],
     "sources": [

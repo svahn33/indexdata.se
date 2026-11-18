@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18T18:03:13+00:00",
+  "generated_at": "2026-11-18T18:27:22+00:00",
   "history": {
     "aluminum": [
       {
@@ -1547,6 +1547,22 @@
       {
         "date": "2026-11-11",
         "value": 92.14
+      },
+      {
+        "date": "2026-11-12",
+        "value": 95.42
+      },
+      {
+        "date": "2026-11-13",
+        "value": 95.17
+      },
+      {
+        "date": "2026-11-16",
+        "value": 92.9
+      },
+      {
+        "date": "2026-11-17",
+        "value": 92.94
       }
     ],
     "copper": [
@@ -5955,6 +5971,22 @@
       {
         "date": "2026-11-11",
         "value": 89.62
+      },
+      {
+        "date": "2026-11-12",
+        "value": 92.3
+      },
+      {
+        "date": "2026-11-13",
+        "value": 91.96
+      },
+      {
+        "date": "2026-11-16",
+        "value": 89.24
+      },
+      {
+        "date": "2026-11-17",
+        "value": 89.53
       }
     ]
   },
@@ -8297,11 +8329,11 @@
       "value": 3061.0
     },
     "brent": {
-      "date": "2026-11-11",
+      "date": "2026-11-17",
       "frequency": "day",
       "source": "EIA via FRED",
       "unit": "USD/fat",
-      "value": 92.14
+      "value": 92.94
     },
     "copper": {
       "date": "2026-10-01",
@@ -8333,43 +8365,43 @@
     },
     "power_se1": {
       "date": "2026-11-18",
-      "end": "2026-11-18T19:15:00+01:00",
+      "end": "2026-11-18T19:30:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-18T19:00:00+01:00",
+      "start": "2026-11-18T19:15:00+01:00",
       "unit": "öre/kWh",
-      "value": 61.644,
-      "value_vat": 77.055
+      "value": 65.261,
+      "value_vat": 81.576
     },
     "power_se2": {
       "date": "2026-11-18",
-      "end": "2026-11-18T19:15:00+01:00",
+      "end": "2026-11-18T19:30:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-18T19:00:00+01:00",
+      "start": "2026-11-18T19:15:00+01:00",
       "unit": "öre/kWh",
-      "value": 107.943,
-      "value_vat": 134.929
+      "value": 123.088,
+      "value_vat": 153.86
     },
     "power_se3": {
       "date": "2026-11-18",
-      "end": "2026-11-18T19:15:00+01:00",
+      "end": "2026-11-18T19:30:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-18T19:00:00+01:00",
+      "start": "2026-11-18T19:15:00+01:00",
       "unit": "öre/kWh",
-      "value": 197.424,
-      "value_vat": 246.781
+      "value": 207.366,
+      "value_vat": 259.207
     },
     "power_se4": {
       "date": "2026-11-18",
-      "end": "2026-11-18T19:15:00+01:00",
+      "end": "2026-11-18T19:30:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-18T19:00:00+01:00",
+      "start": "2026-11-18T19:15:00+01:00",
       "unit": "öre/kWh",
-      "value": 250.481,
-      "value_vat": 313.101
+      "value": 250.692,
+      "value_vat": 313.364
     },
     "silver": {
       "date": "2026-10-01",
@@ -8393,29 +8425,29 @@
       "value": 317.0
     },
     "wti": {
-      "date": "2026-11-11",
+      "date": "2026-11-17",
       "frequency": "day",
       "source": "EIA via FRED",
       "unit": "USD/fat",
-      "value": 89.62
+      "value": 89.53
     }
   },
   "sources": {
     "eia": {
       "count": 3,
-      "last_success": "2026-11-18T18:03:13+00:00",
+      "last_success": "2026-11-18T18:27:22+00:00",
       "message": "Alla tillgängliga serier uppdaterades",
       "status": "ok"
     },
     "power": {
       "count": 4,
-      "last_success": "2026-11-18T18:03:13+00:00",
+      "last_success": "2026-11-18T18:27:22+00:00",
       "message": "Alla tillgängliga serier uppdaterades",
       "status": "ok"
     },
     "worldbank": {
       "count": 7,
-      "last_success": "2026-11-18T18:03:13+00:00",
+      "last_success": "2026-11-18T18:27:22+00:00",
       "message": "Alla tillgängliga serier uppdaterades",
       "status": "ok"
     }
