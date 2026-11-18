@@ -7,10 +7,9 @@
   <meta name="description" content="Följ svensk ekonomi på Indexdata: OMXS30, elpriser i SE1–SE4, bensin- och dieselestimat, räntor, valutor och inflation.">
   <title>Sverige idag | Indexdata</title>
   <link rel="icon" href="./assets/favicon.svg?v=21" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/styles.css?v=24-tv-cards">
+  <link rel="stylesheet" href="./assets/styles.css?v=24-quote-fallback2">
   <script defer src="./assets/omx.js?v=17"></script>
-  <script defer src="./assets/home.js?v=24-tv-cards"></script>
-  <!-- Samma TradingView-datakälla och samma instrumentkoder som i banderollen. -->
+  <script defer src="./assets/home.js?v=24-quote-fallback2"></script>
   <script type="module" src="https://www.tradingview-widget.com/w/en/tv-single-ticker.js"></script>
   <link rel="canonical" href="https://indexdata.se/">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png?v=21">
@@ -57,22 +56,24 @@
   </div>
 
   <section class="today-primary" aria-label="Marknad, el och drivmedel">
-    <article class="surface today-box today-exchange today-exchange-v18 today-exchange-tv" aria-label="OMX Stockholm 30 – TradingView-notering">
+    <article class="surface today-box today-exchange today-exchange-v18 today-exchange-tv" aria-label="OMX Stockholm 30 – senaste kurs och dagsförändring">
       <div class="omx-brief">
         <div class="omx-brief-heading">
           <h2 class="omx-brief-title">OMX Stockholm 30</h2>
           <a class="today-open" href="./marknader.html#omxs30" aria-label="Öppna OMX Stockholm 30-grafen">Graf ↗</a>
         </div>
         <div class="omx-brief-main">
-          <div class="tv-live-quote tv-live-omx" aria-label="OMX Stockholm 30 senaste kurs och dagsförändring via TradingView">
+          <div class="tv-live-quote tv-live-omx" aria-label="OMX Stockholm 30 senaste kurs och dagsförändring">
             <tv-single-ticker symbol="OMXSTO:OMXS30" theme="light" symbol-url="https://indexdata.se/marknader.html?tvwidgetsymbol={tvprosymbol}#omxs30">
-              <span class="tv-quote-placeholder">Hämtar börsnotering …</span>
+              <div class="tv-quote-fallback tv-quote-fallback-omx" aria-live="polite">
+                <div class="tv-fallback-line"><strong id="homeOmxFallbackPrice">—</strong><span class="market-trend" id="homeOmxFallbackChange" data-trend="unknown">—</span></div>
+                <small id="homeOmxFallbackDate">Senaste dagsnotering saknas</small>
+              </div>
             </tv-single-ticker>
           </div>
         </div>
         <div class="omx-brief-footer">
           <p id="homeOmxStatusLine" aria-live="polite">Kontrollerar börsens öppettider …</p>
-          <small>TradingView · kursen kan vara fördröjd</small>
         </div>
       </div>
     </article>
@@ -108,13 +109,12 @@
       <div class="today-box-header"><div><span class="today-kicker">KRONAN</span><h2>Valutakurser</h2></div><a class="today-open" href="./valutor.html">Mer ↗</a></div>
       <div class="today-two-values fx-live-grid">
         <div class="fx-live-item"><span>USD/SEK</span>
-          <div class="tv-live-quote"><tv-single-ticker symbol="FX_IDC:USDSEK" theme="light" symbol-url="https://indexdata.se/valutor.html?tvwidgetsymbol={tvprosymbol}"><span class="tv-quote-placeholder">Hämtar dollarkurs …</span></tv-single-ticker></div>
+          <div class="tv-live-quote"><tv-single-ticker symbol="FX_IDC:USDSEK" theme="light" symbol-url="https://indexdata.se/valutor.html?tvwidgetsymbol={tvprosymbol}"><div class="tv-quote-fallback"><div class="tv-fallback-line"><strong id="homeUSDFallbackPrice">—</strong><span class="market-trend" id="homeUSDFallbackChange" data-trend="unknown">—</span></div><small id="homeUSDFallbackDate">Senaste dagskurs saknas</small></div></tv-single-ticker></div>
         </div>
         <div class="fx-live-item"><span>EUR/SEK</span>
-          <div class="tv-live-quote"><tv-single-ticker symbol="FX_IDC:EURSEK" theme="light" symbol-url="https://indexdata.se/valutor.html?tvwidgetsymbol={tvprosymbol}"><span class="tv-quote-placeholder">Hämtar eurokurs …</span></tv-single-ticker></div>
+          <div class="tv-live-quote"><tv-single-ticker symbol="FX_IDC:EURSEK" theme="light" symbol-url="https://indexdata.se/valutor.html?tvwidgetsymbol={tvprosymbol}"><div class="tv-quote-fallback"><div class="tv-fallback-line"><strong id="homeEURFallbackPrice">—</strong><span class="market-trend" id="homeEURFallbackChange" data-trend="unknown">—</span></div><small id="homeEURFallbackDate">Senaste dagskurs saknas</small></div></tv-single-ticker></div>
         </div>
       </div>
-      <div class="today-source" id="homeCurrencyDate">TradingView · marknadskurser · kan vara fördröjda</div>
     </article>
     <article class="surface today-box today-small">
       <div class="today-box-header"><div><span class="today-kicker">PRISER</span><h2>Inflation</h2></div><a class="today-open" href="./inflation.html">Mer ↗</a></div>
@@ -127,7 +127,7 @@
     <div class="today-ticker-title"><span class="today-kicker">VÄRLDEN</span><span>Index, olja &amp; guld</span></div>
     <div id="homeCompactTicker" class="today-ticker-content"><span class="loading-value">Hämtar marknadsnoteringar …</span></div>
   </section>
-  <div class="today-footer"><span>Officiella dagsdata uppdaterade: <span id="homeUpdated">—</span></span><span>Olika källor har olika uppdateringsintervall. <a href="./kallor.html">Datakällor ↗</a></span></div>
+  <div class="today-footer"><span>Övriga data uppdaterade: <span id="homeUpdated">—</span></span><span class="market-credit">Index- och valutakurser: <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">TradingView</a> (kan vara fördröjda). Vid avbrott visas daterade reservkurser från Nasdaq/Riksbanken. <a href="./kallor.html">Datakällor ↗</a></span></div>
 </main>
 <footer class="site-footer sverige-footer"><span>Indexdata</span><span>© <span id="copyrightYear">2026</span> · Ej investeringsrådgivning</span><nav class="footer-links" aria-label="Information om webbplatsen"><a href="./om.html">Om oss</a><a href="./integritet.html">Integritet &amp; cookies</a><a href="./kontakt.html">Kontakt</a><a href="./annonsinformation.html">Annonsering</a></nav></footer>
 </body>
