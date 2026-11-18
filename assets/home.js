@@ -14,7 +14,6 @@ const isNum=n=>typeof n==='number'&&Number.isFinite(n);
 const latest=(d,id)=>{const item=d?.indicators?.[id];return item&&isNum(item.value)?item:null;};
 const quoteText=(d,id,places,unit='')=>{const q=latest(d,id);return q?`${fmt(q.value,places)}${unit}`:'—';};
 let market={indicators:{},generated_at:null};
-let omxLastVerified=null;
 let commodities={power_intervals:{}};
 let fuel={};
 let fuelModel={};
@@ -36,55 +35,6 @@ function setupVatToggle(){
   applyVatButtons();
 }
 
-function paintOmxChange(){
-  const el=$('homeOmxChange');
-  if(!el)return;
-  const candidates=[market?.omxs30,omxLastVerified].filter(x=>x&&typeof x==='object');
-  const now=Date.now();
-  // Visa bara procent för senaste giltiga handelsdag, aldrig från en äldre session.
-  const dateInStockholm=stamp=>new Intl.DateTimeFormat('sv-SE',{
-    year:'numeric',month:'2-digit',day:'2-digit',timeZone:'Europe/Stockholm'
-  }).format(new Date(stamp));
-  // Använd endast procentförändringen för den senaste påbörjade handelsdagen.
-  // Under helger och på morgonen före öppning gäller senaste föregående handelsdag.
-  let expectedSession=null;
-  const omx=window.IndexdataOmx;
-  if(typeof omx?.schedule==='function'){
-    const current=omx.schedule(new Date());
-    if(current.verified){
-      if(!current.closed&&current.parts.minutes>=540){
-        expectedSession=dateInStockholm(now);
-      }else{
-        const p=current.parts;
-        for(let i=1;i<12;i++){
-          const d=new Date(Date.UTC(p.year,p.month-1,p.day-i,12));
-          const day=omx.schedule(d);
-          if(!day.verified)break;
-          if(!day.closed){expectedSession=dateInStockholm(d);break;}
-        }
-      }
-    }
-  }
-  // Välj senast giltiga observation för rätt handelsdag. Om API:t misslyckats
-  // fungerar det datumkontrollerade reservvärdet, men aldrig för fel dag.
-  const eligible=candidates.filter(item=>{
-    const t=Date.parse(item.price_time||'');
-    return isNum(item.change_percent)&&Math.abs(item.change_percent)<50&&
-      Number.isFinite(t)&&t<=now+3600000&&now-t<8*86400000&&
-      expectedSession!==null&&dateInStockholm(t)===expectedSession;
-  }).sort((a,b)=>Date.parse(b.price_time)-Date.parse(a.price_time));
-  const q=eligible[0];
-  const value=q?.change_percent;
-  const good=Boolean(q);
-  el.dataset.trend=good?(value>0.004?'up':value<-.004?'down':'flat'):'unknown';
-  const number=good?Math.abs(value).toLocaleString('sv-SE',{
-    minimumFractionDigits:2,maximumFractionDigits:2}):null;
-  el.textContent=number===null?'—':(value>0.004?'+':value<-.004?'−':'')+number+'%';
-  el.setAttribute('aria-label',good?`Senaste handelsdagens förändring ${el.textContent}. Källa: ${q.source||'marknadsdata'}`:
-    'Börsförändringen är tillfälligt otillgänglig');
-  el.title=good?'Senaste tillgängliga dagsförändringen · data kan vara fördröjda':'Dagsförändring saknas';
-}
-
 function paintTrend(id, pct, context){
   const el=$(id);
   if(!el)return;
@@ -94,31 +44,12 @@ function paintTrend(id, pct, context){
   el.title=ok?`${context} · ${el.textContent}`:`${context} · underlag saknas`;
   el.setAttribute('aria-label',el.title);
 }
-function fxDailyChange(series){
-  const pts=market?.history?.[series];
-  if(!Array.isArray(pts)||pts.length<2)return null;
-  const seriesPoints=pts.filter(p=>/^\d{4}-\d{2}-\d{2}$/.test(p?.date||'')&&isNum(p?.value)&&p.value>0)
-    .sort((a,b)=>a.date.localeCompare(b.date));
-  if(seriesPoints.length<2)return null;
-  const last=seriesPoints.at(-1),previous=seriesPoints.at(-2);
-  const current=latest(market,series);
-  if(!current||current.date!==last.date)return null;
-  if((Date.parse(last.date+'T12:00:00Z')-Date.parse(previous.date+'T12:00:00Z'))/86400000>7)return null;
-  return 100*(last.value/previous.value-1);
-}
 function paintMarket(){
-  paintOmxChange();
   set('homePolicy',quoteText(market,'SECBREPOEFF',2,' %'));
   set('homeTenYear',quoteText(market,'SEGVB10YC',2,' %'));
-  set('homeUSD',quoteText(market,'SEKUSDPMI',2));
-  paintTrend('homeUSDChange',fxDailyChange('SEKUSDPMI'),'USD/SEK sedan föregående dagsnotering');
-  set('homeEUR',quoteText(market,'SEKEURPMI',2));
-  paintTrend('homeEURChange',fxDailyChange('SEKEURPMI'),'EUR/SEK sedan föregående dagsnotering');
   set('homeKPIF',quoteText(market,'KPIF_YOY',1,' %'));
   set('homeKPI',quoteText(market,'KPI_YOY',1,' %'));
   set('homeRateDate',`Riksbanken · ${fmtShortDate(latest(market,'SEGVB10YC')?.date)}`);
-  const eurSource=latest(market,'SEKEURPMI')?.source||'Riksbanken/ECB';
-  set('homeCurrencyDate',`${eurSource.includes('centralbanken')?'ECB':'Riksbanken'} · ${fmtShortDate(latest(market,'SEKEURPMI')?.date)} · ändring sedan föregående notering`);
   const kpif=latest(market,'KPIF_YOY');
   set('homeInflationDate',kpif?.date?`SCB · ${new Date(kpif.date+'T12:00:00Z').toLocaleDateString('sv-SE',{month:'long',year:'numeric',timeZone:'Europe/Stockholm'})}`:'SCB · inväntar statistik');
   if(market.generated_at){
@@ -195,18 +126,16 @@ async function json(url){
 }
 async function readStatic(){
   const prefix='./data/';
-  const [m,c,f,model,omxLast]=await Promise.allSettled([
+  const [m,c,f,model]=await Promise.allSettled([
     json(prefix+'market.json?t='+Date.now()),
     json(prefix+'commodities.json?t='+Date.now()),
     json(prefix+'fuel.json?t='+Date.now()),
-    json(prefix+'fuel_model.json?t='+Date.now()),
-    json('./assets/omxs30-last-verified.json?t='+Date.now())
+    json(prefix+'fuel_model.json?t='+Date.now())
   ]);
   if(m.status==='fulfilled')market=m.value;
   if(c.status==='fulfilled')commodities=c.value;
   if(f.status==='fulfilled')fuel=f.value;
   if(model.status==='fulfilled')fuelModel=model.value;
-  if(omxLast.status==='fulfilled')omxLastVerified=omxLast.value;
   paintMarket();paintPower();
 }
 async function loadPowerLive(){
@@ -238,7 +167,8 @@ function marketWidgets(){
       {proName:'FOREXCOM:NSXUSD',title:'Nasdaq 100*'},
       {proName:'TVC:UKOIL',title:'Brent'},
       {proName:'TVC:GOLD',title:'Guld'},
-      {proName:'FX_IDC:USDSEK',title:'USD/SEK'}],
+      {proName:'FX_IDC:USDSEK',title:'USD/SEK'},
+      {proName:'FX_IDC:EURSEK',title:'EUR/SEK'}],
     colorTheme:'light',locale:'sv',isTransparent:true,displayMode:'adaptive',showSymbolLogo:false
   });
 }
@@ -250,6 +180,5 @@ loadPowerLive();
 setInterval(paintPower,60000);
 setInterval(loadPowerLive,15*60000);
 setInterval(readStatic,60*60000);
-setInterval(paintOmxChange,30000);
 requestAnimationFrame(marketWidgets);
 })();

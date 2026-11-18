@@ -601,3 +601,23 @@ h1,h2,.brand-wordmark,.market-link-name,.kpi-value,.rate-value,.fx-price,.inflat
 .fuel-method-verification strong{display:block;color:var(--deep-green);font-size:13px;margin-bottom:6px}
 .fuel-method-verification p{font-size:12px;line-height:1.65;margin:0;color:var(--text)}
 @media(max-width:680px){.fuel-station-grid{grid-template-columns:1fr}.fuel-station-explainer h2{font-size:22px}.fuel-station-explainer>p{font-size:12px}}
+
+/* Indexdata v24 – TradingView-noteringar på översiktssidan.
+   Samma tre instrument som banderollen. Inget innehåll från widgetarnas
+   Shadow DOM/iframe läses ut eller maskeras; källans egen visning används. */
+.today-exchange-tv .omx-brief-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.today-exchange-tv .omx-brief-heading .today-open{flex:none;padding-top:0}
+.today-exchange-tv .omx-brief-main{min-height:67px;justify-content:center;padding:3px 0}
+.today-exchange-tv .omx-brief-footer{padding-top:7px}
+.today-exchange-tv .omx-brief-footer small{display:block;font-size:10px;line-height:1.35;color:#81908a;margin-top:3px}
+.tv-live-quote{width:100%;min-width:0;max-width:100%;display:block}
+.tv-live-quote tv-single-ticker{display:block;width:100%;min-width:0;min-height:58px;--tv-color-brand:#123f36}
+.tv-live-omx{width:min(100%,320px)}
+.tv-live-omx tv-single-ticker{min-height:68px}
+.tv-quote-placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:54px;color:#818c87;font-size:11px}
+.fx-live-grid{gap:8px;align-items:center;align-content:center}
+.fx-live-item{min-width:0;overflow:visible}
+.today-currency .fx-live-item>span{display:block;font-size:11px;color:#717c75;margin:0 0 3px}
+.today-currency .fx-live-item .tv-live-quote{width:100%}
+.today-currency .today-source{font-size:10px}
+@media(max-width:380px){.fx-live-grid{gap:5px}.today-currency .tv-live-quote tv-single-ticker{min-height:62px}}
