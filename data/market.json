@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T01:44:06+00:00",
+  "generated_at": "2026-11-23T12:40:43+00:00",
   "history": {
     "DEGVB10Y": [
       {
@@ -2454,6 +2454,10 @@
       },
       {
         "date": "2026-11-20",
+        "value": 2.0
+      },
+      {
+        "date": "2026-11-23",
         "value": 2.0
       }
     ],
@@ -7896,7 +7900,7 @@
       "value": 4.2794
     },
     "SECBREPOEFF": {
-      "date": "2026-11-20",
+      "date": "2026-11-23",
       "source": "Sveriges riksbank",
       "value": 2.0
     },
@@ -7978,35 +7982,35 @@
   },
   "note": "Verifierade startvärden för valutor (13 nov 2026) och inflation (okt 2026). Övriga värden hämtas vid första schemalagda körningen.",
   "omxs30": {
-    "change_percent": -2.5075,
-    "previous_close": 3256.72,
-    "price": 3175.06,
-    "price_time": "2026-11-20T16:35:00+00:00",
+    "change_percent": 1.173,
+    "previous_close": 3175.06,
+    "price": 3212.3,
+    "price_time": "2026-11-23T12:43:36+00:00",
     "source": "Yahoo Finance (fördröjd; inofficiellt gränssnitt)",
     "symbol": "^OMX"
   },
   "sources": {
     "ecb": {
       "count": 2,
-      "last_success": "2026-11-23T01:44:06+00:00",
+      "last_success": "2026-11-23T12:40:43+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "omxs30": {
       "count": 1,
-      "last_success": "2026-11-23T01:44:06+00:00",
+      "last_success": "2026-11-23T12:40:43+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "riksbank": {
       "count": 27,
-      "last_success": "2026-11-23T01:44:06+00:00",
+      "last_success": "2026-11-23T12:40:43+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "scb": {
       "count": 2,
-      "last_success": "2026-11-23T01:44:06+00:00",
+      "last_success": "2026-11-23T12:40:43+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     }
