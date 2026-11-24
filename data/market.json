@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T13:43:00+00:00",
+  "generated_at": "2026-11-24T23:54:02+00:00",
   "history": {
     "DEGVB10Y": [
       {
@@ -5705,6 +5705,10 @@
       {
         "date": "2026-11-23",
         "value": 11.2375
+      },
+      {
+        "date": "2026-11-24",
+        "value": 11.221
       }
     ],
     "SEKUSDPMI": [
@@ -6787,6 +6791,10 @@
       {
         "date": "2026-11-23",
         "value": 10.27288
+      },
+      {
+        "date": "2026-11-24",
+        "value": 10.23534
       }
     ],
     "USGVB10Y": [
@@ -7880,9 +7888,9 @@
       "value": 5.2047
     },
     "JPGVB10Y": {
-      "date": "2026-11-23",
+      "date": "2026-11-24",
       "source": "Sveriges riksbank",
-      "value": 2.785
+      "value": 2.714
     },
     "KPIF_YOY": {
       "date": "2026-10-01",
@@ -7925,39 +7933,39 @@
       "value": 2.845
     },
     "SEKCHFPMI": {
-      "date": "2026-11-23",
+      "date": "2026-11-24",
       "source": "Sveriges riksbank",
-      "value": 12.23329
+      "value": 12.21932
     },
     "SEKDKKPMI": {
-      "date": "2026-11-23",
+      "date": "2026-11-24",
       "source": "Sveriges riksbank",
-      "value": 1.50342
+      "value": 1.50126
     },
     "SEKEURPMI": {
-      "date": "2026-11-23",
+      "date": "2026-11-24",
       "source": "Sveriges riksbank",
-      "value": 11.2375
+      "value": 11.221
     },
     "SEKGBPPMI": {
-      "date": "2026-11-23",
+      "date": "2026-11-24",
       "source": "Sveriges riksbank",
-      "value": 13.43026
+      "value": 13.40621
     },
     "SEKKIX92": {
-      "date": "2026-11-23",
+      "date": "2026-11-24",
       "source": "Sveriges riksbank",
-      "value": 123.26593
+      "value": 123.05555
     },
     "SEKNOKPMI": {
-      "date": "2026-11-23",
+      "date": "2026-11-24",
       "source": "Sveriges riksbank",
-      "value": 1.04744
+      "value": 1.04527
     },
     "SEKUSDPMI": {
-      "date": "2026-11-23",
+      "date": "2026-11-24",
       "source": "Sveriges riksbank",
-      "value": 10.27288
+      "value": 10.23534
     },
     "SEMB2YCACOMB": {
       "date": "2026-11-23",
@@ -7982,35 +7990,35 @@
   },
   "note": "Verifierade startvärden för valutor (13 nov 2026) och inflation (okt 2026). Övriga värden hämtas vid första schemalagda körningen.",
   "omxs30": {
-    "change_percent": -0.9682,
-    "previous_close": 3261.32,
-    "price": 3229.74,
-    "price_time": "2026-11-24T13:45:55+00:00",
+    "change_percent": 1.231,
+    "previous_close": 3175.06,
+    "price": 3214.14,
+    "price_time": "2026-11-24T16:35:02+00:00",
     "source": "Yahoo Finance (fördröjd; inofficiellt gränssnitt)",
     "symbol": "^OMX"
   },
   "sources": {
     "ecb": {
       "count": 2,
-      "last_success": "2026-11-24T13:43:00+00:00",
+      "last_success": "2026-11-24T23:54:02+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "omxs30": {
       "count": 1,
-      "last_success": "2026-11-24T13:43:00+00:00",
+      "last_success": "2026-11-24T23:54:02+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "riksbank": {
       "count": 27,
-      "last_success": "2026-11-24T13:43:00+00:00",
+      "last_success": "2026-11-24T23:54:02+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "scb": {
       "count": 2,
-      "last_success": "2026-11-24T13:43:00+00:00",
+      "last_success": "2026-11-24T23:54:02+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     }
