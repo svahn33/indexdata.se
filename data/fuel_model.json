@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-11-23T12:43:45+00:00",
+  "generated_at": "2026-11-24T02:16:02+00:00",
   "kind": "scenario_model_not_observed_pump_price",
   "model_version": 2,
   "model_selection": "legacy",
   "fuel": "petrol_95",
   "unit": "SEK/l",
   "includes_taxes": "via weekly reference prices",
-  "estimate_sek_per_l": 16.09,
-  "change_percent": 0.28,
-  "change_reference_date": "2026-11-19",
-  "market_observation_date": "2026-11-20",
+  "estimate_sek_per_l": 16.14,
+  "change_percent": 0.32,
+  "change_reference_date": "2026-11-20",
+  "market_observation_date": "2026-11-23",
   "brent_source": "EIA via FRED (dagligt spotpris)",
   "fx_source": "Sveriges riksbank",
-  "indicative_lower_sek_per_l": 15.32,
-  "indicative_upper_sek_per_l": 16.86,
+  "indicative_lower_sek_per_l": 15.37,
+  "indicative_upper_sek_per_l": 16.91,
   "indicative_band_sek_per_l": 0.77,
   "rolling_backtest_mae_sek_per_l": 0.51,
   "rolling_backtest_mae_refined_sek_per_l": 0.64,
@@ -24,9 +24,9 @@
   "reference_brent_usd_per_barrel": 92.94,
   "reference_smoothed_brent_usd_per_barrel": 92.94,
   "brent_latest_date": "2026-11-17",
-  "reference_usdsek": 10.20246,
-  "usdsek_latest_date": "2026-11-20",
-  "eursek_latest_date": "2026-11-20",
+  "reference_usdsek": 10.27288,
+  "usdsek_latest_date": "2026-11-23",
+  "eursek_latest_date": "2026-11-23",
   "calibration_weeks": 10,
   "sensitivity_training_weeks": 30,
   "calibration_offset_sek_per_l": 8.63376,
@@ -34,10 +34,6 @@
   "litres_per_barrel": 158.9873,
   "market_oil_smoothing": "75 % senaste publicerade Brent + 25 % median av tre publicerade Brent-noteringar",
   "recent_history": [
-    {
-      "date": "2026-10-19",
-      "value": 17.88
-    },
     {
       "date": "2026-10-20",
       "value": 17.69
@@ -133,6 +129,10 @@
     {
       "date": "2026-11-20",
       "value": 16.09
+    },
+    {
+      "date": "2026-11-23",
+      "value": 16.14
     }
   ],
   "sources": [
@@ -152,21 +152,21 @@
   "method": "Ankrar till senaste officiella svenska EU-veckopriset och väger samman med 10-veckors medianavvikelse; beräknar separat, regulariserad Brent/SEK-känslighet för bensin och diesel. Jämför mot äldre medianmodell på tidigare, ej använda EU-veckor och väljer den enklare om den nya visar mer än 5 procent högre historiskt fel.",
   "disclaimer": "Modellestimat, inte uppmätt stationspris eller ett statistiskt konfidensintervall. Oljepriset och valutor kan vara fördröjda. Lokal konkurrens, skatter, raffineringsmarginaler, biodrivmedelsinblandning och prissättningsfördröjningar modelleras inte fullständigt.",
   "diesel_model": {
-    "generated_at": "2026-11-23T12:43:45+00:00",
+    "generated_at": "2026-11-24T02:16:02+00:00",
     "kind": "scenario_model_not_observed_pump_price",
     "model_version": 2,
     "model_selection": "anchored",
     "fuel": "diesel",
     "unit": "SEK/l",
     "includes_taxes": "via weekly reference prices",
-    "estimate_sek_per_l": 21.31,
-    "change_percent": 0.176,
-    "change_reference_date": "2026-11-19",
-    "market_observation_date": "2026-11-20",
+    "estimate_sek_per_l": 21.35,
+    "change_percent": 0.2,
+    "change_reference_date": "2026-11-20",
+    "market_observation_date": "2026-11-23",
     "brent_source": "EIA via FRED (dagligt spotpris)",
     "fx_source": "Sveriges riksbank",
-    "indicative_lower_sek_per_l": 20.29,
-    "indicative_upper_sek_per_l": 22.33,
+    "indicative_lower_sek_per_l": 20.33,
+    "indicative_upper_sek_per_l": 22.37,
     "indicative_band_sek_per_l": 1.02,
     "rolling_backtest_mae_sek_per_l": 0.68,
     "rolling_backtest_mae_refined_sek_per_l": 0.68,
@@ -177,9 +177,9 @@
     "reference_brent_usd_per_barrel": 92.94,
     "reference_smoothed_brent_usd_per_barrel": 92.94,
     "brent_latest_date": "2026-11-17",
-    "reference_usdsek": 10.20246,
-    "usdsek_latest_date": "2026-11-20",
-    "eursek_latest_date": "2026-11-20",
+    "reference_usdsek": 10.27288,
+    "usdsek_latest_date": "2026-11-23",
+    "eursek_latest_date": "2026-11-23",
     "calibration_weeks": 10,
     "sensitivity_training_weeks": 30,
     "calibration_offset_sek_per_l": 15.2849,
@@ -187,10 +187,6 @@
     "litres_per_barrel": 158.9873,
     "market_oil_smoothing": "75 % senaste publicerade Brent + 25 % median av tre publicerade Brent-noteringar",
     "recent_history": [
-      {
-        "date": "2026-10-19",
-        "value": 22.8
-      },
       {
         "date": "2026-10-20",
         "value": 22.64
@@ -286,6 +282,10 @@
       {
         "date": "2026-11-20",
         "value": 21.31
+      },
+      {
+        "date": "2026-11-23",
+        "value": 21.35
       }
     ],
     "sources": [
