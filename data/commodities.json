@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T08:37:22+00:00",
+  "generated_at": "2026-11-25T19:18:57+00:00",
   "history": {
     "aluminum": [
       {
@@ -1543,6 +1543,26 @@
       {
         "date": "2026-11-17",
         "value": 92.94
+      },
+      {
+        "date": "2026-11-18",
+        "value": 92.88
+      },
+      {
+        "date": "2026-11-19",
+        "value": 95.17
+      },
+      {
+        "date": "2026-11-20",
+        "value": 92.76
+      },
+      {
+        "date": "2026-11-23",
+        "value": 91.2
+      },
+      {
+        "date": "2026-11-24",
+        "value": 91.8
       }
     ],
     "copper": [
@@ -3063,6 +3083,26 @@
       {
         "date": "2026-11-17",
         "value": 3.1
+      },
+      {
+        "date": "2026-11-18",
+        "value": 3.24
+      },
+      {
+        "date": "2026-11-19",
+        "value": 3.31
+      },
+      {
+        "date": "2026-11-20",
+        "value": 3.29
+      },
+      {
+        "date": "2026-11-23",
+        "value": 3.28
+      },
+      {
+        "date": "2026-11-24",
+        "value": 3.3
       }
     ],
     "gold": [
@@ -5943,6 +5983,26 @@
       {
         "date": "2026-11-17",
         "value": 89.53
+      },
+      {
+        "date": "2026-11-18",
+        "value": 86.81
+      },
+      {
+        "date": "2026-11-19",
+        "value": 86.78
+      },
+      {
+        "date": "2026-11-20",
+        "value": 87.59
+      },
+      {
+        "date": "2026-11-23",
+        "value": 81.42
+      },
+      {
+        "date": "2026-11-24",
+        "value": 82.24
       }
     ]
   },
@@ -8285,11 +8345,11 @@
       "value": 3061.0
     },
     "brent": {
-      "date": "2026-11-17",
+      "date": "2026-11-24",
       "frequency": "day",
       "source": "EIA via FRED",
       "unit": "USD/fat",
-      "value": 92.94
+      "value": 91.8
     },
     "copper": {
       "date": "2026-10-01",
@@ -8299,11 +8359,11 @@
       "value": 14508.0
     },
     "gas_us": {
-      "date": "2026-11-17",
+      "date": "2026-11-24",
       "frequency": "day",
       "source": "EIA via FRED",
       "unit": "USD/MMBtu",
-      "value": 3.1
+      "value": 3.3
     },
     "gold": {
       "date": "2026-10-01",
@@ -8321,43 +8381,43 @@
     },
     "power_se1": {
       "date": "2026-11-25",
-      "end": "2026-11-25T09:45:00+01:00",
+      "end": "2026-11-25T20:30:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-25T09:30:00+01:00",
+      "start": "2026-11-25T20:15:00+01:00",
       "unit": "öre/kWh",
-      "value": 102.587,
-      "value_vat": 128.234
+      "value": 105.947,
+      "value_vat": 132.434
     },
     "power_se2": {
       "date": "2026-11-25",
-      "end": "2026-11-25T09:45:00+01:00",
+      "end": "2026-11-25T20:30:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-25T09:30:00+01:00",
+      "start": "2026-11-25T20:15:00+01:00",
       "unit": "öre/kWh",
-      "value": 95.339,
-      "value_vat": 119.174
+      "value": 111.251,
+      "value_vat": 139.064
     },
     "power_se3": {
       "date": "2026-11-25",
-      "end": "2026-11-25T09:45:00+01:00",
+      "end": "2026-11-25T20:30:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-25T09:30:00+01:00",
+      "start": "2026-11-25T20:15:00+01:00",
       "unit": "öre/kWh",
-      "value": 275.454,
-      "value_vat": 344.317
+      "value": 208.793,
+      "value_vat": 260.991
     },
     "power_se4": {
       "date": "2026-11-25",
-      "end": "2026-11-25T09:45:00+01:00",
+      "end": "2026-11-25T20:30:00+01:00",
       "frequency": "quarter",
       "source": "Spotwatts / ENTSO-E",
-      "start": "2026-11-25T09:30:00+01:00",
+      "start": "2026-11-25T20:15:00+01:00",
       "unit": "öre/kWh",
-      "value": 326.011,
-      "value_vat": 407.514
+      "value": 288.073,
+      "value_vat": 360.092
     },
     "silver": {
       "date": "2026-10-01",
@@ -8381,29 +8441,29 @@
       "value": 317.0
     },
     "wti": {
-      "date": "2026-11-17",
+      "date": "2026-11-24",
       "frequency": "day",
       "source": "EIA via FRED",
       "unit": "USD/fat",
-      "value": 89.53
+      "value": 82.24
     }
   },
   "sources": {
     "eia": {
       "count": 3,
-      "last_success": "2026-11-25T08:37:22+00:00",
+      "last_success": "2026-11-25T19:18:57+00:00",
       "message": "Alla tillgängliga serier uppdaterades",
       "status": "ok"
     },
     "power": {
       "count": 4,
-      "last_success": "2026-11-25T08:37:22+00:00",
+      "last_success": "2026-11-25T19:18:57+00:00",
       "message": "Alla tillgängliga serier uppdaterades",
       "status": "ok"
     },
     "worldbank": {
       "count": 7,
-      "last_success": "2026-11-25T08:37:22+00:00",
+      "last_success": "2026-11-25T19:18:57+00:00",
       "message": "Alla tillgängliga serier uppdaterades",
       "status": "ok"
     }
