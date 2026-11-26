@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-11-26T03:37:53+00:00",
+  "generated_at": "2026-11-26T16:57:22+00:00",
   "kind": "scenario_model_not_observed_pump_price",
   "model_version": 2,
   "model_selection": "legacy",
   "fuel": "petrol_95",
   "unit": "SEK/l",
   "includes_taxes": "via weekly reference prices",
-  "estimate_sek_per_l": 16.05,
-  "change_percent": 0.19,
-  "change_reference_date": "2026-11-24",
-  "market_observation_date": "2026-11-25",
+  "estimate_sek_per_l": 16.0,
+  "change_percent": -0.316,
+  "change_reference_date": "2026-11-25",
+  "market_observation_date": "2026-11-26",
   "brent_source": "EIA via FRED (dagligt spotpris)",
   "fx_source": "Sveriges riksbank",
-  "indicative_lower_sek_per_l": 15.28,
-  "indicative_upper_sek_per_l": 16.82,
+  "indicative_lower_sek_per_l": 15.23,
+  "indicative_upper_sek_per_l": 16.77,
   "indicative_band_sek_per_l": 0.77,
   "rolling_backtest_mae_sek_per_l": 0.51,
   "rolling_backtest_mae_refined_sek_per_l": 0.64,
@@ -24,9 +24,9 @@
   "reference_brent_usd_per_barrel": 91.8,
   "reference_smoothed_brent_usd_per_barrel": 91.8,
   "brent_latest_date": "2026-11-24",
-  "reference_usdsek": 10.27755,
-  "usdsek_latest_date": "2026-11-25",
-  "eursek_latest_date": "2026-11-25",
+  "reference_usdsek": 10.20729,
+  "usdsek_latest_date": "2026-11-26",
+  "eursek_latest_date": "2026-11-26",
   "calibration_weeks": 10,
   "sensitivity_training_weeks": 30,
   "calibration_offset_sek_per_l": 8.63376,
@@ -133,6 +133,10 @@
     {
       "date": "2026-11-25",
       "value": 16.05
+    },
+    {
+      "date": "2026-11-26",
+      "value": 16.0
     }
   ],
   "sources": [
@@ -152,21 +156,21 @@
   "method": "Ankrar till senaste officiella svenska EU-veckopriset och väger samman med 10-veckors medianavvikelse; beräknar separat, regulariserad Brent/SEK-känslighet för bensin och diesel. Jämför mot äldre medianmodell på tidigare, ej använda EU-veckor och väljer den enklare om den nya visar mer än 5 procent högre historiskt fel.",
   "disclaimer": "Modellestimat, inte uppmätt stationspris eller ett statistiskt konfidensintervall. Oljepriset och valutor kan vara fördröjda. Lokal konkurrens, skatter, raffineringsmarginaler, biodrivmedelsinblandning och prissättningsfördröjningar modelleras inte fullständigt.",
   "diesel_model": {
-    "generated_at": "2026-11-26T03:37:53+00:00",
+    "generated_at": "2026-11-26T16:57:22+00:00",
     "kind": "scenario_model_not_observed_pump_price",
     "model_version": 2,
     "model_selection": "anchored",
     "fuel": "diesel",
     "unit": "SEK/l",
     "includes_taxes": "via weekly reference prices",
-    "estimate_sek_per_l": 21.28,
-    "change_percent": 0.119,
-    "change_reference_date": "2026-11-24",
-    "market_observation_date": "2026-11-25",
+    "estimate_sek_per_l": 21.24,
+    "change_percent": -0.198,
+    "change_reference_date": "2026-11-25",
+    "market_observation_date": "2026-11-26",
     "brent_source": "EIA via FRED (dagligt spotpris)",
     "fx_source": "Sveriges riksbank",
-    "indicative_lower_sek_per_l": 20.26,
-    "indicative_upper_sek_per_l": 22.3,
+    "indicative_lower_sek_per_l": 20.22,
+    "indicative_upper_sek_per_l": 22.26,
     "indicative_band_sek_per_l": 1.02,
     "rolling_backtest_mae_sek_per_l": 0.68,
     "rolling_backtest_mae_refined_sek_per_l": 0.68,
@@ -177,9 +181,9 @@
     "reference_brent_usd_per_barrel": 91.8,
     "reference_smoothed_brent_usd_per_barrel": 91.8,
     "brent_latest_date": "2026-11-24",
-    "reference_usdsek": 10.27755,
-    "usdsek_latest_date": "2026-11-25",
-    "eursek_latest_date": "2026-11-25",
+    "reference_usdsek": 10.20729,
+    "usdsek_latest_date": "2026-11-26",
+    "eursek_latest_date": "2026-11-26",
     "calibration_weeks": 10,
     "sensitivity_training_weeks": 30,
     "calibration_offset_sek_per_l": 15.2849,
@@ -286,6 +290,10 @@
       {
         "date": "2026-11-25",
         "value": 21.28
+      },
+      {
+        "date": "2026-11-26",
+        "value": 21.24
       }
     ],
     "sources": [
