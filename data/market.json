@@ -1,11 +1,7 @@
 {
-  "generated_at": "2026-11-26T16:54:16+00:00",
+  "generated_at": "2026-11-27T01:44:47+00:00",
   "history": {
     "DEGVB10Y": [
-      {
-        "date": "2025-10-27",
-        "value": 2.6145
-      },
       {
         "date": "2025-10-28",
         "value": 2.6222
@@ -1385,10 +1381,6 @@
     ],
     "SECBREPOEFF": [
       {
-        "date": "2025-10-27",
-        "value": 1.75
-      },
-      {
         "date": "2025-10-28",
         "value": 1.75
       },
@@ -2479,10 +2471,6 @@
     ],
     "SEGVB10YC": [
       {
-        "date": "2025-10-27",
-        "value": 2.532
-      },
-      {
         "date": "2025-10-28",
         "value": 2.527
       },
@@ -3569,10 +3557,6 @@
     ],
     "SEGVB2YC": [
       {
-        "date": "2025-10-27",
-        "value": 1.889
-      },
-      {
         "date": "2025-10-28",
         "value": 1.875
       },
@@ -4658,10 +4642,6 @@
       }
     ],
     "SEKEURPMI": [
-      {
-        "date": "2025-10-27",
-        "value": 10.912
-      },
       {
         "date": "2025-10-28",
         "value": 10.921
@@ -5753,10 +5733,6 @@
     ],
     "SEKUSDPMI": [
       {
-        "date": "2025-10-27",
-        "value": 9.37457
-      },
-      {
         "date": "2025-10-28",
         "value": 9.39037
       },
@@ -6846,10 +6822,6 @@
       }
     ],
     "USGVB10Y": [
-      {
-        "date": "2025-10-27",
-        "value": 3.987
-      },
       {
         "date": "2025-10-28",
         "value": 3.978
@@ -8056,25 +8028,25 @@
   "sources": {
     "ecb": {
       "count": 2,
-      "last_success": "2026-11-26T16:54:16+00:00",
+      "last_success": "2026-11-27T01:44:47+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "omxs30": {
       "count": 1,
-      "last_success": "2026-11-26T16:54:16+00:00",
+      "last_success": "2026-11-27T01:44:47+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "riksbank": {
       "count": 27,
-      "last_success": "2026-11-26T16:54:16+00:00",
+      "last_success": "2026-11-27T01:44:47+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     },
     "scb": {
       "count": 2,
-      "last_success": "2026-11-26T16:54:16+00:00",
+      "last_success": "2026-11-27T01:44:47+00:00",
       "message": "Alla anrop lyckades",
       "status": "ok"
     }
