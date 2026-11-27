@@ -1,18 +1,9 @@
 {
-  "generated_at": "2026-11-27T01:47:50.981613+00:00",
+  "generated_at": "2026-11-27T12:23:28.038951+00:00",
   "source": "EU EnergyPrices / EU Commission Weekly Oil Bulletin",
   "source_url": "https://www.euenergyprices.eu/en/data",
   "license": "CC BY 4.0",
   "history": [
-    {
-      "date": "2025-05-12",
-      "diesel": {
-        "value_eur_per_l": 1.4177
-      },
-      "petrol": {
-        "value_eur_per_l": 1.3991
-      }
-    },
     {
       "date": "2025-05-19",
       "diesel": {
@@ -723,14 +714,23 @@
       "petrol": {
         "value_eur_per_l": 1.4082
       }
+    },
+    {
+      "date": "2026-11-23",
+      "diesel": {
+        "value_eur_per_l": 1.814
+      },
+      "petrol": {
+        "value_eur_per_l": 1.3594
+      }
     }
   ],
   "petrol": {
-    "date": "2026-11-16",
-    "value_eur_per_l": 1.4082
+    "date": "2026-11-23",
+    "value_eur_per_l": 1.3594
   },
   "diesel": {
-    "date": "2026-11-16",
-    "value_eur_per_l": 1.9102
+    "date": "2026-11-23",
+    "value_eur_per_l": 1.814
   }
 }
